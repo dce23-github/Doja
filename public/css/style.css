@@ -1,0 +1,11 @@
+html{
+    box-sizing : border-box !important;
+    overflow-x : hidden;
+    overflow-y :auto;
+}
+
+body{
+    margin : 0;
+    padding : 0;
+    border : none;
+}

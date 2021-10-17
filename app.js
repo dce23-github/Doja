@@ -1,12 +1,16 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
-
+const mongoose = require("mongoose");;
+const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
+const path = require("path");
 const app = express();
 
 const PORT = process.env.PORT || 9000;
+const dbURI =  "mongodb://localhost:27017/doja";
+if(process.env.NODE_ENV == "production") dbURI = prcoess.env.dbURIl;
 
-mongoose.connect(process.env.dbURI, (err) => {
+mongoose.connect(dbURI, {useNewUrlParser: true,useUnifiedTopology: true,}, (err) => {
   if (err) {
     console.log(err);
   } else {
@@ -14,16 +18,33 @@ mongoose.connect(process.env.dbURI, (err) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(`Server is running on ${PORT}`);
+        console.log(`Server is running on ${PORT} and connected to mongoDB`);
       }
     });
   }
 });
 
+
+/* configuration */
+
+app.set('view engine', 'ejs');
+app.engine("ejs", ejsMate);
+app.set('views', path.join(__dirname, 'views'));
+
+/* configuration ends here */
+
 /* middlewares */
+
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
+app.use(express.static(path.join(__dirname, "public")));
+
+/* middleware ends here */
+
+
 
 /* routes */
 
 app.get("/", (req, res) => {
-  res.send("<h1>This is working!</h1>");
+  res.render("home");
 });

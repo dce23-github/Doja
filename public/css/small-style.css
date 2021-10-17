@@ -1,0 +1,369 @@
+:root{
+    --top-height : 50px;
+}
+
+div, button, a, span, ul, li{
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 8px;
+}
+
+
+body{
+    margin : 0;
+    padding : 0;
+    top : 0;
+    left : 0;
+    background: whitesmoke;
+    font-size: 1.2rem;
+}
+
+h1{
+    display: inline-block;
+    margin: 0;
+    /* background: white; */
+}
+
+
+header{
+    position : sticky;
+    z-index: 1024 !important;
+    top : 0;
+    height : var(--top-height);
+}
+
+.col-xs{width : 5%;}
+.col-s-1 {width: 8.33%;}
+.col-s-2 {width: 16.66%;}
+.col-s-3 {width: 25%;}
+.col-s-4 {width: 33.33%;}
+.col-s-5 {width: 41.66%;}
+.col-s-6 {width: 50%;}
+.col-s-7 {width: 58.33%;}
+.col-s-8 {width: 66.66%;}
+.col-s-9 {width: 75%;}
+.col-s-10 {width: 83.33%;}
+.col-s-11 {width: 91.66%;}
+.col-s-12 {width: 100%;}
+
+.nav-bar{
+    display: block;
+    position: relative;
+    background: rgb(253, 253, 253);
+    box-shadow: 0px 2px 4px 2px rgb(77, 76, 76);
+    height : 100%;
+}
+
+.nav-container{
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    align-items: center;
+    text-align: center;
+    padding : 3%;
+}
+
+
+.link-container-l{
+    display: none;
+}
+
+.link-container-s{
+    display: flex;
+    justify-content: flex-end;
+    position : absolute;
+    right : 0;
+}
+
+.container-btns{
+    width : 50%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.slide-container{
+    display: none;
+    height: 100vh;
+    position: fixed;
+    display: none;
+    top : var(--top-height);
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    border-top : 2px solid gold;
+    background-color: rgb(255, 255, 255);
+    opacity: 0;
+    right : 0;
+    min-height: fit-content;
+    height : 100vh;
+    z-index: 1026;
+    overflow-y: hidden;
+    box-shadow: 0px 8px 4px 3px rgb(37, 37, 37);
+}
+
+.links{
+    padding : 10%;
+}
+
+.slide-container-animate-left{
+    display: flex;
+    animation-name: animate-left;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.slide-container-animate-right{
+    display: flex;
+    animation-name: animate-right;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animate-left {
+    from { 
+        display: none;
+        right : -50%; opacity: 0;
+    }
+    to{ 
+        right : 0; opacity: 1;
+        display: flex;
+    }
+}
+
+@keyframes animate-right {
+    from { 
+        display: flex;
+        right : 0; opacity: 1;
+    }
+    to{ 
+        display: none !important;
+        right : -50%; opacity: 0;
+    }
+}
+
+.menu{
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    cursor: pointer;
+    border :none;
+    background : none;
+}
+
+
+.img-logo{
+    text-align: left;
+}
+
+
+.small-aside{
+    
+    position : fixed;
+    background:rgb(255, 255, 255);
+    background-color: rgb(217, 255, 47);
+    box-shadow: 0px 0px 4px 2px rgb(63, 63, 63);
+    border-radius: 0.9rem;
+    top : 50vh;
+    left :-1%;
+    z-index:1024;
+    display : inline-block;
+}
+
+.btn-aside{
+    background: none;
+    border:none;
+    position: relative;
+    left:1%;
+    cursor : pointer;
+}
+
+.main{
+    position : relative;
+}
+
+
+
+.sidebar{
+    display: none;
+    background: white;
+    box-shadow: 0px 8px 4px 3px rgb(68, 67, 67);
+    position: fixed;
+    height: 100vh;
+    top : var(--top-height);
+    border-top: 2px solid gold;
+    /* border-radius: 0.5rem; */
+    opacity: 0;
+    z-index: 1024;
+}
+
+.animate-sidebar-close{
+    display: block;
+    animation-name: anim-sidebar-close;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+
+.animate-sidebar-open{
+    display: block;
+    animation-name: anim-sidebar-open;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes anim-sidebar-open {
+    from{
+        display: none;
+        opacity: 0;
+        left : -50%;
+    }
+    to{
+        display: block;
+        opacity: 1;
+        left : 0;
+    }
+}
+
+@keyframes anim-sidebar-close {
+    from{
+        display: block;
+        opacity: 1;
+        left : 0;
+    }
+    to{
+        display: none !important;
+        opacity: 0;
+        left : -50%;
+    }
+}
+
+.main-container{
+    height: 100vh;
+    position: relative;   
+    display: block;
+    /* padding : 5% 10% 0 8%; */
+   }
+
+.content{
+    background: white;
+    border-left : 10px solid rgb(216, 216, 216);
+    box-shadow: 0px 0px 4px 2px rgb(68, 67, 67);
+    position: relative;
+    height : 100vh;
+}
+
+
+/* settings dropdown  starts */
+
+
+
+.settings{
+    width : 3rem;
+    max-width: 30px;
+    cursor: pointer;
+    background:none;
+    border :none;
+    border : 2px solid gray;
+    border-radius: 0.5rem;
+}
+
+.animate-btn-set-open{
+    animation-name: anim-btn-set-open;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.animate-btn-set-close{
+    animation-name: anim-btn-set-close;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes anim-btn-set-open {
+    from{ border : 2px solid gray;}
+    to{ border : 2px solid crimson;}
+}
+
+@keyframes anim-btn-set-close {
+    from{ border : 2px solid crimson;}
+    to{ border : 2px solid gray;}
+}
+
+.list-settings{
+    display: none;
+    position: fixed;
+    background-color: white;
+    box-shadow: 0px 2px 2px 2px rgb(102, 102, 102);
+    margin : 0;
+    padding : 0;
+    border-top : 2px solid gold;
+    padding-top : 1%;
+    padding-bottom: 1%;
+    top : 0;
+    opacity: 0;
+    border-radius: 0 0 0.8rem 0.8rem;
+    right : 3%;
+    list-style: none;
+    text-align: center;
+    z-index: 1024;
+    min-height: fit-content;
+}
+.list-settings li{
+    position: relative;
+    display: block;
+    margin :0;
+    width: 100%;
+    padding : 5%;
+}
+
+.animate-settings-open{
+    display: block;
+    animation-name: anim-settings-open;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.animate-settings-close{
+    display: block;
+    animation-name: anim-settings-close;
+    animation-duration: 0.5s;
+    /* animation-fill-mode: forwards; */
+}
+
+@keyframes anim-settings-open {
+    from{ display : none; top : 0; opacity: 0;}
+    to{ display: block; top : var(--top-height); opacity :1;}
+}
+
+@keyframes anim-settings-close {
+    from{ display : block ; top : var(--top-height); opacity :1; }
+    to{  display : none; top : 0; opacity: 0;}
+}
+
+/* .dropdown ul li{
+    display: block;
+    margin : 0;
+    width: 100%;
+    padding : 5%;
+} */
+
+
+/*settings dropdown ends   */
+
+
+.overlay-container{
+    display:  none;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    width:100vw;
+    height : 100vh;
+    border :0;
+    margin :0;
+    padding : 0;
+    z-index: 1023;
+    transition: opacity 2s ease-in;
+}
