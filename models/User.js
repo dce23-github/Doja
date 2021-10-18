@@ -29,7 +29,7 @@ const userSchema = new Schema(
     googleId: {
       type: String,
     },
-    college: {
+    organisation: {
       type: String,
     },
     submissions: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
