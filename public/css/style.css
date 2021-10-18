@@ -1,11 +1,13 @@
-html{
-    box-sizing : border-box !important;
-    overflow-x : hidden;
-    overflow-y :auto;
+html {
+  box-sizing: border-box !important;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-body{
-    margin : 0;
-    padding : 0;
-    border : none;
+body {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  font-family: sans-serif;
 }
