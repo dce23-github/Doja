@@ -1,0 +1,81 @@
+.col-25{
+    width : 25%;
+    display: inline-block;
+    margin-bottom: 2rem;
+    margin-left: 25%;
+}
+
+.col-75{
+    width : 50%;
+    float: right;
+}
+
+.signup-container{
+    display: block;
+    margin-top : 2rem;
+    margin-bottom: 5rem;;
+    margin-left: auto;
+    margin-right : auto;
+    width : 70%;
+    border : 1px solid rgb(214, 214, 214);
+}
+
+.signup-box{
+    font-size: 1.4rem;
+    color : rgb(27, 27, 27);
+}
+
+.signup{
+    display: block;
+    margin-left : auto;
+    margin-right : auto;
+}
+
+#logo-container-signup {
+    background-color: rgb(54, 54, 54);
+    height: min-content;
+    padding: 0.5rem;
+}
+
+#logo-signup {
+    display: block;
+    margin-left: auto;
+    margin-right : auto;
+    max-width: 70px;
+    max-height: 70px;
+}
+
+#user-container-signup {
+    margin-top: 1.5rem;
+}
+
+#user-img-signup {
+    max-width: 80px;
+    max-height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 5rem;
+    box-shadow: 0px 1px 1px 1px rgb(34, 34, 34);
+    margin-bottom: 2rem;;
+}
+
+#close-img-signup {
+    max-width: 50px;
+    max-height: 50px;
+    position: absolute;
+    right: 0;
+}
+
+#signup-submit{
+    display: block;
+    width : 6rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: orange;
+    color : white;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+}
+

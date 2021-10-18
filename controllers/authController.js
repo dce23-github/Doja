@@ -9,9 +9,9 @@ const createToken = (id) => {
 
 const signup_get = (req, res) => {
   try {
-    res.render("login");
+    res.render("auth/signup");
   } catch (error) {
-    console.log(error);
+    console.log(error, "insidesigup error");
   }
 };
 
@@ -44,7 +44,7 @@ const signup_post = async (req, res) => {
     const existsHandle = await User.findOne({ userHandle });
 
     if (existsHandle && existsHandle.userHandle === userHandle) {
-      throw Error("handle taken");
+      throw Error("Handle already taken...");
     }
 
     const user = await User.create({
