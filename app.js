@@ -3,8 +3,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
+
+const authRoutes = require("./routes/authRoutes");
 
 const PORT = process.env.PORT || 9000;
 const dbURI = process.env.dbURI;
@@ -38,13 +42,17 @@ app.set("views", path.join(__dirname, "views"));
 
 /* middlewares */
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
 /* middleware ends here */
 
-/* routes */
+/* Auth routes */
+app.use("/user", authRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
