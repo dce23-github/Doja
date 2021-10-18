@@ -61,7 +61,8 @@ header{
     display: block;
     position: relative;
     /* background-color: white; */
-    background : linear-gradient(#001b3a, #03ecec );
+    /* background : linear-gradient(#001b3a, #03ecec ); */
+    background-color: rgb(0, 11, 49) ;
     box-shadow: 0px 2px 4px 2px rgb(77, 76, 76);
     height : 75px;
 }
@@ -99,6 +100,7 @@ header{
     font-size: 2rem;
     color: wheat;
     text-shadow: 2px 2px 2px rgb(44, 44, 44);
+    max-width : 100px;
 }
 
 .doja-img{
