@@ -1,0 +1,218 @@
+.login-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 2rem;
+}
+
+.form-container1 {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(95, 158, 160, 0.418);
+    z-index: 1024;
+}
+
+.form-container2 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    height: 70vh;
+    top: 5%;
+    width: 40vw;
+    background-color: white;
+    box-shadow: 0px 2px 4px 3px rgb(39, 39, 39);
+    border-radius: 0.5rem;
+}
+
+.form-container3 {
+    margin: 1rem;
+    position: relative;
+    /* top : 5rem; */
+    padding: 2rem;
+    font-size: 1.5vw;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /* box-sizing: border-box; */
+}
+
+#username {
+    grid-column: 2/4;
+    grid-row: 1;
+}
+
+#label-username {
+    grid-column: 1/1;
+    grid-row: 1;
+}
+
+#label-password {
+    grid-column: 1/1;
+    grid-row: 2;
+}
+
+#password {
+    grid-column: 2/4;
+    grid-row: 2;
+}
+
+#submit {
+    grid-column: 2/2;
+    grid-row: 3;
+    color: rgb(34, 34, 34);
+    font-size: 1.2rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+#empty {
+    display: inline-block;
+    grid-column: 3/3;
+    grid-row: 3;
+}
+
+#logo-container {
+    background-color: rgb(44, 44, 44);
+    height: min-content;
+}
+
+#logo-login {
+    margin-top : 10px;
+    max-width: 60px;
+    max-height: 60px;
+    display: inline;
+}
+
+#user-container {
+    margin-top: 1.5rem;
+}
+
+#user-img {
+    max-width: 80px;
+    max-height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 5rem;
+    box-shadow: 0px 1px 1px 1px rgb(34, 34, 34);
+}
+
+#close-img {
+    max-width: 50px;
+    max-height: 50px;
+    position: absolute;
+    right: 0;
+}
+
+
+.signup {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 2rem;
+}
+
+.form-container1-signup {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(95, 158, 160, 0.418);
+    z-index: 1024;
+}
+
+.form-container2-signup {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    height: 72vh;
+    top: 10%;
+    width: 40vw;
+    background-color: white;
+    box-shadow: 0px 2px 4px 3px rgb(39, 39, 39);
+    border-radius: 0.5rem;
+}
+
+.form-container3-signup {
+    margin: 1rem;
+    position: relative;
+    /* top : 5rem; */
+    padding: 2rem;
+    font-size: 1.5vw;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /* box-sizing: border-box; */
+}
+
+#username-signup {
+    grid-column: 2/4;
+    grid-row: 1;
+}
+
+#label-username-signup {
+    grid-column: 1/1;
+    grid-row: 1;
+}
+
+#label-password-signup {
+    grid-column: 1/1;
+    grid-row: 2;
+}
+
+#password-signup {
+    grid-column: 2/4;
+    grid-row: 2;
+}
+
+#label-email-signup{
+    grid-column: 1/1;
+    grid-row: 3;
+}
+
+#email-signup{
+    grid-column: 2/4;
+    grid-row: 3;
+}
+
+#submit-signup{
+    grid-column: 2/2;
+    grid-row: 4;
+    color: rgb(34, 34, 34);
+    font-size: 1.7rem;
+    font-weight:400;
+    cursor: pointer;
+}
+
+#empty-signup {
+    display: inline-block;
+    grid-column: 3/3;
+    grid-row: 4;
+}
+
+#logo-container-signup {
+    background-color: rgb(44, 44, 44);
+    height: min-content;
+}
+
+#logo-login-signup {
+    max-width: 60px;
+    max-height: 60px;
+}
+
+#user-container-signup {
+    margin-top: 2rem;
+}
+
+#user-img-signup {
+    max-width: 80px;
+    max-height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 5rem;
+    box-shadow: 0px 1px 1px 1px rgb(34, 34, 34);
+}
+
+#close-img-signup{
+    max-width: 50px;
+    max-height: 50px;
+    position: absolute;
+    right : 0;
+}

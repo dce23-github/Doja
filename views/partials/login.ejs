@@ -1,0 +1,24 @@
+<div class="form-container1">
+  <div class="form-container2">
+    <div id="logo-container">
+      <img src="/images/logo.png" id="logo-login">
+      <a onclick="loginRender()"><img src="/images/close1.png" id="close-img"></a>
+    </div>
+    <div id="user-container"><img src="/images/user-img.png" id="user-img"></div>
+    <div class="form-container3">
+      <form method="POST" action="/login" class="form-validate login-form">
+        <label for="username" id="label-username">User Name</label>
+        <input type="text" name="username" id="username" class="required">
+
+        <!-- <label for = "email" >Email </label>
+          <input type = "email" name ="email" id = "email" class = "required"> -->
+
+        <label for="password" id="label-password">Password</label>
+        <input type="password" name="password" id="password" class="required">
+
+        <button type="submit" id="submit">Login</button>
+        <div id="empty"></div>
+      </form>
+    </div>
+  </div>
+</div>
