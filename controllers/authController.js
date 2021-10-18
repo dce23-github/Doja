@@ -34,7 +34,7 @@ const signup_post = async (req, res) => {
       gender,
       country,
       userHandle,
-      college,
+      organisation,
     } = req.body;
 
     if (password !== confirmPassword) {
@@ -55,7 +55,7 @@ const signup_post = async (req, res) => {
       age,
       gender,
       userHandle,
-      college,
+      organisation,
     });
 
     const token = createToken(user._id);

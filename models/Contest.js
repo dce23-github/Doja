@@ -6,11 +6,13 @@ const contestSchema = new Schema(
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
     description: { type: String, required: true },
-    prize: { type: String, required: true },
-    registrations: [{ type: Schema.Types.ObjectId }],
+    prize: { type: String },
+    registrations: [{ type: Schema.Types.ObjectId, ref: "User" }],
     problems: [{ type: Schema.Types.ObjectId, ref: "Problem" }],
-    organisationName: { type: String },
-    constestTitle: { type: String, required: true },
+    organisation: { type: String, required: true },
+    contestTitle: { type: String, required: true },
+    isInitiated: { type: Boolean },
+    authorId: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
