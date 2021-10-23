@@ -29,4 +29,6 @@ const problemSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Problem", problemSchema);
+const Problem = mongoose.model("Problem", problemSchema);
+
+module.exports = Problem;

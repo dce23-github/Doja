@@ -6,7 +6,8 @@ const {
   initiateContest__patch,
   deleteContest__delete,
   updateContest__patch,
-  createContest_get,
+  addProblem__post,
+  addTestcase__patch,
 } = require("../controllers/contestController");
 
 router.get("/create", createContest_get);
@@ -15,5 +16,7 @@ router.get("/:id", getContest__get);
 router.patch("/initiate/:id", initiateContest__patch);
 router.patch("/update/:id", updateContest__patch);
 router.delete("/delete/:id", deleteContest__delete);
+router.post("/:id/addProblem", addProblem__post);
+router.patch("/:id/:pid/addTestcase", addTestcase__patch);
 
 module.exports = router;
