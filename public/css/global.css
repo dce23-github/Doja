@@ -2,7 +2,7 @@
     --top-height: 75px;
     --main-color1: rgb(245, 222, 179);
     --main-color2: rgb(0, 51, 128);
-    --main-color3: rgb(255, 203, 31);
+    --main-color3: rgb(255, 177, 31);
     --shadow-color-light: rgb(103, 103, 103);
     --shadow-color-dark: rgb(47, 47, 47);
     --navbar-color: rgb(11, 34, 57);
@@ -10,6 +10,10 @@
 
 div, button, a, span, ul, li {
     box-sizing: border-box;
+}
+
+button{
+    cursor: pointer;
 }
 
 a {
@@ -167,6 +171,10 @@ header {
     width : 5rem;
 }
 
+.login-nav:hover{
+    border : 2px solid var(--main-color3);
+}
+
 
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -282,6 +290,10 @@ header {
     border-radius: 0.5rem;
 }
 
+.settings:hover{
+    border : 2px solid var(--main-color3);
+}
+
 .menu-img {
     max-width: 20px;
     min-width: 20px;
@@ -307,13 +319,13 @@ header {
         border: 2px solid var(--main-color1);
     }
     to {
-        border: 2px solid var(--main-color2);
+        border: 2px solid var(--main-color3);
     }
 }
 
 @keyframes anim-btn-set-close {
     from {
-        border: 2px solid var(--main-color2);
+        border: 2px solid var(--main-color3);
     }
     to {
         border: 2px solid var(--main-color1);
@@ -327,7 +339,7 @@ header {
     box-shadow: 0px 2px 2px 2px rgb(102, 102, 102);
     margin: 0;
     padding: 0;
-    border-top: 2px solid var(--main-color2);
+    border-top: 2px solid var(--main-color3);
     padding-top: 1%;
     padding-bottom: 1%;
     top: 0;
@@ -344,8 +356,15 @@ header {
     position: relative;
     display: block;
     width: 100%;
-    margin: 0;
-    padding: 5%;
+    margin: 5% 0 5% 0;
+}
+
+.list-settings li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding : 3%;
+    color :rgb(0, 51, 128);
 }
 
 .animate-settings-open {
@@ -389,7 +408,7 @@ header {
 }
 
 .list-settings a:hover {
-    background-color: rgb(228, 228, 228);
+    background-color: var(--main-color3);
 }
 
 /* .dropdown ul li{

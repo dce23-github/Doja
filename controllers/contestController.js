@@ -1,5 +1,9 @@
 const Contest = require("../models/Contest");
 
+const createContest_get = (req, res)=>{
+  res.render("contest/create");
+}
+
 const createContest__post = async (req, res) => {
   try {
     const {
@@ -143,4 +147,5 @@ module.exports = {
   initiateContest__patch,
   deleteContest__delete,
   updateContest__patch,
+  createContest_get,
 };

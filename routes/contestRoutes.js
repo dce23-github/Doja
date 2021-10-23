@@ -6,8 +6,10 @@ const {
   initiateContest__patch,
   deleteContest__delete,
   updateContest__patch,
+  createContest_get,
 } = require("../controllers/contestController");
 
+router.get("/create", createContest_get);
 router.post("/create", createContest__post);
 router.get("/:id", getContest__get);
 router.patch("/initiate/:id", initiateContest__patch);

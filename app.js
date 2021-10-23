@@ -10,7 +10,7 @@ const app = express();
 
 const authRoutes = require("./routes/authRoutes");
 const contestRoutes = require("./routes/contestRoutes");
-const problemRoutes = require("./routes/problemRoutes");
+// const problemRoutes = require("./routes/problemRoutes");
 
 const PORT = process.env.PORT || 9000;
 const dbURI = process.env.dbURI;
@@ -60,7 +60,7 @@ app.use("/user", authRoutes);
 app.use("/contest", contestRoutes);
 
 /* Problem routes */
-app.use("/problem", problemRoutes);
+// app.use("/problem", problemRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");

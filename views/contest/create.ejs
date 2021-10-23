@@ -1,0 +1,59 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="contest-container">
+  <div class="contest-box">
+    <h1>Create Contest</h1>
+  </div>
+
+  <form method="POST" action="/contest/create" class="form-validate contest">
+    <div>
+      <div class="contest-col-25">
+        <label for="contesetTitle">Title</label>
+      </div>
+      <div class="contest-col-75">
+        <input type="text" name="contestTitle" class="required">
+      </div>
+    </div>
+
+    <div>
+      <div class="contest-col-25">
+        <label for="description">Description</label>
+      </div>
+      <div class="contest-col-75">
+        <textarea name="description" class="required"></textarea>
+      </div>
+    </div>
+
+    <div>
+      <div class="contest-col-25">
+        <label for="startTime">Start Time</label>
+      </div>
+      <div class="contest-col-75">
+        <input type="time" name="startTime" class="required">
+      </div>
+    </div>
+
+    <div>
+      <div class="contest-col-25">
+        <label for="endTime">End Time</label>
+      </div>
+      <div class="contest-col-75">
+        <input type="time" name="endTime" class="required">
+      </div>
+    </div>
+
+    <div>
+      <div class="contest-col-25">
+        <label for="prize">Prize</label>
+      </div>
+      <div class="contest-col-75">
+        <textarea name="prize" class="required"></textarea>
+      </div>
+    </div>
+
+
+    <button type="submit" id="contest-create">Create</button>
+
+  </form>
+
+</div>
