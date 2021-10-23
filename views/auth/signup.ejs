@@ -3,19 +3,20 @@
 <div class="signup-container">
   <div class="signup-box">
     <div id="logo-container-signup">
-      <img src="/images/logo.png" id="logo-signup">
+      <img src="/images/logo.png" id="logo-signup" />
     </div>
 
-    <div id="user-container-signup"><img src="/images/user-img.png" id="user-img-signup"></div>
+    <div id="user-container-signup">
+      <img src="/images/user-img.png" id="user-img-signup" />
+    </div>
 
-    <form method="POST" action="/signup" class="form-validate signup">
-
+    <form class="form-validate signup">
       <div>
         <div class="col-25">
           <label for="name">Name</label>
         </div>
         <div class="col-75">
-          <input type="text" name="name" class="required">
+          <input type="text" name="name" class="required" required />
         </div>
       </div>
 
@@ -23,62 +24,66 @@
         <label for="email">Email </label>
       </div>
       <div class="col-75">
-        <input type="email" name="email" class="required">
+        <input type="email" name="email" class="required" required />
       </div>
 
       <div class="col-25">
         <label for="age">Age</label>
       </div>
       <div class="col-75">
-        <input type="number" name="age" class="required">
+        <input type="number" name="age" class="required" required />
       </div>
 
       <div class="col-25">
         <label for="gender">Gender</label>
       </div>
       <div class="col-75">
-        <input type="text" name="gender" class="required">
+        <input type="text" name="gender" class="required" required />
       </div>
 
       <div class="col-25">
         <label for="country">Country</label>
       </div>
       <div class="col-75">
-        <input type="text" name="country" class="required">
+        <input type="text" name="country" class="required" required />
       </div>
 
       <div class="col-25">
         <label for="organization">Organiztion</label>
       </div>
       <div class="col-75">
-        <input type="text" name="organization" class="required">
+        <input type="text" name="organisation" class="required" required />
       </div>
 
       <div class="col-25">
         <label for="userHandle">Handle</label>
       </div>
       <div class="col-75">
-        <input type="text" name="userHandle" class="required">
+        <input type="text" name="userHandle" class="required" required />
       </div>
-
 
       <div class="col-25">
         <label for="password">Password</label>
       </div>
       <div class="col-75">
-        <input type="password" name="password" class="required">
+        <input type="password" name="password" class="required" required />
       </div>
 
       <div class="col-25">
         <label for="confirmPassword">Confirm Password</label>
       </div>
       <div class="col-75">
-        <input type="password" name="confirmPassword" class="required">
+        <input
+          type="password"
+          name="confirmPassword"
+          class="required"
+          required
+        />
       </div>
 
-      <button type="submit" id = "signup-submit">Sign Up</button>
-
+      <button type="submit" id="signup-submit">Sign Up</button>
     </form>
-
   </div>
 </div>
+
+<script src="/scripts/signup.js"></script>

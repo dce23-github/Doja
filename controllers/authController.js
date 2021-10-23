@@ -47,20 +47,33 @@ const signup_post = async (req, res) => {
       throw Error("Handle already taken...");
     }
 
-    const user = await User.create({
-      name,
-      email,
-      password,
-      country,
-      age,
-      gender,
-      userHandle,
-      organisation,
-    });
+    var ok = 1;
 
-    const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user });
+    for (var i = 0; i < userHandle.length; ++i) {
+      if (userHandle[i] === "@") {
+        ok = 0;
+        break;
+      }
+    }
+
+    if (!ok) {
+      throw Error("Handle should not contain special characters!");
+    } else {
+      const user = await User.create({
+        name,
+        email,
+        password,
+        country,
+        age,
+        gender,
+        userHandle,
+        organisation,
+      });
+
+      const token = createToken(user._id);
+      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.status(201).json({ user });
+    }
   } catch (error) {
     console.log(error.message);
     if (error.message === "handle taken") {
@@ -75,20 +88,25 @@ const signup_post = async (req, res) => {
 
 const login_post = async (req, res) => {
   try {
-    const { email, userHandle, password } = req.body;
+    const { username, password } = req.body;
 
-    let userCred = "";
     let type = "";
+    let ok = 0;
 
-    if (email !== undefined) {
-      userCred = email;
-      type = "email";
-    } else {
-      userCred = userHandle;
-      type = "handle";
+    for (var i = 0; i < username.length; ++i) {
+      if (username[i] === "@") {
+        ok = 1;
+        break;
+      }
     }
 
-    const user = await User.login(userCred, password, type);
+    if (ok) {
+      type = "email";
+    } else {
+      type = "userHandle";
+    }
+
+    const user = await User.login(username, password, type);
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ user });
