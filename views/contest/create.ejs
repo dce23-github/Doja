@@ -1,4 +1,5 @@
 <% layout("layouts/boilerplate") %>
+<link href="/css/contest-create.css" type="text/css" rel="stylesheet">
 
 <div class="contest-container">
   <div class="contest-box">
@@ -6,16 +7,16 @@
   </div>
 
   <form method="POST" action="/contest/create" class="form-validate contest">
-    <div>
+    <div class = "item">
       <div class="contest-col-25">
-        <label for="contesetTitle">Title</label>
+        <label for="contestTitle">Title</label>
       </div>
       <div class="contest-col-75">
         <input type="text" name="contestTitle" class="required">
       </div>
     </div>
 
-    <div>
+    <div class = "item" id = "textarea-box">
       <div class="contest-col-25">
         <label for="description">Description</label>
       </div>
@@ -24,7 +25,7 @@
       </div>
     </div>
 
-    <div>
+    <div class = "item">
       <div class="contest-col-25">
         <label for="startTime">Start Time</label>
       </div>
@@ -33,7 +34,7 @@
       </div>
     </div>
 
-    <div>
+    <div class = "item">
       <div class="contest-col-25">
         <label for="endTime">End Time</label>
       </div>
@@ -42,7 +43,25 @@
       </div>
     </div>
 
-    <div>
+    <div class = "item">
+      <div class="contest-col-25">
+        <label for="isInitiated">Activate</label>
+      </div>
+      <div class="contest-col-75">
+        <input type="checkbox" name="isInitiated" class="required" style = "height : 20px;">
+      </div>
+    </div>
+
+    <div class = "item" id = "textarea-box">
+      <div class="contest-col-25">
+        <label for="organisation">Organisation</label>
+      </div>
+      <div class="contest-col-75">
+        <input type="text" name="organisation" class="required">
+      </div>
+    </div>
+
+    <div class = "item" id = "textarea-box">
       <div class="contest-col-25">
         <label for="prize">Prize</label>
       </div>

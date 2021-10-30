@@ -1,0 +1,134 @@
+<% layout("layouts/boilerplate") %>
+<link href="/css/chat.css" type="text/css" rel="stylesheet">
+<link href="/css/tiny.css" type="text/css" rel="stylesheet">
+<script src="https://cdn.tiny.cloud/1/g7fi99szcp2weshc8wnjrqhfkdyg3wgk9ihkxs2x6fl3uj1w/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<div class="my-connection"></div>
+<div class="online"></div>
+<div class="typing"></div>
+
+<ul id="messages"></ul>
+<form class="msg-form" action="">
+  <textarea id="mytextarea" autocomplete="off" placeholder="Say something"></textarea><button>Send</button>
+</form>
+
+
+<script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+<script>
+  var socket = io();
+  let user = "<%=user.name%>";
+  console.log(user);
+  var msgform = document.querySelector('.msg-form');
+  var input = document.getElementById('mytextarea');
+  var messages = document.getElementById('messages');
+  let typingArr = [];
+  var editor;
+
+
+  msgform.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const cont = tinymce.get("mytextarea").getContent();
+    if (cont) {
+      socket.emit('chat message', cont, user);
+      tinymce.get("mytextarea").setContent("");
+    }
+  });
+
+  socket.on('chat message', (msg, user) => {
+    var item = document.createElement('li');
+    // item.textContent = user + ": ";
+    item.innerHTML = user + ": "+msg;
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  function keyup(len){
+    socket.emit('typing', user, len);
+  };
+
+  socket.on("typing", (user, len) => {
+    var item = document.querySelector(".typing");
+    if (len == 0) {
+      typingArr = typingArr.filter(u => {
+        return u !== user
+      });
+
+    } else if (typingArr.indexOf(user) == -1)
+      typingArr.push(user);
+    let s = "";
+    for (let u of typingArr) {
+      s += u + ", ";
+    }
+    if (s !== "") {
+      s = s.slice(0, s.length - 2);
+      item.textContent = s + ((typingArr.length > 1) ? " are " : " is ") + "typing";
+    } else {
+      item.textContent = "";
+    }
+  });
+
+  socket.on("online", online => {
+    var item = document.querySelector(".online");
+    let s = "";
+    for (let u of online) {
+      if (u !== user) s += u + ", ";
+    }
+    if (s !== "") {
+      s = s.slice(0, s.length - 2);
+      item.textContent = s + ((online.length > 1) ? " are " : " is ") + "online";
+    } else item.textContent = "Nobody is online!!";
+  });
+
+  socket.on("hello", msg => {
+    const item = document.querySelector(".my-connection");
+    item.textContent = msg;
+  });
+
+  tinymce.init({
+    selector: '#mytextarea',
+    resize: false,
+    plugins: [
+      // 'autolink',
+      // 'autoresize',
+      'codesample',
+      'link',
+      'lists',
+      'media',
+      'table',
+      'image',
+      'quickbars',
+      'codesample',
+    ],
+    menubar: false,
+    toolbar: false,
+    // quickbars_selection_toolbar: 'bold italic underline | formatselect | bullist numlist | blockquote quicklink',
+    quickbars_selection_toolbar: false,
+    // quickbars_insert_toolbar: false,
+    quickbars_insert_toolbar : 'quicktable image link',
+    // contextmenu: 'image link codesample',
+    contextmenu: false,
+    css: "/css/tiny.css",
+    setup: function(ed) {
+      ed.on('init', function(args) {
+        const iframe = window.frames["mytextarea_ifr"];
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        const area = doc.getElementById("tinymce");
+        editor = area;
+        console.log(area);
+        area.style.lineHeight = "0.4";
+      });
+
+      ed.on("beforeGetContent", function(e){
+        if(editor && editor.lastChild.innerText === "&nbsp"){
+          area.removeChild(editor.lastChild);
+        }
+      });
+
+      ed.on("keyUp", function(e){
+        const cont = tinymce.get("mytextarea").getBody();
+        const len =  tinymce.trim(cont.innerText || cont.textContent);
+        keyup(len);
+      });
+    }
+  });
+</script>

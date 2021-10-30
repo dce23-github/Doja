@@ -1,0 +1,95 @@
+<% layout("layouts/boilerplate") %>
+<link href="/css/userProfile.css" type="text/css" rel="stylesheet">
+
+<div class="profile-container">
+  <div class="user-img">
+    <img src="<%=user.img%>" id="user-img">
+  </div>
+
+  <div class="general-info">
+    <ul>
+      <li>
+        <p><%=user.handle%> </p>
+      </li>
+      <li>
+        <p><%=user.name%> </p>
+      </li>
+      <li>
+        <p><%=user.country%> </p>
+      </li>
+      <li>
+        <p><%=user.gender%> </p>
+      </li>
+      <li>
+        <p><%=user.organization%> </p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="add-friend">
+    <a href="#" onclick="return addFriend(event)">Add Friends</a>
+    <div class="search-box disp-none">
+      <form method="POST" action="" class="search-user-form">
+        <input type="search" name="handle" placeholder="Search hanlde">
+        <button type="submit">Search</button>
+      </form>
+      <div class="display-users">
+        <form class = "user-list" method="POST" action = "/user/<%=user._id%>/addFriend">
+        
+          <button type = "submit">Send Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<a href = "/user/<%=user._id%>/chat" >Create Chat Room</a>
+<br>
+<a href ="/user/<%=user._id%>/room/<%=user.chatid%>">Connect To Chat Room</a>
+
+<script type='text/javascript'>
+
+  const sbox = document.querySelector(".search-box");
+  const sform = document.querySelector(".search-user-form");
+
+  function addFriend(event) {
+    console.log("hello");
+    sbox.classList.remove("disp-none");
+    sbox.classList.add("disp-block");
+    return false;
+  };
+
+  sform.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const f = event.target;
+    const handle = f.handle.value;
+    const payload = {
+      handle
+    };
+    const res = await fetch("/user/<%=user._id%>/search", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+
+    const users = await res.json();
+    console.log(users);
+    const dbox = document.querySelector(".user-list");
+    for(let u of users){
+      const lab = document.createElement("label")
+      lab.textContent =  u.name +"@"+u.userHandle;
+      const item = document.createElement("input");
+      item.setAttribute("type", "checkbox");
+      item.setAttribute("name", "friends[]");
+      item.setAttribute("value", u._id+"");
+      
+      dbox.appendChild(lab);
+      dbox.appendChild(item);
+    }
+
+
+  });
+</script>

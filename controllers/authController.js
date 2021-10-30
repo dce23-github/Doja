@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
 const maxAge = 3 * 24 * 3600;
 
 const createToken = (id) => {
@@ -59,7 +58,7 @@ const signup_post = async (req, res) => {
     if (!ok) {
       throw Error("Handle should not contain special characters!");
     } else {
-      const user = await User.create({
+      const user = new User({
         name,
         email,
         password,
@@ -69,10 +68,12 @@ const signup_post = async (req, res) => {
         userHandle,
         organisation,
       });
-
+      
+      await user.save();
       const token = createToken(user._id);
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(201).json({ user });
+      // res.status(201).json({ user });
+      res.redirect("/");
     }
   } catch (error) {
     console.log(error.message);
@@ -86,29 +87,30 @@ const signup_post = async (req, res) => {
   }
 };
 
+
 const login_post = async (req, res) => {
   try {
-    const { username, password } = req.body;
-
+    const { username : userHandle , password } = req.body;
+    
     let type = "";
     let ok = 0;
 
-    for (var i = 0; i < username.length; ++i) {
-      if (username[i] === "@") {
+    for (var i = 0; i < userHandle.length; ++i) {
+      if (userHandle[i] === "@") {
         ok = 1;
         break;
       }
     }
-
+    
     if (ok) {
       type = "email";
     } else {
       type = "userHandle";
     }
-
-    const user = await User.login(username, password, type);
+    const user = await User.login(userHandle, password, type);
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    console.log(user);
     res.status(201).json({ user });
   } catch (error) {
     console.log(error);

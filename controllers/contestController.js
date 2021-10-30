@@ -1,12 +1,29 @@
 const Contest = require("../models/Contest");
 const Problem = require("../models/Problem");
 
-const createContest_get = (req, res)=>{
+
+const allContest__get = async (req, res) => {
+  const all = await Contest.find({});
+  let user;
+  if (res.locals.currentUser) user = res.locals.currentUser;
+  else user = null;
+
+  res.render("contest/all", { user, all });
+}
+
+const createContest_get = (req, res) => {
   res.render("contest/create");
+}
+
+const addProblem__get = async (req, res) => {
+  const { id } = req.params;
+  const contest = await Contest.findById(id);
+  res.render(`contest/addProblem`, { contest });
 }
 
 const createContest__post = async (req, res) => {
   try {
+
     const {
       startTime,
       endTime,
@@ -15,10 +32,11 @@ const createContest__post = async (req, res) => {
       organisation,
       contestTitle,
       isInitiated,
-      authorId,
     } = req.body;
+    const authorId = res.locals.currentUser;
 
-    const contest = await Contest.create({
+
+    const contest = new Contest({
       startTime,
       endTime,
       description,
@@ -28,9 +46,10 @@ const createContest__post = async (req, res) => {
       isInitiated,
       authorId,
     });
-    console.log(contest);
 
-    res.status(200).json({ message: "Contest created!" });
+    await contest.save();
+    res.redirect(`/contest/${contest._id}`);
+
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "failed to create contest!" });
@@ -40,12 +59,12 @@ const createContest__post = async (req, res) => {
 const getContest__get = async (req, res) => {
   try {
     const { id } = req.params;
+    const contest = await Contest.findById(id).populate("problems");
 
-    const contest = await Contest.find({ _id: id });
     if (contest.length === 0) {
       throw Error("contest not found!");
     } else {
-      res.status(200).json({ contest });
+      res.render("contest/show", { contest: contest });
     }
   } catch (error) {
     console.log(error);
@@ -151,12 +170,14 @@ const addProblem__post = async (req, res) => {
       output,
       constraints,
       title,
-      authorId,
+      // authorId,
       difficulty,
-      timeTaken,
-      memoryTaken,
+      timeLimit,
+      memoryLimit,
+      // image,
     } = req.body;
-
+    const authorId = res.locals.currentUser;
+    // console.log(image.data);
     const problem = await Problem.create({
       statement,
       input,
@@ -165,20 +186,65 @@ const addProblem__post = async (req, res) => {
       title,
       authorId,
       difficulty,
-      timeTaken,
-      memoryTaken,
+      timeLimit,
+      memoryLimit,
     });
 
-    const contest = await Contest.updateOne(
-      { _id: id },
+    const contest = await Contest.findByIdAndUpdate(
+      id,
       {
         $push: {
           problems: problem._id,
         },
       }
     );
+    
 
-    res.status(200).json({ message: "problem added!" });
+    res.redirect(`/contest/${contest._id}`);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "failed to add problem" });
+  }
+};
+
+const addProblemEdit__get = async (req, res) => {
+  const { id, pid } = req.params;
+  const contest = await Contest.findById(id);
+  const problem = await Problem.findById(pid);
+  res.render("contest/editProblem", { contest, problem });
+}
+
+const addProblem__patch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      statement,
+      input,
+      output,
+      constraints,
+      title,
+      // authorId,
+      difficulty,
+      timeLimit,
+      memoryLimit,
+    } = req.body;
+    const authorId = res.locals.currentUser;
+
+    const problem = await Problem.UdpateOne(
+      { _id: id },
+      {
+        statement,
+        input,
+        output,
+        constraints,
+        title,
+        authorId,
+        difficulty,
+        timeLimit,
+        memoryLimit,
+      });
+
+    res.redirect(`/contest/${contest._id}`);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "failed to add problem" });
@@ -208,16 +274,26 @@ const addTestcase__patch = async (req, res) => {
   }
 };
 
+
+const getProblem__get = async (req, res) => {
+  const { id, pid } = req.params;
+  const contest = await Contest.findById(id);
+  const problem = await Problem.findById(pid);
+  res.render("contest/showProblem", {contest, problem});
+}
+
 module.exports = {
   createContest__post,
   getContest__get,
   initiateContest__patch,
   deleteContest__delete,
   updateContest__patch,
-<<<<<<< HEAD
   createContest_get,
-=======
   addProblem__post,
   addTestcase__patch,
->>>>>>> 6688692d83d3af6a5677923310b8c53b390beda9
+  addProblem__get,
+  allContest__get,
+  addProblem__patch,
+  addProblemEdit__get,
+  getProblem__get,
 };

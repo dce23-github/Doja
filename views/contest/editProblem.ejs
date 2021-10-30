@@ -1,0 +1,156 @@
+<% layout("layouts/boilerplate") %>
+<link href="/css/addProblem.css" type="text/css" rel="stylesheet">
+<script src="https://cdn.tiny.cloud/1/g7fi99szcp2weshc8wnjrqhfkdyg3wgk9ihkxs2x6fl3uj1w/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<div class="problem-container">
+  <div class="problem-box">
+    <h1>Edit problem</h1>
+  </div>
+
+  <form method="PATCH" action="/contest/<%=contest._id%>/addProblem?_method=PATCH" class="form-validate problem">
+    <div class="problem-item">
+      <div class="problem-col-25">
+        <label for="title">Title</label>
+      </div>
+      <div class="problem-col-75">
+        <input type="text" name="title" class="required" value="<%=problem.title%>">
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="statement">Statement</label>
+      </div>
+      <div class="problem-col-75">
+        <textarea id ="mytextarea1" class="textbox" name="statement" class="required" ><%=problem.statement%></textarea>
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="input">Input</label>
+      </div>
+      <div class="problem-col-75">
+        <textarea id ="mytextarea2" class="textbox" name="input" class="required" ><%=problem.input%></textarea>
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="output">Ouput</label>
+      </div>
+      <div class="problem-col-75">
+        <textarea id ="mytextarea3" class="textbox" name="output" class="required" ><%=problem.output%></textarea>
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="constraints">Constraints</label>
+      </div>
+      <div class="problem-col-75">
+        <textarea id ="mytextarea4" class="textbox" name="constraints" class="required" ><%=problem.constraints%></textarea>
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="sampleCases">Sample Cases</label>
+      </div>
+      <div class="problem-col-75">
+        <textarea id ="mytextarea5" class="textbox" name="sampleCases" class="required" ><%=problem.sampleCases%></textarea>
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="testCases">Test Cases</label>
+      </div>
+      <div class="problem-col-75">
+        <textarea id ="mytextarea6" class="textbox" name="testCases" class="required" ><%=problem.testCases%></textarea>
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="timeLimit">Time Limit(in seconds)</label>
+      </div>
+      <div class="problem-col-75">
+        <input type="number" name="timeLimit" class="required" value="<%=problem.timeLimit%>">
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="memoryLimit">Memory Limit(in MB)</label>
+      </div>
+      <div class="problem-col-75">
+        <input type="number" name="memoryLimit" class="required" value="<%=problem.memoryLimit%>">
+      </div>
+    </div>
+
+    <div class="problem-item" id="textarea-box">
+      <div class="problem-col-25">
+        <label for="difficulty">Difficulty(1-4)</label>
+      </div>
+      <div class="problem-col-75">
+        <input type="number" name="difficulty" class="required" value="<%=problem.difficulty%>">
+      </div>
+    </div>
+
+
+    <button type="submit" id="problem-create">Submit</button>
+
+  </form>
+
+</div>
+
+
+<script>
+  var ta = document.querySelectorAll("textarea");
+  console.log(ta);
+  ta.forEach((t, i) => {
+    tinymce.init({
+      selector: `#mytextarea${i+1}`,
+      toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | image',
+      plugins: 'advlist link image lists media',
+      height : 400,
+      width : 800,
+      file_picker_types: 'image',
+      /* and here's our custom image picker*/
+      file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+
+        input.onchange = function() {
+          var file = this.files[0];
+
+          var reader = new FileReader();
+          reader.onload = function() {
+            /*
+              Note: Now we need to register the blob in TinyMCEs image blob
+              registry. In the next release this part hopefully won't be
+              necessary, as we are looking to handle it internally.
+            */
+            var id = 'blobid' + (new Date()).getTime();
+            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+            var base64 = reader.result.split(',')[1];
+            var blobInfo = blobCache.create(id, file, base64);
+            blobCache.add(blobInfo);
+
+            /* call the callback and populate the Title field with the file name */
+            cb(blobInfo.blobUri(), {
+              title: file.name
+            });
+          };
+          reader.readAsDataURL(file);
+        };
+
+        input.click();
+      },
+
+      resize:false,
+    });
+  })
+</script>

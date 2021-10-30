@@ -1,0 +1,32 @@
+.outer-box{
+    background-color: white;
+}
+
+.inner-box{
+    margin:1rem;
+}
+
+.problem-container{
+    display: flex;
+}
+
+.code-chat-container{
+    display: flex;
+}
+
+.problem{
+    width : 75%;
+    display: inline-block;
+}
+.submit-file{
+    width : 25%;
+    display: inline-block;
+}
+
+.editor{
+    width : 75%;
+}
+
+.chatbox{
+    width : 25%;
+}

@@ -23,8 +23,10 @@ const problemSchema = new Schema(
     difficulty: { type: Number },
     tags: [{ type: String }],
     countAc: { type: Number },
-    timeTaken: { type: Number, required: true },
-    memoryTaken: { type: Number, required: true },
+    timeLimit : {type : Number, required : true},
+    memoryLimit : {type : Number, required : true},
+    timeTaken: { type: Number, }, // for showing on submission of user about time  of submission, min(timeTaken, timeLimit)
+    memoryTaken: { type: Number, },//for showing on submission of user about memory taken by user program , min(memoryTaken, memoryLimit)
   },
   { timestamps: true }
 );

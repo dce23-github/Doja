@@ -26,7 +26,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const result = await fetch("/user/signup", {
+    const result = await fetch("/auth/signup", {
       method: "POST",
       body: JSON.stringify(payload),
       headers: { "Content-Type": "application/json" },

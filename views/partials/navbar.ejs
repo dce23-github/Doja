@@ -3,16 +3,20 @@
     <div class="nav-container">
       <!--flex-->
       <div class="img-logo-container">
-        <a href = "/"><img src="/images/doja14.png" class="doja-img"></a>
+        <a href="/"><img src="/images/doja14.png" class="doja-img"></a>
         <div class="doja-text-container">
-          <a href = "/"><h1 class="doja-text">DO<span id="doja-end">JA</span></h1></a>
+          <a href="/">
+            <h1 class="doja-text">DO<span id="doja-end">JA</span></h1>
+          </a>
         </div>
       </div>
 
       <div class="link-container-l col-l-10">
         <!-- flex-->
+        <% if (currentUser === null) { %>
         <a class="login-nav col-l-1" onclick="loginRender()">Log In</a>
-        <a class = "login-nav col-l-1" href = "/user/signup">Sign up</a>
+        <a class="login-nav col-l-1" href="/auth/signup">Sign up</a>
+        <% } %>
         
         <div class="dropdown col-l-1">
           <button class="settings col-l-2"><img src="/images/menu.png" class="menu-img"></button><!-- add an image here-->
@@ -21,7 +25,7 @@
               <a href=" profile.html" title="My Profile">Profile</a>
             </li>
             <li>
-              <a href="log-out.html" title="Log Out">Log Out</a>
+              <a href="/auth/logout" title="Log Out">Log Out</a>
             </li>
             <li>
               <a href="notifications.html" title="Notifications">Notifications</a>

@@ -1,0 +1,35 @@
+<% layout("layouts/boilerplate") %>
+<link href="/css/showProblem.css" type="text/css" rel="stylesheet">
+
+
+<div class = "outer-box">
+
+    <div class = "inner-box">
+        <a href = "/contest/<%=contest._id%>" style = "display: block;">Back to Contest Page</a>
+        <div class = "problem-container">
+            <div class ="problem">
+                <p><%=problem.title%> </p>
+                <p><%-problem.statement%> </p>
+                <p><%-problem.input%> </p>
+                <p><%-problem.output%> </p>
+                <p><%-problem.sampleCases%> </p>
+            </div>
+            <div class = "submit-file">
+                <div>
+                    <p>Time remaining : </p>
+                    <div class = "file-form">
+                        <!-- add form for file submission-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = "code-chat-container">
+            <div class = "editor">
+                <p>Editor</p>
+            </div>
+            <div class = "chatbox">
+                <p>Chatbox</p>
+            </div>
+        </div>
+    </div>
+</div>

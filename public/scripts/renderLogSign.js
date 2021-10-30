@@ -12,24 +12,24 @@ function loginRender() {
 
 
 
-const login = document.querySelector(".login-form");
-// const logout = document.querySelector(".logout");
+// const login = document.querySelector(".login-form");
+// // const logout = document.querySelector(".logout");
 
-if(login)
-login.addEventListener("submit", (e) => {
-    const form = e.target;
-    if (!form.classList.contains("invalid-form")) {
-        e.preventDefault;
-        console.log(window.location.pathname);
-        const input = document.createElement("input");
-        input.setAttribute("type", "hidden");
-        const url = window.location.pathname;
-        input.setAttribute("name", "url");
-        input.setAttribute("value", url);
-        form.appendChild(input);
-    }
+// if(login)
+// login.addEventListener("submit", (e) => {
+//     const form = e.target;
+//     if (!form.classList.contains("invalid-form")) {
+//         e.preventDefault;
+//         console.log(window.location.pathname);
+//         const input = document.createElement("input");
+//         input.setAttribute("type", "hidden");
+//         const url = window.location.pathname;
+//         input.setAttribute("name", "url");
+//         input.setAttribute("value", url);
+//         form.appendChild(input);
+//     }
     
-});
+// });
 
 
 // if(logout)

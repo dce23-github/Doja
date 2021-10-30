@@ -6,10 +6,16 @@ const ejsMate = require("ejs-mate");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const jwt = require("jsonwebtoken");
+const User = require("./models/User");
 const app = express();
+const server = require("http").createServer(app);
+const io = require('socket.io')(server);
 
 const authRoutes = require("./routes/authRoutes");
 const contestRoutes = require("./routes/contestRoutes");
+const {userRoutes, socketCreate} =  require("./routes/userRoutes");
+
 // const problemRoutes = require("./routes/problemRoutes");
 
 const PORT = process.env.PORT || 9000;
@@ -23,7 +29,7 @@ mongoose.connect(
     if (err) {
       console.log(err);
     } else {
-      app.listen(PORT, (err) => {
+      server.listen(PORT, (err) => {
         if (err) {
           console.log(err);
         } else {
@@ -51,10 +57,21 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
+
+app.use((req, res, next) => {
+  if (req.cookies.jwt) {
+    let token = req.cookies.jwt;
+    token = jwt.decode(token);
+    res.locals.currentUser = token.id;
+  }
+  else res.locals.currentUser = null;
+  next();
+});
+socketCreate(io);
 /* middleware ends here */
 
 /* Auth routes */
-app.use("/user", authRoutes);
+app.use("/auth", authRoutes);
 
 /* Contest routes */
 app.use("/contest", contestRoutes);
@@ -62,6 +79,19 @@ app.use("/contest", contestRoutes);
 /* Problem routes */
 // app.use("/problem", problemRoutes);
 
-app.get("/", (req, res) => {
-  res.render("home");
+/*     User Routes    */
+app.use("/user", userRoutes);
+
+
+app.get("/", async(req, res) => {
+
+  try {
+    let user;
+    if (res.locals.currentUser)
+      user = await User.findById(res.locals.currentUser);
+    res.render("home", { user : user || null });
+  }
+  catch(err){
+    console.log(err);
+  }
 });

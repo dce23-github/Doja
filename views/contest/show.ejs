@@ -1,0 +1,42 @@
+<% layout("layouts/boilerplate") %>
+<link href="/css/contest-show.css" type="text/css" rel="stylesheet">
+
+<div class="show-box">
+
+  <div class="show-info">
+    <h2 id="show-title"><%=contest.contestTitle%></h2>
+    <h3><%=contest.organisation%></h3>
+    <h3><%=contest.startTime +" - " + contest.endTime%> </h3>
+    <h3><%=contest.description%></h3>
+  </div>
+
+  <div class="all-problems">
+    <% contest.problems.forEach((p, i)=>{ %>
+
+    <div class="problem">
+
+      <div id="pid"><span id = "text"><%=i+1%></span></div>
+      <div id="ptitle"><a href = "/contest/<%=contest._id%>/problem/<%=p._id%>"><span id = "text"><%=p.title%></span></a></div>
+      <a href="/contest/<%=contest._id%>/addProblem/<%=p._id%>" id="edit">
+        <span id = "text">Edit</span>
+      </a>
+
+    </div>
+    <% } )%>
+
+    <div class="add-problem">
+      <div class="add-box">
+        <a href="/contest/<%=contest._id%>/addProblem">
+          <p>Add Problem</p>
+        </a> <!-- add a plus sign here after add problem-->
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<script>
+  const prob = document.querySelector(".dummy-problem");
+</script>
