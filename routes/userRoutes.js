@@ -3,7 +3,7 @@ const Chat = require("../models/Chat");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const cookieParser = require("cookie-parser");
+const Message = require("../models/Message");
 const cookie = require("cookie");
 
 router.post("/:id/search", async (req, res) => {
@@ -33,47 +33,59 @@ router.get("/:id", async (req, res) => {
 
 
 router.post("/:id/addFriend", async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findById(id);
-    const friends = req.body.friends;
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        user.friends.length = 0;
+        const friends = req.body.friends;
 
-    const fdocs = [];
-    for (let f of friends) {
-        const doc = await User.findById(f);
-        if (!user.friends.some(id => id == f)) user.friends.push(f);
-        fdocs.push(doc);
-    }
-
-    for (let d1 of fdocs) {
-        if (!d1.friends.some(id => id == f)) d1.friends.push(id);
-        for (let d2 of fdocs) {
-            if (d1._id != d2._id) {
-                if (!user.friends.some(id => id == f)) d1.friends.push(d2._id);
-            }
+        const fdocs = [];
+        for (let f of friends) {
+            const doc = await User.findById(f);
+            console.log(doc);
+            if (!user.friends.some(id => String(id) == String(f))) user.friends.push(f);
+            fdocs.push(doc);
         }
-        await d1.save();
-    }
 
-    await user.save();
-    res.json({ user: user.friends });
+        for (let d1 of fdocs) {
+            if (!d1.friends.some(f => f == id)) d1.friends.push(id);
+            for (let d2 of fdocs) {
+                if (d1._id != d2._id) {
+                    if (!d1.friends.some(f => f == d2._id)) d1.friends.push(d2._id);
+                }
+            }
+            await d1.save();
+        }
+
+        await user.save();
+        res.json({ user: user.friends });
+    }
+    catch (err) {
+        console.log(err, "at userRoutes");
+    }
 })
 
 
 router.get("/:id/chat", async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findById(id).populate("friends");
-        const members = user.friends;
-
+        const user = await User.findById(id);
+        let members = user.friends;
+        members.push(user._id);
         const chat = new Chat({
             member_count: 3,
             authorized_users: [...members],
         });
 
-        user.chatid = chat._id;
-        await user.save();
         await chat.save();
 
+        user.chatid = chat._id;
+        await user.save();
+        console.log(user.chatid);
+
+        await user.populate("friends");
+        members = user.friends;
+        console.log(members);
         for (let f of members) {
             f.chatid = chat._id;
             await f.save();
@@ -85,7 +97,6 @@ router.get("/:id/chat", async (req, res) => {
         console.log(err);
         res.status(500).json({ msg: err });
     }
-
 })
 
 router.get("/:id/room/:chatid", async (req, res) => {
@@ -101,13 +112,14 @@ router.get("/:id/room/:chatid", async (req, res) => {
 });
 
 
+// chat code
 
 const socketCreate = (io) => {
 
     io.use(async (socket, next) => {
         if (socket.request.user) {
             next();
-        } 
+        }
         else {
             const cookies = cookie.parse(socket.request.headers.cookie);
             var token = cookies.jwt;
@@ -127,31 +139,67 @@ const socketCreate = (io) => {
         // });
 
         const userCon = socket.request.user; // connected user
-        const chat = await Chat.findById(userCon.chatid);
-
+        const chatid = String(userCon.chatid);
+        const chat = await Chat.findById(userCon.chatid).populate({
+            path: "messages",
+            populate: {
+                path: "author",
+            },
+        });
+        
+        socket.join(chatid);
         if (!chat.online.some(name => name === userCon.name)) chat.online.push(userCon.name);
         await chat.save();
-        io.emit("online", chat.online);
+        
+        io.to(chatid).emit("online", chat.online);
         socket.emit("hello", "you are online");
+        socket.emit("initialize-chat", chat);
 
-        socket.on("disconnecting", async(socket)=> {
+        socket.on("disconnecting", async (socket) => {
             chat.online = chat.online.filter(name => name !== userCon.name);
             await chat.save();
-            io.emit("online", chat.online);
+            io.to(chatid).emit("online", chat.online);
             io.to(socket.id).emit("hello", "you are offline");// 2
         });
 
-        socket.on("disconnect", (socket)=>{
-            
+        socket.on("disconnect", (socket) => {
+
         })
 
-        socket.on('chat message', (msg, user) => {
-            io.emit('chat message', msg, user);
+        socket.on('chat message', async (msg, user, time) => {
+            const message = new Message({
+                author: userCon._id,
+                content: msg,
+                "time" : time,
+            });
+            await message.save();
+            chat.messages.push(message._id);
+            await chat.save();
+            io.to(chatid).emit("chat message", msg, user , time);
         });
 
         socket.on('typing', (user, len) => {
-            socket.broadcast.emit("typing", user, len);
+            socket.to(chatid).emit("typing", user, len);
         });
+
+
+        socket.on("chat images", async (msg, user, time) => {
+            for (let m of msg) {
+                const message = new Message({
+                    author: userCon._id,
+                    data: {
+                        name: m.name,
+                        img: m.b64,
+                    },
+                    "time" : time,
+                });
+                await message.save();
+                chat.messages.push(message._id);
+                await chat.save();
+            }
+            io.to(chatid).emit("chat images", msg, user, time);
+            console.log("ehllo");
+        })
     });
 }
 

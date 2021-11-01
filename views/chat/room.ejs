@@ -1,19 +1,69 @@
 <% layout("layouts/boilerplate") %>
 <link href="/css/chat.css" type="text/css" rel="stylesheet">
 <link href="/css/tiny.css" type="text/css" rel="stylesheet">
+<!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script> -->
 <script src="https://cdn.tiny.cloud/1/g7fi99szcp2weshc8wnjrqhfkdyg3wgk9ihkxs2x6fl3uj1w/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="/socket.io/socket.io.js"></script>
 
-<div class="my-connection"></div>
-<div class="online"></div>
-<div class="typing"></div>
+<div class="status">
+  <div class="stat-container">
+    <div class="my-connection"></div>
+    <div class="online"></div>
+    <div class="typing"></div>
+  </div>
+</div>
+
+<div class="error">
+  <p>You can upload at max five images at a time.</p>
+</div>
+
+<div class="link-modal">
+  <div class="bg"></div>
+  <div class="link-container">
+    <form id="link-form">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name">
+      <label for="link-box">URL</label>
+      <input type="text" id="link-box" name="url">
+      <button type="submit" id="link-add">Add</button>
+    </form>
+  </div>
+</div>
+
+
+<div class="preview">
+  <div class="bg"></div>
+  <div class="slideshow">
+    <div class="modal">
+      <div class="img-box">
+      </div>
+      <div class="remove">
+        <button id="bin-btn" onclick="removeImg()"><img class="bin" src="/images/bin.png"></button>
+      </div>
+    </div>
+    <div class="slide-btns">
+      <!--for buttons-->
+      <ul class="pointers">
+      </ul>
+    </div>
+  </div>
+</div>
 
 <ul id="messages"></ul>
 <form class="msg-form" action="">
-  <textarea id="mytextarea" autocomplete="off" placeholder="Say something"></textarea><button>Send</button>
+  <textarea id="mytextarea" autocomplete="off" placeholder="Say something"></textarea>
+  <div>
+    <input type="file" id="files" style="display: none;" multiple onchange="filePick(event)">
+    <button type="button" class="btn" onclick="clickFile()"><img src="/images/imgPick.png" id="file-pick"></button>
+  </div>
+  <button type="button" class="btn" onclick="makeLink()"><img src="/images/linkMake.png" id="linker"></button>
+  <button id="submit">Send</button>
+
 </form>
 
 
-<script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+
 <script>
   var socket = io();
   let user = "<%=user.name%>";
@@ -23,26 +73,160 @@
   var messages = document.getElementById('messages');
   let typingArr = [];
   var editor;
+  const preview = document.querySelector(".preview");
+  preview.classList.add("disp-none");
+  const linkModal = document.querySelector(".link-modal");
+  linkModal.classList.add("disp-none");
+
+  const pointers = document.querySelector(".pointers");
+  let cntImg;
+  let totalCnt;
+  let dataSend = [];
+  let openImg = false;
+  let openLink = false;
+  const imgBox = document.querySelector(".img-box");
+  const error = document.querySelector(".error");
+  error.classList.add("disp-none");
+
+
+  const linkForm = document.querySelector("#link-form");
+  linkForm.addEventListener("submit", function(e) {
+    console.log("yola");
+    e.preventDefault();
+    const form = e.target;
+    const url = form.url.value;
+    const a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.innerText = form.name.value;
+    editor.appendChild(a);
+    linkModal.classList.remove("disp-block");
+    linkModal.classList.add("disp-none");
+    openLink = false;
+
+  });
 
 
   msgform.addEventListener('submit', function(e) {
     e.preventDefault();
-    const cont = tinymce.get("mytextarea").getContent();
-    if (cont) {
-      socket.emit('chat message', cont, user);
-      tinymce.get("mytextarea").setContent("");
+    if (editor && editor.lastChild.innerText === "&nbsp") {
+      editor.removeChild(editor.lastChild);
+      console.log(editor.lastChild);
     }
+
+    if (openImg) {
+
+      var today = new Date();
+      var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date + ' ' + time;
+
+      socket.emit("chat images", dataSend, user, dateTime);
+      openImg = false;
+      pointers.innerHTML = "";
+      imgBox.innerHTML = "";
+      preview.classList.remove("disp-block");
+      preview.classList.add("disp-none");
+
+    } else {
+      const cont = tinymce.get("mytextarea").getContent();
+      if (cont) {
+
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        socket.emit('chat message', cont, user, dateTime);
+        tinymce.get("mytextarea").setContent("");
+        keyup(0);
+      }
+    }
+
   });
 
-  socket.on('chat message', (msg, user) => {
+  socket.on('initialize-chat', (chat) => {
+    for (let msg of chat.messages) {
+      if (msg.content !== "" && msg.content !== undefined) {
+        var item = document.createElement('li');
+        if (user === msg.author.name) item.classList.add("mine");
+        item.innerHTML = msg.author.name + ": " + msg.content;
+        if (msg.time) {
+          const time = document.createElement("p");
+          time.innerText = msg.time;
+          time.classList.add("time");
+          item.appendChild(time);
+        }
+        messages.appendChild(item);
+      } else {
+        const item = document.createElement('li');
+        if (user === msg.author.name) item.classList.add("mine");
+        const p = document.createElement("p");
+        p.innerText = msg.author.name + ": ";
+        item.appendChild(p);
+        const img = document.createElement('img');
+
+        function bufTob64(data) {
+          let ind = 0;
+          let binary = "";
+          for (let i = 0; i < data.length; i++) {
+            binary += String.fromCharCode(data[i]);
+          }
+          return binary;
+        }
+        const src = bufTob64(msg.data.img.data);
+        img.setAttribute("src", "data:image/jpeg;base64," + src);
+        img.classList.add("max-size");
+        item.appendChild(img);
+        if (msg.time) {
+          const time = document.createElement("p");
+          time.innerText = msg.time;
+          time.classList.add("time");
+          item.appendChild(time);
+        }
+        messages.appendChild(item);
+      }
+
+    }
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  socket.on('chat message', (msg, User, time) => {
     var item = document.createElement('li');
     // item.textContent = user + ": ";
-    item.innerHTML = user + ": "+msg;
+    console.log(time);
+    if (user === User) item.classList.add("mine");
+    item.innerHTML = User + ": " + msg;
+    const p = document.createElement("p");
+    p.innerText = time;
+    p.classList.add("time");
+    item.appendChild(p);
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
 
-  function keyup(len){
+
+  socket.on("chat images", (msg, User, time) => {
+    for (let m of msg) {
+      console.log(m);
+      console.log("msg recieved");
+      const item = document.createElement('li');
+      if (user === User) item.classList.add("mine");
+      const p = document.createElement("p");
+      p.innerText = User + ": ";
+      item.appendChild(p);
+      const img = document.createElement('img');
+      img.setAttribute("src", "data:image/jpeg;base64," + m.b64);
+      img.classList.add("max-size");
+      item.appendChild(img);
+      const p2 = document.createElement("p");
+      p2.innerText = time;
+      p2.classList.add("time");
+      item.appendChild(p2);
+      messages.appendChild(item);
+    }
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  function keyup(len) {
     socket.emit('typing', user, len);
   };
 
@@ -75,7 +259,7 @@
     }
     if (s !== "") {
       s = s.slice(0, s.length - 2);
-      item.textContent = s + ((online.length > 1) ? " are " : " is ") + "online";
+      item.textContent = s + ((online.length - 1 > 1) ? " are " : " is ") + "online";
     } else item.textContent = "Nobody is online!!";
   });
 
@@ -101,34 +285,161 @@
     ],
     menubar: false,
     toolbar: false,
+    referrer_policy: 'strict-origin-when-cross-origin',
     // quickbars_selection_toolbar: 'bold italic underline | formatselect | bullist numlist | blockquote quicklink',
     quickbars_selection_toolbar: false,
     // quickbars_insert_toolbar: false,
-    quickbars_insert_toolbar : 'quicktable image link',
+    // quickbars_insert_toolbar: 'quicktable image link',
     // contextmenu: 'image link codesample',
     contextmenu: false,
     css: "/css/tiny.css",
+    config_src_url: "/config/application.conf",
     setup: function(ed) {
       ed.on('init', function(args) {
         const iframe = window.frames["mytextarea_ifr"];
         var doc = iframe.contentDocument || iframe.contentWindow.document;
+        const html = doc.querySelector("html");
+        html.style.cursor = "text";
         const area = doc.getElementById("tinymce");
         editor = area;
-        console.log(area);
         area.style.lineHeight = "0.4";
+        // area.style.cursor = "text";
       });
 
-      ed.on("beforeGetContent", function(e){
-        if(editor && editor.lastChild.innerText === "&nbsp"){
-          area.removeChild(editor.lastChild);
-        }
-      });
-
-      ed.on("keyUp", function(e){
+      ed.on("keyUp", function(e) {
         const cont = tinymce.get("mytextarea").getBody();
-        const len =  tinymce.trim(cont.innerText || cont.textContent);
+        const len = tinymce.trim(cont.innerText || cont.textContent);
         keyup(len);
       });
     }
   });
+
+
+  function filePick(event) {
+    const input = event.target;
+    const files = input.files;
+    cntImg = files.length;
+    totalCnt = cntImg;
+    if (cntImg > 5) {
+      error.classList.remove("disp-none");
+      error.classList.add("disp-block");
+      cntImg = 0;
+      totalCnt = 0;
+      setTimeout(function() {
+        error.classList.remove("disp-block");
+        error.classList.add("disp-none");
+      }, 3000)
+      return;
+    }
+    preview.classList.remove("disp-none");
+    preview.classList.add("disp-block");
+
+
+
+    const imgBox = document.querySelector(".img-box");
+
+    for (let i = 0; i < Math.min(files.length, 5); i++) {
+      const f = files[i];
+      const fr = new FileReader();
+      fr.onload = function(e) {
+        const data = e.target.result;
+        const name = files[i].name;
+        const b64 = data.split(",")[1];
+        const obj = {
+          "name": name,
+          "b64": b64,
+          "ind": (i + 1),
+        };
+        dataSend.push(obj);
+        const img = document.createElement("img");
+        img.setAttribute("src", data);
+        img.classList.add("modImg");
+        img.classList.add("img" + (i + 1));
+        if (i > 0)
+          img.classList.add("disp-none");
+        else img.classList.add("disp-block");
+        imgBox.appendChild(img);
+        const btn = document.createElement("button");
+        btn.classList.add("btn-pointer");
+        btn.classList.add("btn" + (i + 1));
+        if (i == 0)
+          btn.classList.add("active");
+        pointers.appendChild(btn);
+        btn.onclick = openImage;
+      };
+      fr.readAsDataURL(f);
+    }
+    console.log(dataSend);
+    console.log(dataSend.length);
+  }
+
+
+  function openImage(event) {
+    const btn = event.target;
+    for (let i = 0; i < Math.min(5, cntImg); i++) {
+      const img = document.querySelector((".img" + (i + 1)));
+      const btn = document.querySelector((".btn" + (i + 1)));
+      if (btn) {
+        btn.classList.remove("active");
+        img.classList.remove("disp-block");
+        img.classList.add("disp-none");
+      }
+    }
+
+    for (let i = 0; i < Math.min(5, cntImg); i++) {
+      if (btn.classList.contains("btn" + (i + 1))) {
+        const img = document.querySelector((".img" + (i + 1)));
+        btn.classList.add("active");
+        img.classList.remove("disp-none");
+        img.classList.add("disp-block");
+      }
+    }
+  }
+
+
+  function clickFile() {
+    if (!openImg && !openLink) {
+      document.getElementById('files').click();
+      openImg = true;
+    }
+  }
+
+  function removeImg() {
+
+    for (let i = 0; i < Math.min(5, cntImg); i++) {
+      const img = document.querySelector((".img" + (i + 1)));
+      const btn = document.querySelector((".btn" + (i + 1)));
+      if (img && img.classList.contains("disp-block")) {
+        img.remove();
+        btn.remove();
+        dataSend = dataSend.filter(d => d.ind !== (i + 1));
+        for (let j = 0; j < Math.min(5, cntImg); j++) {
+          if (j != i) {
+            const btn = document.querySelector(".btn" + (j + 1));
+            if (btn) {
+              btn.click();
+              break;
+            }
+          }
+        }
+        totalCnt--;
+        if (totalCnt === 0) {
+          openImg = false;
+          pointers.innerHTML = "";
+          imgBox.innerHTML = "";
+          preview.classList.remove("disp-block");
+          preview.classList.add("disp-none");
+        }
+        break;
+      }
+    }
+  }
+
+  function makeLink() {
+    if (!openImg && !openLink) {
+      openLink = true;
+      linkModal.classList.remove("disp-none");
+      linkModal.classList.add("disp-block");
+    }
+  }
 </script>

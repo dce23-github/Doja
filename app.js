@@ -10,15 +10,15 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const app = express();
 const server = require("http").createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, { cors: { origin: "*", methods: ["GET", "POST"] } });
 
 const authRoutes = require("./routes/authRoutes");
 const contestRoutes = require("./routes/contestRoutes");
-const {userRoutes, socketCreate} =  require("./routes/userRoutes");
+const { userRoutes, socketCreate } = require("./routes/userRoutes");
 
 // const problemRoutes = require("./routes/problemRoutes");
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 3000;
 const dbURI = process.env.dbURI;
 // if (process.env.NODE_ENV == "production") dbURI = prcoess.env.dbURIl;
 
@@ -50,12 +50,17 @@ app.set("views", path.join(__dirname, "views"));
 
 /* middlewares */
 
-app.use(cors());
+app.use(cors()); // re-enable after removing CDNs
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 
 app.use((req, res, next) => {
@@ -83,15 +88,14 @@ app.use("/contest", contestRoutes);
 app.use("/user", userRoutes);
 
 
-app.get("/", async(req, res) => {
-
+app.get("/", async (req, res) => {
   try {
     let user;
     if (res.locals.currentUser)
       user = await User.findById(res.locals.currentUser);
-    res.render("home", { user : user || null });
+    res.render("home", { user: user || null });
   }
-  catch(err){
+  catch (err) {
     console.log(err);
   }
 });

@@ -6,6 +6,7 @@ const createToken = (id) => {
   return jwt.sign({ id }, "jwtKey", { expiresIn: maxAge });
 };
 
+
 const signup_get = (req, res) => {
   try {
     res.render("auth/signup");

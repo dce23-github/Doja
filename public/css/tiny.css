@@ -8,4 +8,8 @@
     border-radius : 1rem;
   }
 
+  #mytextarea_ifr:hover{
+    cursor: text;
+  }
+
 
