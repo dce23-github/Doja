@@ -65,33 +65,40 @@ router.post("/:id/addFriend", async (req, res) => {
     }
 })
 
+router.get("/:id/chat", async(req, res)=>{
+    const {id} = req.params;
+    const user = await User.findById(id).populate("friends");
+    res.json(user.friends);
+})
 
-router.get("/:id/chat", async (req, res) => {
+
+router.post("/:id/chat", async (req, res) => {
     try {
-        const { id } = req.params;
+        const {id} = req.params;
         const user = await User.findById(id);
-        let members = user.friends;
+        let members = req.body.friends;
+        if(req.body.friends.length != 2){
+            res.send("Please select two friends!!\nIf you do not have two friends , please add using Friend Request.")
+        }
         members.push(user._id);
         const chat = new Chat({
             member_count: 3,
             authorized_users: [...members],
         });
-
+        
         await chat.save();
-
         user.chatid = chat._id;
         await user.save();
-        console.log(user.chatid);
 
         await user.populate("friends");
         members = user.friends;
-        console.log(members);
+
         for (let f of members) {
             f.chatid = chat._id;
             await f.save();
         }
 
-        res.send("chat created");
+        res.redirect(`/user/${user._id}/room/${chat._id}`);
     }
     catch (err) {
         console.log(err);
@@ -146,11 +153,11 @@ const socketCreate = (io) => {
                 path: "author",
             },
         });
-        
+
         socket.join(chatid);
         if (!chat.online.some(name => name === userCon.name)) chat.online.push(userCon.name);
         await chat.save();
-        
+
         io.to(chatid).emit("online", chat.online);
         socket.emit("hello", "you are online");
         socket.emit("initialize-chat", chat);
@@ -170,12 +177,12 @@ const socketCreate = (io) => {
             const message = new Message({
                 author: userCon._id,
                 content: msg,
-                "time" : time,
+                "time": time,
             });
             await message.save();
             chat.messages.push(message._id);
             await chat.save();
-            io.to(chatid).emit("chat message", msg, user , time);
+            io.to(chatid).emit("chat message", msg, user, time);
         });
 
         socket.on('typing', (user, len) => {
@@ -191,7 +198,7 @@ const socketCreate = (io) => {
                         name: m.name,
                         img: m.b64,
                     },
-                    "time" : time,
+                    "time": time,
                 });
                 await message.save();
                 chat.messages.push(message._id);
