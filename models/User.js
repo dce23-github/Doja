@@ -41,16 +41,6 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-//before new user is created - hashing of password must be done
-var Salt;
-userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  Salt = salt;
-  console.log(Salt);
-  this.password = await bcrypt.hash(this.password, salt);
-  // console.log(this.password);
-  next();
-});
 
 userSchema.statics.login = async function (userCred, password, type) {
   if (type === "userHandle"){

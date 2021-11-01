@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const maxAge = 3 * 24 * 3600;
+const bcrypt = require("bcrypt");
 
 const createToken = (id) => {
   return jwt.sign({ id }, "jwtKey", { expiresIn: maxAge });
@@ -59,6 +60,9 @@ const signup_post = async (req, res) => {
     if (!ok) {
       throw Error("Handle should not contain special characters!");
     } else {
+      const salt = await bcrypt.genSalt();
+      const passwordHashed = await bcrypt.hash(password, salt);
+
       const user = new User({
         name,
         email,
@@ -69,7 +73,7 @@ const signup_post = async (req, res) => {
         userHandle,
         organisation,
       });
-      
+
       await user.save();
       const token = createToken(user._id);
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -91,8 +95,8 @@ const signup_post = async (req, res) => {
 
 const login_post = async (req, res) => {
   try {
-    const { username : userHandle , password } = req.body;
-    
+    const { username: userHandle, password } = req.body;
+
     let type = "";
     let ok = 0;
 
@@ -102,7 +106,7 @@ const login_post = async (req, res) => {
         break;
       }
     }
-    
+
     if (ok) {
       type = "email";
     } else {
