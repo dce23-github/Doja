@@ -104,7 +104,8 @@ app.get("/", async (req, res) => {
 
 app.get("/submit", (req, res) => {
   const sport = (process.env.PORT+1);
-  axios.get(`https://localhost:${sport}/`)
+  console.log(sport);
+  axios.get(`https://judge:${sport}/`)
     .then(data => {
       console.log(data.data)
       console.log(JSON.stringify(data.data));
