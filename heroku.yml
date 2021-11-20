@@ -1,6 +1,0 @@
-build:
-  docker:
-    web: Dockerfile
-    judge : judge/Dockerfile
-run:
-  web: bundle exec puma -C config/puma.rb
