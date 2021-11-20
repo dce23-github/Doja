@@ -103,7 +103,7 @@ app.get("/", async (req, res) => {
 
 
 app.get("/submit", (req, res) => {
-  axios.get("https://judge:8080/")
+  axios.get("https://judge:9000/")
     .then(data => {
       console.log(data.data)
       console.log(JSON.stringify(data.data));
