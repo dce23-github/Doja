@@ -112,7 +112,7 @@ app.get("/submit", (req, res) => {
     })
     .catch(err => {
       // res.status(500).send(err);
-      res.status(500).send("receiving errro mf");
+      res.status(500).send("error mf");
     })
 })
 
