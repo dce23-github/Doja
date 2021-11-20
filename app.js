@@ -103,6 +103,7 @@ app.get("/", async (req, res) => {
 
 
 app.get("/submit", (req, res) => {
+  console.log(process.env.PORT);
   const sport = (process.env.PORT+1);
   console.log(sport);
   axios.get(`https://judge:${sport}/`)
