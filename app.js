@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const cors = require("cors");
+const axios = require("axios");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -99,6 +100,20 @@ app.get("/", async (req, res) => {
     console.log(err);
   }
 });
+
+
+app.get("/submit", (req, res) => {
+  axios.get("https://judge:8080/")
+    .then(data => {
+      console.log(data.data)
+      console.log(JSON.stringify(data.data));
+      res.send(JSON.stringify(data.data));
+    })
+    .catch(err => {
+      // res.status(500).send(err);
+      res.status(500).send("receiving errro mf");
+    })
+})
 
 
 
