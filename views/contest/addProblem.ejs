@@ -1,8 +1,6 @@
 <% layout("layouts/boilerplate") %>
 <link href="/css/addProblem.css" type="text/css" rel="stylesheet">
-<!-- <script src="https://cdn.tiny.cloud/1/g7fi99szcp2weshc8wnjrqhfkdyg3wgk9ihkxs2x6fl3uj1w/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
 <script src="https://cdn.tiny.cloud/1/g7fi99szcp2weshc8wnjrqhfkdyg3wgk9ihkxs2x6fl3uj1w/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-
 
 <div class="problem-container">
   <div class="problem-box">
@@ -30,7 +28,7 @@
 
     <div class="problem-item" id="textarea-box">
       <div class="problem-col-25">
-        <label for="input">Input</label>
+        <label for="input">Input Format</label>
       </div>
       <div class="problem-col-75">
         <textarea id="mytextarea2" class="textbox" name="input" class="required"></textarea>
@@ -39,7 +37,7 @@
 
     <div class="problem-item" id="textarea-box">
       <div class="problem-col-25">
-        <label for="output">Ouput</label>
+        <label for="output">Ouput Format</label>
       </div>
       <div class="problem-col-75">
         <textarea id="mytextarea3" class="textbox" name="output" class="required"></textarea>
@@ -55,30 +53,88 @@
       </div>
     </div>
 
-    <div class="problem-item" id="textarea-box">
-      <div class="problem-col-25">
-        <label for="sampleCases">Sample Cases</label>
-      </div>
-      <div class="problem-col-75">
-        <textarea id="mytextarea5" class="textbox" name="sampleCases" class="required"></textarea>
-      </div>
-    </div>
+    <div class="samples">
 
-    <div class="problem-item" id="textarea-box">
-      <div class="problem-col-25">
-        <label for="testCases">Test Cases</label>
+      <div class="problem-item dummySampleCaseInput disp-none samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Dummy Sample Case Input </label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class ="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"></textarea>
+        </div>
       </div>
-      <div class="problem-col-75">
-        <textarea id="mytextarea6" class="textbox" name="testCases" class="required"></textarea>
+
+      <div class="problem-item dummySampleCaseOutput disp-none samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Dummy Sample Case Output </label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class ="mytextarea" class="textbox" name="sampleCaseOutput[]" class="required"></textarea>
+        </div>
+      </div>
+
+      <div class="problem-item samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Sample Case 1 : Input</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class ="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"></textarea>
+        </div>
+      </div>
+      <div class="problem-item samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Sample Case 1 : Output</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class ="mytextarea" class="textbox" name="sampleCaseOutput[]" class="required"></textarea>
+        </div>
       </div>
     </div>
+    <button type="button" class="add" onclick="addSample(event)">Add Sample Case</button>
+
+    <div class="tests">
+      <div class="problem-item dummyTestCaseInput testcase disp-none" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Dummy Test Case : Input</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class="mytextarea" class="textbox" name="testCaseInput[]" class="required"></textarea>
+        </div>
+      </div>
+      <div class="problem-item dummyTestCaseOutput testcase disp-none" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Dummy Test Case : Ouput</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class="mytextarea" class="textbox" name="testCaseOutput[]" class="required"></textarea>
+        </div>
+      </div>
+
+      <div class="problem-item testcase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Test Case 1: Input</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class="mytextarea" class="textbox" name="testCaseInput[]" class="required"></textarea>
+        </div>
+      </div>
+      <div class="problem-item testcase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Test Case 1: Ouput</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea class="mytextarea" class="textbox" name="testCaseOutput[]" class="required"></textarea>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="add" onclick="addTest(event)">Add Test Case</button>
 
     <div class="problem-item" id="textarea-box">
       <div class="problem-col-25">
         <label for="timeLimit">Time Limit(in seconds)</label>
       </div>
       <div class="problem-col-75">
-        <input type="number" name="timeLimit" class="required">
+        <input type="number" name="timeLimit" class="required" >
       </div>
     </div>
 
@@ -87,7 +143,7 @@
         <label for="memoryLimit">Memory Limit(in MB)</label>
       </div>
       <div class="problem-col-75">
-        <input type="number" name="memoryLimit" class="required">
+        <input type="number" name="memoryLimit" class="required" >
       </div>
     </div>
 
@@ -96,27 +152,114 @@
         <label for="difficulty">Difficulty(1-4)</label>
       </div>
       <div class="problem-col-75">
-        <input type="number" name="difficulty" class="required">
+        <input type="number" name="difficulty" class="required" >
       </div>
     </div>
-    
-    <button type="submit"  id="problem-create">Create</button>
+
+
+    <button type="submit" id="problem-create">Submit</button>
 
   </form>
 
 </div>
 
-
+<a onclick="tryy(event)">Try</a>
 <script>
+  
+
   var ta = document.querySelectorAll("textarea");
-  console.log(ta);
+
   ta.forEach((t, i) => {
+    initializeEditor(t, i);
+  });
+
+  let cntSample = 1;
+  let cntta = 8;
+
+  function addSample(event) {
+    let sampleO = document.querySelector(".dummySampleCaseInput");
+    let sample = sampleO.cloneNode(true);
+    let txt = sample.childNodes[1].childNodes[1];
+    let ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummySampleCaseInput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    cntSample++;
+    txt.textContent = "Sample Case " + cntSample + " : Input";
+    const par = document.querySelector(".samples");
+
+    cntta++;
+    // ta.id = "mytextarea" + cntta;
+    ta.classList.add("mytextarea");
+    par.appendChild(sample);
+    // initializeEditor(ta, cntta - 1);
+
+    sampleO = document.querySelector(".dummySampleCaseOutput");
+    sample = sampleO.cloneNode(true);
+    
+    txt = sample.childNodes[1].childNodes[1];
+    ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummySampleCaseOutput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    txt.textContent = "Sample Case " + cntSample + " : Ouput";
+    
+    cntta++;
+    // ta.id = "mytextarea" + cntta;
+    ta.classList.add("mytextarea");
+    par.appendChild(sample);
+    // initializeEditor(ta, cntta - 1);
+  }
+
+  let cntTest = 1;
+
+  function addTest(event) {
+    let sampleO = document.querySelector(".dummyTestCaseInput");
+    let sample = sampleO.cloneNode(true);
+    console.log(sample);
+    let txt = sample.childNodes[1].childNodes[1];
+    let ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummyTestCaseInput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    cntTest++;
+    txt.textContent = "Test Case " + cntTest + ": Input";
+    par = document.querySelector(".tests");
+
+    cntta++;
+    // ta.id = "mytextarea" + cntta;
+    ta.classList.add("mytextarea");
+    par.appendChild(sample);
+    // initializeEditor(ta, cntta - 1);
+
+    sampleO = document.querySelector(".dummyTestCaseOutput");
+    sample = sampleO.cloneNode(true);
+    console.log(sample);
+    txt = sample.childNodes[1].childNodes[1];
+    ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummyTestCaseOutput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    txt.textContent = "Test Case " + cntTest+" : Output";
+    
+    cntta++;
+    // ta.id = "mytextarea" + cntta;
+    ta.classList.add("mytextarea");
+    par.appendChild(sample);
+    // initializeEditor(ta, cntta - 1);
+  }
+
+  function initializeEditor(t, i) {
     tinymce.init({
       selector: `#mytextarea${i+1}`,
       toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | image',
       plugins: 'advlist link image lists media',
-      height : 400,
-      width : 800,
+      height: 400,
+      width: 800,
       file_picker_types: 'image',
       /* and here's our custom image picker*/
       file_picker_callback: function(cb, value, meta) {
@@ -145,15 +288,23 @@
               title: file.name
             });
           };
-
           reader.readAsDataURL(file);
         };
 
         input.click();
       },
 
-      resize:false,
+      resize: false,
     });
-  })
+  }
 
+
+  function tryy(e){
+    const ed = document.querySelector("#mytextarea");
+    console.log(ed.value);
+    // const cont = tinymce.get("mytextarea5").getContent();
+    // console.log(cont);
+    e.preventDefault();
+    e.stopPropagation();
+  }
 </script>

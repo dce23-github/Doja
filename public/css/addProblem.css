@@ -46,10 +46,10 @@
 }
 
 
-.textbox{
-    width : 90%;
-    height : 150px;
-    resize:none;
+.textbox {
+    width: 90%;
+    height: 150px;
+    resize: none;
 }
 
 .problem-item {
@@ -59,8 +59,8 @@
 }
 
 
-input{
-    padding : 0.5rem;
+input {
+    padding: 0.5rem;
     width: 50%;
 }
 
@@ -69,21 +69,53 @@ input{
 } */
 
 
-#problem-create{
+#problem-create {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2rem;
-    width : 100px;
+    width: 100px;
     font-size: 1.2rem;
     background-color: var(--main-color3);
     border-radius: 0.5rem;
-    border : 1px solid rgb(39, 39, 39);
-    color : white;
-    padding : 2px;
+    border: 1px solid rgb(39, 39, 39);
+    color:black;
+    padding: 5px;
     text-shadow: 1px 1px 1px var(--shadow-color-light);
+    box-shadow: 0px 2px 4px 1px rgb(97, 97, 97);
 }
 
-input{
-    border : 1px solid rgb(194, 193, 193);
+input {
+    border: 1px solid rgb(194, 193, 193);
+}
+
+
+.disp-none {
+    display: none;
+}
+
+.disp-block {
+    display: block;
+}
+
+
+.add{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.3rem;
+    background-color: cornflowerblue;
+    border : 1px solid black;
+    box-shadow: 0px 2px 4px 1px rgb(97, 97, 97);
+    margin-bottom: 4rem;
+    border-radius: 0.5rem;
+    padding : 5px;
+}
+
+
+.mytextarea{
+    width : 60%;
+    height : 200px;
+    font-size: 1.1rem;
+    resize:none;
 }

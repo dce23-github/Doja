@@ -13,12 +13,14 @@ const problemSchema = new Schema(
       type: String,
       required: true,
     },
-    input: { type: String, required: true },
-    output: { type: String, required: true },
+    input: { type: String, required: true }, // format
+    output: { type: String, required: true }, // format
     constraints: { type: String, required: true },
     title: { type: String, required: true },
     authorId: { type: Schema.Types.ObjectId, required: true },
     testCases: [testCase],
+    // testExpOutput : [{type : String}],
+    // sampleExpOutput : [{type : String}],
     sampleCases: [testCase],
     difficulty: { type: Number },
     tags: [{ type: String }],

@@ -12,16 +12,27 @@ const User = require("./models/User");
 const app = express();
 const server = require("http").createServer(app);
 const io = require('socket.io')(server, { cors: { origin: "*", methods: ["GET", "POST"] } });
+const redis = require('redis');
+const client = redis.createClient({
+  host: 'localhost',
+  port: "6379",
+  // password: process.env.REDIS_KEY,
+});
+
+client.on('error', err => {
+  console.log('Error ' + err);
+});
 
 const authRoutes = require("./routes/authRoutes");
 const contestRoutes = require("./routes/contestRoutes");
 const { userRoutes, socketCreate } = require("./routes/userRoutes");
-
+const { submissionRoutes } = require("./routes/submissionRoutes")
 // const problemRoutes = require("./routes/problemRoutes");
 
 const PORT = process.env.PORT || 3000;
 const dbURI = process.env.dbURI;
 // if (process.env.NODE_ENV == "production") dbURI = prcoess.env.dbURIl;
+``
 
 mongoose.connect(
   dbURI,
@@ -89,6 +100,11 @@ app.use("/contest", contestRoutes);
 app.use("/user", userRoutes);
 
 
+/*   Submission Routes    */
+
+app.use("/submit", submissionRoutes);
+
+
 app.get("/", async (req, res) => {
   try {
     let user;
@@ -102,21 +118,21 @@ app.get("/", async (req, res) => {
 });
 
 
-app.get("/submit", (req, res) => {
-  console.log(process.env.PORT);
-  const sport = (process.env.PORT+1);
-  console.log(sport);
-  axios.get(`https://judge:${sport}/`)
-    .then(data => {
-      console.log(data.data)
-      console.log(JSON.stringify(data.data));
-      res.send(JSON.stringify(data.data));
-    })
-    .catch(err => {
-      // res.status(500).send(err);
-      res.status(500).send("error mf");
-    })
-})
+// app.get("/submit", (req, res) => {
+//   console.log(process.env.PORT);
+//   const sport = (process.env.PORT+1);
+//   console.log(sport);
+//   axios.get(`https://judge:${sport}/`)
+//     .then(data => {
+//       console.log(data.data)
+//       console.log(JSON.stringify(data.data));
+//       res.send(JSON.stringify(data.data));
+//     })
+//     .catch(err => {
+//       // res.status(500).send(err);
+//       res.status(500).send("error mf");
+//     })
+// })
 
 
 

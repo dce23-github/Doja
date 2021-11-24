@@ -3,14 +3,20 @@ const Schema = mongoose.Schema;
 
 const submissionSchema = new Schema(
   {
-    userId: { type: Schema.Types.ObjectId, required: true },
+    status : {type : String},
+    userId: { type: Schema.Types.ObjectId, required: true , ref : "User"},
     code: { type: String, required: true },
-    problemId: { type: Schema.Types.ObjectId, required: true },
-    verdict: { type: String, required: true },
-    timeTaken: { type: Number },
-    memoryTaken: { type: Number },
+    lang : {type : String, required : true, },
+    probId: { type: Schema.Types.ObjectId, required: true, ref : "Problem"},
+    output : [{type : String}],
+    verdict : [{type : String}],
+    time: [{ type: Number }],
+    memory: [{ type: Number }],
+    // filepath : {type : String, required : true,},
+    type : {type : String, enum : ["sample", "test"], required : true},
   },
   { timestamps: true }
 );
 
-export default mongoose.model("Submission", submissionSchema);
+const Submission = mongoose.model("Submission", submissionSchema);
+module.exports = Submission;

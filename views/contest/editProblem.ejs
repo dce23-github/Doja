@@ -22,25 +22,25 @@
         <label for="statement">Statement</label>
       </div>
       <div class="problem-col-75">
-        <textarea id ="mytextarea1" class="textbox" name="statement" class="required" ><%=problem.statement%></textarea>
+        <textarea id="mytextarea1" class="textbox" name="statement" class="required"><%=problem.statement%></textarea>
       </div>
     </div>
 
     <div class="problem-item" id="textarea-box">
       <div class="problem-col-25">
-        <label for="input">Input</label>
+        <label for="input">Input Format</label>
       </div>
       <div class="problem-col-75">
-        <textarea id ="mytextarea2" class="textbox" name="input" class="required" ><%=problem.input%></textarea>
+        <textarea id="mytextarea2" class="textbox" name="input" class="required"><%=problem.input%></textarea>
       </div>
     </div>
 
     <div class="problem-item" id="textarea-box">
       <div class="problem-col-25">
-        <label for="output">Ouput</label>
+        <label for="output">Ouput Format</label>
       </div>
       <div class="problem-col-75">
-        <textarea id ="mytextarea3" class="textbox" name="output" class="required" ><%=problem.output%></textarea>
+        <textarea id="mytextarea3" class="textbox" name="output" class="required"><%=problem.output%></textarea>
       </div>
     </div>
 
@@ -49,27 +49,92 @@
         <label for="constraints">Constraints</label>
       </div>
       <div class="problem-col-75">
-        <textarea id ="mytextarea4" class="textbox" name="constraints" class="required" ><%=problem.constraints%></textarea>
+        <textarea id="mytextarea4" class="textbox" name="constraints" class="required"><%=problem.constraints%></textarea>
       </div>
     </div>
 
-    <div class="problem-item" id="textarea-box">
-      <div class="problem-col-25">
-        <label for="sampleCases">Sample Cases</label>
-      </div>
-      <div class="problem-col-75">
-        <textarea id ="mytextarea5" class="textbox" name="sampleCases" class="required" ><%=problem.sampleCases%></textarea>
-      </div>
-    </div>
+    <div class="samples">
 
-    <div class="problem-item" id="textarea-box">
-      <div class="problem-col-25">
-        <label for="testCases">Test Cases</label>
+      <div class="problem-item dummySampleCaseInput disp-none samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Dummy Sample Case Input </label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"></textarea>
+        </div>
       </div>
-      <div class="problem-col-75">
-        <textarea id ="mytextarea6" class="textbox" name="testCases" class="required" ><%=problem.testCases%></textarea>
+
+      <div class="problem-item dummySampleCaseOutput disp-none samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Dummy Sample Case Output </label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea" class="textbox" name="sampleCaseOutput[]" class="required"></textarea>
+        </div>
       </div>
+
+      <% for( let i = 0; i < problem.sampleCases.length; i++ ) { %>
+      <div class="problem-item samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Sample Case <%=i+1%> : Input</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"><%=problem.sampleCases[i].input%></textarea>
+        </div>
+      </div>
+
+      <div class="problem-item samplecase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="sampleCases">Sample Case <%=i+1%> : Output</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea6" class="textbox" name="sampleCaseOutput[]" class="required"><%=problem.sampleCases[i].output%></textarea>
+        </div>
+      </div>
+      <% } %>
+
+
     </div>
+    <button type="button" class="add" onclick="addSample(event)">Add Sample Case</button>
+
+    <div class="tests">
+      <div class="problem-item dummyTestCaseInput testcase disp-none" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Dummy Test Case : Input</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea" class="textbox" name="testCaseInput[]" class="required"></textarea>
+        </div>
+      </div>
+      <div class="problem-item dummyTestCaseOutput testcase disp-none" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Dummy Test Case : Ouput</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea" class="textbox" name="testCaseOutput[]" class="required"></textarea>
+        </div>
+      </div>
+
+      <% for( let i = 0; i < problem.testCases.length; i++ ) { %>
+      <div class="problem-item testcase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Test Case <%=i+1%>: Input</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea7" class="textbox" name="testCaseInput[]" class="required"><%=problem.testCases[i].input%></textarea>
+        </div>
+      </div>
+      <div class="problem-item testcase" id="textarea-box">
+        <div class="problem-col-25">
+          <label for="testCases">Test Case <%=i+1%>: Output</label>
+        </div>
+        <div class="problem-col-75">
+          <textarea id="mytextarea8" class="textbox" name="testCaseOutput[]" class="required"><%=problem.testCases[i].output%></textarea>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    <button type="button" class="add" onclick="addTest(event)">Add Test Case</button>
 
     <div class="problem-item" id="textarea-box">
       <div class="problem-col-25">
@@ -77,45 +142,126 @@
       </div>
       <div class="problem-col-75">
         <input type="number" name="timeLimit" class="required" value="<%=problem.timeLimit%>">
-      </div>
     </div>
+</div>
 
-    <div class="problem-item" id="textarea-box">
-      <div class="problem-col-25">
-        <label for="memoryLimit">Memory Limit(in MB)</label>
-      </div>
-      <div class="problem-col-75">
-        <input type="number" name="memoryLimit" class="required" value="<%=problem.memoryLimit%>">
-      </div>
-    </div>
+<div class="problem-item" id="textarea-box">
+  <div class="problem-col-25">
+    <label for="memoryLimit">Memory Limit(in MB)</label>
+  </div>
+  <div class="problem-col-75">
+    <input type="number" name="memoryLimit" class="required" value="<%=problem.memoryLimit%>">
+  </div>
+</div>
 
-    <div class="problem-item" id="textarea-box">
-      <div class="problem-col-25">
-        <label for="difficulty">Difficulty(1-4)</label>
-      </div>
-      <div class="problem-col-75">
-        <input type="number" name="difficulty" class="required" value="<%=problem.difficulty%>">
-      </div>
-    </div>
+<div class="problem-item" id="textarea-box">
+  <div class="problem-col-25">
+    <label for="difficulty">Difficulty(1-4)</label>
+  </div>
+  <div class="problem-col-75">
+    <input type="number" name="difficulty" class="required" value="<%=problem.difficulty%>">
+  </div>
+</div>
 
 
-    <button type="submit" id="problem-create">Submit</button>
+<button type="submit" id="problem-create">Submit</button>
 
-  </form>
+<a onclick="tryy(event)">Try</a>
+</form>
 
 </div>
 
 
 <script>
   var ta = document.querySelectorAll("textarea");
-  console.log(ta);
+
   ta.forEach((t, i) => {
+    initializeEditor(t, i);
+  });
+
+  let cntSample = 1;
+  let cntta = 8;
+
+  function addSample(event) {
+    let sampleO = document.querySelector(".dummySampleCaseInput");
+    let sample = sampleO.cloneNode(true);
+    let txt = sample.childNodes[1].childNodes[1];
+    let ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummySampleCaseInput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    cntSample++;
+    txt.textContent = "Sample Case " + cntSample + " : Input";
+    const par = document.querySelector(".samples");
+
+    cntta++;
+    ta.id = "mytextarea" + cntta;
+    par.appendChild(sample);
+    initializeEditor(ta, cntta - 1);
+
+    sampleO = document.querySelector(".dummySampleCaseOutput");
+    sample = sampleO.cloneNode(true);
+
+    txt = sample.childNodes[1].childNodes[1];
+    ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummySampleCaseOutput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    txt.textContent = "Sample Case " + cntSample + " : Ouput";
+
+    cntta++;
+    ta.id = "mytextarea" + cntta;
+    par.appendChild(sample);
+    initializeEditor(ta, cntta - 1);
+  }
+
+  let cntTest = 1;
+
+  function addTest(event) {
+    let sampleO = document.querySelector(".dummyTestCaseInput");
+    let sample = sampleO.cloneNode(true);
+    console.log(sample);
+    let txt = sample.childNodes[1].childNodes[1];
+    let ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummyTestCaseInput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    cntTest++;
+    txt.textContent = "Test Case " + cntTest + ": Input";
+    par = document.querySelector(".tests");
+
+    cntta++;
+    ta.id = "mytextarea" + cntta;
+    par.appendChild(sample);
+    initializeEditor(ta, cntta - 1);
+
+    sampleO = document.querySelector(".dummyTestCaseOutput");
+    sample = sampleO.cloneNode(true);
+    console.log(sample);
+    txt = sample.childNodes[1].childNodes[1];
+    ta = sample.childNodes[3].childNodes[1];
+    sample.classList.remove("dummyTestCaseOutput");
+    sample.classList.remove("disp-none");
+    // sample.classList.add("disp-block");
+
+    txt.textContent = "Test Case " + cntTest + " : Output";
+
+    cntta++;
+    ta.id = "mytextarea" + cntta;
+    par.appendChild(sample);
+    initializeEditor(ta, cntta - 1);
+  }
+
+  function initializeEditor(t, i) {
     tinymce.init({
       selector: `#mytextarea${i+1}`,
       toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | image',
       plugins: 'advlist link image lists media',
-      height : 400,
-      width : 800,
+      height: 400,
+      width: 800,
       file_picker_types: 'image',
       /* and here's our custom image picker*/
       file_picker_callback: function(cb, value, meta) {
@@ -150,7 +296,17 @@
         input.click();
       },
 
-      resize:false,
+      resize: false,
     });
-  })
+  }
+
+
+  function tryy(e){
+    const ed = document.querySelector("#mytextarea");
+    console.log(ed.TEXT_NODE);
+    // const cont = tinymce.get("mytextarea5").getContent();
+    // console.log(cont);
+    e.preventDefault();
+    e.stopPropagation();
+  }
 </script>

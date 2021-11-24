@@ -83,3 +83,11 @@ input{
     padding : 2px;
     text-shadow: 1px 1px 1px var(--shadow-color-light);
 }
+
+.disp-none{
+    display: none;
+}
+
+.disp-block{
+    display: block;
+}

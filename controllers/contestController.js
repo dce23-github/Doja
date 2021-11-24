@@ -175,9 +175,37 @@ const addProblem__post = async (req, res) => {
       timeLimit,
       memoryLimit,
       // image,
+      testCaseInput,
+      testCaseOutput,
+      sampleCaseInput, 
+      sampleCaseOutput,
     } = req.body;
     const authorId = res.locals.currentUser;
-    // console.log(image.data);
+    
+    console.log(testCaseInput.length, sampleCaseInput.length);
+    console.log(sampleCaseInput[1]);
+
+    const testCases = [];
+    const sampleCases = [];
+    testCaseInput.forEach((tci, i)=>{
+      if(i !=0)
+      testCases.push({
+        input : tci,
+        output : testCaseOutput[i],
+      });
+    });
+
+    sampleCaseInput.forEach((sci, i)=>{
+      if(i !=0)
+      sampleCases.push({
+        input : sci,
+        output : sampleCaseOutput[i],
+      });
+    });
+
+    console.log(sampleCases);
+    console.log(testCases);
+
     const problem = await Problem.create({
       statement,
       input,
@@ -188,6 +216,8 @@ const addProblem__post = async (req, res) => {
       difficulty,
       timeLimit,
       memoryLimit,
+      testCases,
+      sampleCases,
     });
 
     const contest = await Contest.findByIdAndUpdate(
@@ -227,6 +257,8 @@ const addProblem__patch = async (req, res) => {
       difficulty,
       timeLimit,
       memoryLimit,
+      testCases,
+      sampleCases,
     } = req.body;
     const authorId = res.locals.currentUser;
 
@@ -279,6 +311,7 @@ const getProblem__get = async (req, res) => {
   const { id, pid } = req.params;
   const contest = await Contest.findById(id);
   const problem = await Problem.findById(pid);
+  console.log(problem.sampleCases[0]);
   res.render("contest/showProblem", {contest, problem});
 }
 
