@@ -1,25 +1,16 @@
  
 #!/bin/bash
-
 lang=$1
 solution=$7
 testcase=$8
 solrun=$9
 RTE=0
 CE=0
-# cLang = "c"
-# cppLang = "cpp"
-# javaLan = "java"
-# pyLang = "py"
-
-memArr=(3500 7500 95000 19000)
+# memArr=(3500 7500 95000 19000)
 initMem=0
-
-
-
 if [[ $lang = "c" ]]
 then {
-        initMem=${memArr[0]}
+        # initMem=${memArr[0]}
         gcc -o $9 $7 &> $2 && {
             {
                 cat $8 | /usr/bin/time -f "%e %M" -o $3 timeout $4s ./$9 &> $2
@@ -34,8 +25,7 @@ elif [[ $lang = "cpp" ]]
 then {
         
         
-       initMem=${memArr[1]}
-       g++ -o $9 $7 &> $2 && {
+    #    g++ -o $9 $7 &> $2 && {
             {
                 cat $8 | /usr/bin/time -f "%e %M" -o $3 timeout $4s ./$9 &> $2
             } || {
@@ -47,7 +37,7 @@ then {
     }
 elif [[ $lang = "java" ]]
 then {
-        initMem=${memArr[2]}
+        # initMem=${memArr[2]}
         javac $7 &> $2 && {
             {
                 cat $8 | /usr/bin/time -f "%e %M" -o $3 timeout $4s java $9 &> $2
@@ -60,7 +50,7 @@ then {
     }
 elif [[ $lang = "py" ]]
 then {
-        initMem=${memArr[3]}
+        # initMem=${memArr[3]}
         cat $8 | /usr/bin/time -f "%e %M" -o $3 timeout $4s python3 $7 &> $2
     } || {
         RTE=1

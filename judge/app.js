@@ -6,13 +6,14 @@ const path = require("path");
 const app = express();
 const server = require("http").createServer(app);
 const PORT = (process.env.PORT+1) || 9000;
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res)=>{
-    console.log("hello from server");
-    res.send({msg : "recieved on container server"});
+    const {sub , prob} = req.body;
+
+    const res = runCode(sub, prob)
+    res.send(res);
 });
 
 server.listen(PORT, () => {

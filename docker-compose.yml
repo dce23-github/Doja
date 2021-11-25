@@ -7,17 +7,35 @@ services:
       dockerfile: Dockerfile.web
       context: ./
     expose:
-      - "3000"
+    - "3000"
     ports :
     - "3000:3000"
-  judge:
-    container_name: cont_judge
-    build:
-      dockerfile: Dockerfile.judge
-      context: ./judge/
+    # networks:
+    # - "redisNet"
+  
+  redis :
+    # container_name: cont_redis
+    image : redis
     expose:
-      - "8080"
-    ports:
-      - "8080:8080"
+    - "6379"
+    # ports :
+    # - "6379:6379"
+    # networks:
+    # - "redisNet"
+
+# networks:
+#   redisNet:
+#     driver: bridge
+      
+    
+  # judge:
+  #   container_name: cont_judge
+  #   build:
+  #     dockerfile: Dockerfile.judge
+  #     context: ./judge/
+  #   expose:
+  #     - "8080"
+  #   ports:
+  #     - "8080:8080"
   
   

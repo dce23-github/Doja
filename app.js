@@ -13,15 +13,17 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require('socket.io')(server, { cors: { origin: "*", methods: ["GET", "POST"] } });
 const redis = require('redis');
-const client = redis.createClient({
-  host: 'localhost',
-  port: "6379",
-  // password: process.env.REDIS_KEY,
-});
+
+
+const client = redis.createClient({"host" : `${process.env.REDIS_ENDPOINT_URI}`, "password" : `${process.env.REDIS_PASSWORD}`, "port" : process.env.REDIS_PORT});
 
 client.on('error', err => {
   console.log('Error ' + err);
 });
+
+client.on("connect", ()=>{
+  console.log("connected");
+})
 
 const authRoutes = require("./routes/authRoutes");
 const contestRoutes = require("./routes/contestRoutes");
@@ -106,15 +108,16 @@ app.use("/submit", submissionRoutes);
 
 
 app.get("/", async (req, res) => {
-  try {
-    let user;
-    if (res.locals.currentUser)
-      user = await User.findById(res.locals.currentUser);
-    res.render("home", { user: user || null });
-  }
-  catch (err) {
-    console.log(err);
-  }
+  res.send("Sorry, currently under maintenance.\n Will spin up the server in 2-3 days.")
+  // try {
+  //   let user;
+  //   if (res.locals.currentUser)
+  //     user = await User.findById(res.locals.currentUser);
+  //   res.render("home", { user: user || null });
+  // }
+  // catch (err) {
+  //   console.log(err);
+  // }
 });
 
 
