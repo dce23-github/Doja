@@ -23,27 +23,27 @@ queue.process(numWorkers, (async (job) => {
         // run code and set verdict
 
         try {
-            // const res = await runCode(sub, prob); // change this to a fetch call
-            // res.status = "finished";
-            // console.log(res);
-            // await res.save();
+            const res = await runCode(sub, prob); // change this to a fetch call
+            res.status = "finished";
+            console.log(res);
+            await res.save();
             
-            const payload = {sub, prob};
-            let resp = await fetch("https://pure-coast-94262.herokuapp.com/",{
-                method : "post",
-                body : JSON.stringify(payload) ,
-                headers: {'Content-Type': 'application/json'}
-            });
+            // const payload = {sub, prob};
+            // let resp = await fetch("https://pure-coast-94262.herokuapp.com/",{
+            //     method : "post",
+            //     body : JSON.stringify(payload) ,
+            //     headers: {'Content-Type': 'application/json'}
+            // });
             
             
-            data = await resp.json();
-            sub.output = data.output;
-            sub.verdict = data.verdict;
-            sub.status = data.status;
-            sub.time = data.time;
-            sub.memory = data.memory;
-            console.log(sub);
-            await sub.save();
+            // data = await resp.json();
+            // sub.output = data.output;
+            // sub.verdict = data.verdict;
+            // sub.status = data.status;
+            // sub.time = data.time;
+            // sub.memory = data.memory;
+            // console.log(sub);
+            // await sub.save();
             
             return true;
         }
