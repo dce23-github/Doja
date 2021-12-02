@@ -133,12 +133,11 @@ const createContest__post = async (req, res) => {
     await contest.save();
     if (isInitiated === "on") {
       let temp = new Date();
-      console.log(temp.toLocaleString("Asia/Kolkata"));
-      console.log(temp.toLocaleTimeString());
-      let dobj = new Date(`${temp.toDateString()} ${temp.toTimeString()} GMT-05:30`);
-      const hr = dobj.getUTCHours();
-      const mn = dobj.getUTCMinutes();
-      const day1 = dobj.getUTCDate();
+      console.log(temp.toLocaleString("IST"));
+      let dobj = new Date(`${temp.toLocaleString("IST")}`);
+      const hr = dobj.getHours();
+      const mn = dobj.getMinutes();
+      const day1 = dobj.getDate();
       const day2 = new Date(date).getDate();
       console.log(hr, mn, day1, day2);
 
