@@ -154,8 +154,10 @@ const createContest__post = async (req, res) => {
       const st = contest.startTime;
       let arr = st.split(":");
       let hrst = Number(arr[0]), mnst = Number(arr[1]);
-      if (day1 != day2)
+      if (day1 != day2){
+        console.log(day1, day2);
         time += (hrst * 60 * 60 + mnst * 60) * 1000;
+      }
       else {
         let x = hrst + "" + mnst;
         let y = hr + "" + mn;
