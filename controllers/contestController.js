@@ -71,7 +71,7 @@ const allContest__get = async (req, res) => {
     user = await User.findById(user);
   }
   else user = null;
-  
+
   all = all.filter(contest => contest.isInitiated === "off");
   res.render("contest/all", { user, all });
 }
@@ -132,12 +132,14 @@ const createContest__post = async (req, res) => {
 
     await contest.save();
     if (isInitiated === "on") {
-      let dobj = new Date();
+      let temp = new Date();
+      console.log(temp.toLocaleTimeString());
+      let dobj = new Date(`${temp.toDateString()} ${temp.toTimeString()} GMT+5:30`);
       const hr = dobj.getHours();
       const mn = dobj.getMinutes();
       const day1 = dobj.getDate();
       const day2 = new Date(date).getDate();
-      // console.log(hr, mn, sec, day, day2);
+      console.log(hr, mn, day1, day2);
 
       if (day2 - day1 > 3) {
         res.send("cannot create contest before three days");
@@ -151,16 +153,18 @@ const createContest__post = async (req, res) => {
       }
       time *= 1000; // time in miliseconds after which contest should start
 
-      const st = contest.startTime;
+      let st = contest.startTime;
       let arr = st.split(":");
       let hrst = Number(arr[0]), mnst = Number(arr[1]);
-      if (day1 != day2){
+      if (day1 != day2) {
         console.log(day1, day2);
         time += (hrst * 60 * 60 + mnst * 60) * 1000;
       }
       else {
-        let x = hrst + "" + mnst;
-        let y = hr + "" + mn;
+        let x = arr.join("");
+        let y =  String(mn);
+        if(y.length == 1)y = "0"+y;
+        y = hr+y;
         console.log(x, y);
         x = Number(x);
         y = Number(y);
@@ -178,14 +182,16 @@ const createContest__post = async (req, res) => {
       const end = contest.endTime;
       arr = end.split(":");
       let hrend = Number(arr[0]), mnend = Number(arr[1]);
-      let x = hrend + "" + mnend;
-      let y = hrst + "" + mnst;
+      let x = arr.join("");
+      let y = (st.split(":")).join("");
+      console.log(x,y);
       x = Number(x);
       y = Number(y);
       x -= y;
       x = String(x);
       let d1, d2;
       while (x.length < 4) x = "0" + x;
+      console.log(x);
       d1 = Number(x.slice(0, 2));
       d2 = Number(x.slice(2, 4));
       console.log(d1, d2);
