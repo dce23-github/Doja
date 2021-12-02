@@ -135,9 +135,9 @@ const createContest__post = async (req, res) => {
       let temp = new Date();
       console.log(temp.toLocaleTimeString());
       let dobj = new Date(`${temp.toDateString()} ${temp.toTimeString()} GMT+5:30`);
-      const hr = dobj.getHours();
-      const mn = dobj.getMinutes();
-      const day1 = dobj.getDate();
+      const hr = dobj.getUTCHours();
+      const mn = dobj.getUTCMinutes();
+      const day1 = dobj.getUTCDate();
       const day2 = new Date(date).getDate();
       console.log(hr, mn, day1, day2);
 
