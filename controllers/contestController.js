@@ -142,6 +142,7 @@ const createContest__post = async (req, res) => {
       if (day2 - day1 > 3) {
         res.send("cannot create contest before three days");
       }
+      console.log(date, startTime, endTime);
 
       dobj = new Date();
       let time = ((day2 - day1 - 1 > 0) ? day2 - day1 - 1 : 0) * 60 * 60;
