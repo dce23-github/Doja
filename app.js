@@ -11,24 +11,26 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const app = express();
 const server = require("http").createServer(app);
-const io = require('socket.io')(server, { cors: { origin: "*", methods: ["GET", "POST"] } });
+const io = require('socket.io')(server, {  cors: { origin: "*", methods: ["GET", "POST"] } });
+const ioChat = io.of("/chat");
+const ioEditor = io.of("/editor");
 const redis = require('redis');
-
-
-const client = redis.createClient({"host" : `${process.env.REDIS_ENDPOINT_URI}`, "password" : `${process.env.REDIS_PASSWORD}`, "port" : process.env.REDIS_PORT});
+const client = redis.createClient({ "host": `${process.env.REDIS_ENDPOINT_URI}`, "password": `${process.env.REDIS_PASSWORD}`, "port": process.env.REDIS_PORT });
 
 client.on('error', err => {
   console.log('Error ' + err);
 });
 
-client.on("connect", ()=>{
+client.on("connect", () => {
   console.log("connected");
 })
 
 const authRoutes = require("./routes/authRoutes");
 const contestRoutes = require("./routes/contestRoutes");
-const { userRoutes, socketCreate } = require("./routes/userRoutes");
+const { userRoutes, socketChat } = require("./routes/userRoutes");
 const { submissionRoutes } = require("./routes/submissionRoutes")
+const { teamRoutes } = require("./routes/teamRoutes");
+const {editorRoutes, socketEditor} = require("./routes/editorRoutes");
 // const problemRoutes = require("./routes/problemRoutes");
 
 const PORT = process.env.PORT || 3000;
@@ -86,7 +88,9 @@ app.use((req, res, next) => {
   else res.locals.currentUser = null;
   next();
 });
-socketCreate(io);
+socketChat(ioChat);
+socketEditor(ioEditor);
+
 /* middleware ends here */
 
 /* Auth routes */
@@ -94,6 +98,10 @@ app.use("/auth", authRoutes);
 
 /* Contest routes */
 app.use("/contest", contestRoutes);
+
+/*   Editor Routes */ // 
+
+app.use("/editor", editorRoutes);
 
 /* Problem routes */
 // app.use("/problem", problemRoutes);
@@ -107,17 +115,22 @@ app.use("/user", userRoutes);
 app.use("/submit", submissionRoutes);
 
 
+/*   Team Routes */ // creation and accepting invite
+
+app.use("/team", teamRoutes);
+
+
+
 app.get("/", async (req, res) => {
-  res.send("Sorry, currently under maintenance.\n Will spin up the server in 2-3 days.")
-  // try {
-  //   let user;
-  //   if (res.locals.currentUser)
-  //     user = await User.findById(res.locals.currentUser);
-  //   res.render("home", { user: user || null });
-  // }
-  // catch (err) {
-  //   console.log(err);
-  // }
+  try {
+    let user;
+    if (res.locals.currentUser)
+      user = await User.findById(res.locals.currentUser);
+    res.render("home", { user: user || null });
+  }
+  catch (err) {
+    console.log(err);
+  }
 });
 
 

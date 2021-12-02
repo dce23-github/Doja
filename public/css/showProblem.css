@@ -1,40 +1,249 @@
-.outer-box{
+.outer-box {
     background-color: white;
 }
 
-.inner-box{
-    margin:1rem;
+.inner-box {
+    margin: 1rem;
 }
 
-.problem-container{
+.problem-container {
     display: flex;
 }
 
-.code-chat-container{
+.code-chat-container {
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
 }
 
-.problem{
-    width : 75%;
+.problem {
+    width: 75%;
     display: inline-block;
 }
-.submit-file{
-    width : 25%;
+
+.submit-file {
+    width: 25%;
     display: inline-block;
 }
 
-.editor{
-    width : 75%;
+.editor {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.chatbox{
-    width : 25%;
+.chatbox {
+    width: 40%;
 }
 
 
-.io{
+.io {
     font-size: 1.1rem;
-    width : 500px;
+    width: 80%;
     height: 200px;
     resize: none;
+    display: block;
+    border-left: 10px solid var(--main-color2);
+    background-color: whitesmoke;
+    padding: 10px;
+    box-shadow: 2px 2px 2px 2px gray;
+}
+
+
+.code {
+    display: block;
+    width: 100%;
+    height: 500px;
+    resize: none;
+    background-color: orange;
+}
+
+
+.chat {
+    width: 100%;
+    height: 500px;
+}
+
+.config {
+    margin-top: 20px;
+}
+
+.sample {
+    margin-left: 20px;
+    padding: 5px;
+    font-size: 1.1rem;
+    background-color: turquoise;
+    border-radius: 0.5rem;
+    box-shadow: 0px 2px 2px 2px grey;
+    font-weight: 600;
+    color: rgb(19, 19, 19);
+}
+
+.test {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 1.1rem;
+    background-color: rgb(246, 156, 10);
+    border-radius: 0.5rem;
+    box-shadow: 0px 2px 2px 2px grey;
+    font-weight: 600;
+    color: rgb(19, 19, 19);
+}
+
+.lang-text {
+    margin-left: 20px;
+    color: rgb(19, 19, 19);
+    text-shadow: 1px 1px 1px rgb(99, 99, 99);
+}
+
+.lang-select {
+    font-size: 1.05rem;
+}
+
+.submit-status-box {
+    border: 2px solid gray;
+    border-radius: 0.5rem;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    background-color: white;
+    box-shadow: 2px 2px 2px 2px rgb(31, 31, 31);
+}
+
+.pass-status {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    background-color: lightgray
+}
+
+.head-submission {
+    text-align: center;
+    background-color: cornflowerblue;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 10px;
+    box-shadow: 2px 2px 2px 2px rgb(31, 31, 31);
+    margin-top: 0;
+}
+
+.rowCase {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid gray;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+
+.divNum, .stat {
+    text-align: center;
+    text-shadow: 1px 1px 0.5px rgb(32, 32, 32);
+    border-left: 1px solid gray;
+    border-radius: 1px solid gray;
+    width: 50%;
+}
+
+.stat {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.doneProb {
+    text-align: center;
+    background-color: limegreen;
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 1px rgb(49, 49, 49);
+}
+
+.proceed-msg {
+    text-align: center;
+    font-weight: bold;
+}
+
+.flash {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 1035;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+}
+
+.flash-content {
+    width: 60%;
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0px 2px 2px 2px rgb(68, 68, 68);
+    position: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    top: 30%;
+    position: relative;
+    padding: 20px;
+    border: 5px solid rgb(177, 177, 177);
+}
+
+.timer-container {
+    border: 2px solid lightgray;
+    border-radius: 0.7rem;
+    box-shadow: 2px 2px 2px 2px rgb(51, 51, 51);
+}
+
+.timer {
+    display: flex;
+    /* justify-content: space-between; */
+    padding-left: 0;
+    left: 25%;
+    position: relative;
+}
+
+.timer-heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background-color: lightgray;
+}
+
+.time-unit {
+    padding: 10px;
+    font-size: 1.4rem;
+    border: 2px solid lightgray;
+    border-radius: 0.5rem;
+    list-style: none;
+    margin-left: 5px;
+    margin-right: 2px;
+}
+
+
+.prob-title {
+    text-align: center;
+    color: rgb(36, 36, 36);
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgb(66, 66, 66);
+    margin-bottom: 0;
+}
+
+.pbox {
+    display: block;
+}
+
+
+.underline {
+    width: 40%;
+    background-color: lightgray;
+    height: 1px;
+    border: 0;
+    border-radius: 0.5rem;
+}
+
+.separator {
+    width: 60%;
+    border-top: 3px dotted lightgray;
+    border-bottom: 0;
+    border-radius: 0.5rem;
 }

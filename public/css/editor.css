@@ -1,0 +1,9 @@
+.CodeMirror{
+    font-size : 1.4rem !important;
+    height : 500px !important;
+}
+
+#textArea{
+    font-size: 1.4rem;
+    height: 500px;
+}

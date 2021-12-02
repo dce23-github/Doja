@@ -7,7 +7,8 @@ const Data = new Schema({
 }, {timestamps: true});
 
 const ChatSchema = new Schema({
-    member_count: { type: String },
+    teamId : {type : Schema.Types.ObjectId, ref : "Team"},
+    member_count: { type: Number },
     authorized_users: [{ type: Schema.Types.ObjectId, ref: "User" }],
     online: [String], // online users
     media: [Data],

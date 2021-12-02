@@ -10,30 +10,33 @@
       <% if (user !== null) { %>
       <div class="user-info">
         <!-- add a centered round image here , by first adding to schema-->
-        <a href = "/user/<%=user._id%>/"><h3 id="username"><%=user.name%></h3></a>
+        <a href="/user/<%=user._id%>/">
+          <h3 id="username"><%=user.name%></h3>
+        </a>
         <hr>
       </div>
       <% }%>
 
-      <ul class = "sidebar-menu"> <!--flex-->
-          <li>
-            <a href="/contest/running">Running Contests</a>
-          </li>
-          <li>
-            <a href="/contest/running">Problemset</a>
-          </li>
-          <li>
-            <a href="/contest/create">Create Contest</a>
-          </li>
-          <li>
-            <a href="/contest/running">Create Team</a>
-          </li>
-          <li>
-            <a href="/contest/solved">Solved Contests</a>
-          </li>
-          <li>
-            <a href="/contest/all">All Contests</a>
-          </li>
+      <ul class="sidebar-menu">
+        <!--flex-->
+        <li>
+          <a href="/contest/running">Running Contests</a>
+        </li>
+        <li>
+          <a href="/contest/running">Problemset</a>
+        </li>
+        <li>
+          <a href="/contest/create">Create Contest</a>
+        </li>
+        <li>
+          <a href="/contest/running">Create Team</a>
+        </li>
+        <li>
+          <a href="/contest/solved">Solved Contests</a>
+        </li>
+        <li>
+          <a href="/contest/all">All Contests</a>
+        </li>
       </ul>
 
     </div>
@@ -41,7 +44,44 @@
 
   <div class="content-box col-l-10 col-m-10 col-s-12">
     <div class="content">
+      <div class = "home-content">
+        <h2 id = "home-heading">Welcome to Doja</h2>
+        <hr class = "underline">
+        <p>Doja is an Online Judge platform to create, host and participate in coding
+          competitions and contests.
+        </p>
+        <p>Participate in <b>team contest</b>, <b>code in real time code editor</b>, <b>chat with team mates to discuss the problem and work on solution within one screen.</b>
+          and of-course submit the problem, and wait for your <b style="color: green;font-weight:bold;">AC</b>
+        </p>
+        <h3>Steps to participate in a contest :-</h3>
+        <ul>
+          <li>One needs to create an account</li>
+          <li> Go to user profile</li>
+          <li> Search friends and send request</li>
+          <li>Ask friends to accept request</li>
+          <li>In user profile section, click on <b>Create Team</b></li>
+          <li>Type in Team Name and select at most <b>2</b> friends to create a team with</li>
+          <li>Finally, go to running contest section from home page</li>
+        </ul>
+        <p> You're good to go.</p>
 
+        <h3>Creating a contest is easy:-</h3>
+        <ul>
+          <li>Login</li>
+          <li>Click on <b>Create Contest</b> on home page. </li>
+          <li>Fill in the requrired details</li>
+          <li>If you choose to activate contest , you cannot edit the contest details again. But you'll always have the
+            option to add/edit problems.
+          </li>
+          <li>Once you submit the form, you can add problems, eidt them. You can edit contest details from contest page and maybe activate 
+            the contest once all the problems have been set by selecting date and time.
+          </li>
+          <li>Set the duration of the contest by choosing start time and end time. Keep the start and end time in
+            absolute hours(preferably).
+          </li>
+          <li><b>You cannot activate a contest before three days of starting</b></li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

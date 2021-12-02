@@ -4,26 +4,42 @@
 <div class="show-box">
 
   <div class="show-info">
-    <h2 id="show-title"><%=contest.contestTitle%></h2>
-    <h3><%=contest.organisation%></h3>
-    <h3><%=contest.startTime +" - " + contest.endTime%> </h3>
-    <h3><%=contest.description%></h3>
+    <% if (user && String(user._id) === String(contest.authorId) && contest.isInitiated === "off") { %>
+    <a href="/contest/<%=contest._id%>/update" class="editContest">Edit Contest</a>
+    <% } %>
+    <div class="info-box">
+      <div class="info1">
+        <h2 id="show-title"><%=contest.contestTitle%></h2>
+        <h3><%=contest.organisation%></h3>
+        <h3><%=contest.startTime +" - " + contest.endTime%> </h3>
+      </div>
+      <div class="info2">
+        <textarea class="info-textbox" readonly>Description : <%=contest.description%></textarea>
+        <textarea class="info-textbox" readonly>Prizes : <%=contest.prize%></textarea>
+      </div>
+    </div>
   </div>
 
   <div class="all-problems">
+    <a href = "/contest/<%=contest._id%>/standings" class = "standings">Standings</a>
     <% contest.problems.forEach((p, i)=>{ %>
 
     <div class="problem">
 
-      <div id="pid"><span id = "text"><%=i+1%></span></div>
-      <div id="ptitle"><a href = "/contest/<%=contest._id%>/problem/<%=p._id%>"><span id = "text"><%=p.title%></span></a></div>
+      <div id="pid"><span id="text"><%=i+1%></span></div>
+      <div id="ptitle"><a href="/contest/<%=contest._id%>/problem/<%=p._id%>"><span id="text"><%=p.title%></span></a></div>
+      <% if (user && user === String(contest.authorId) ) { %>
       <a href="/contest/<%=contest._id%>/addProblem/<%=p._id%>" id="edit">
-        <span id = "text">Edit</span>
+        <span id="text">Edit</span>
       </a>
+      <% } else{ %>
+      <div class="countAc"><%=p.countAc%></div>
+      <% } %>
 
     </div>
     <% } )%>
 
+    <% if (user && String(user._id) === String(contest.authorId) && contest.isInitiated === "off") { %>
     <div class="add-problem">
       <div class="add-box">
         <a href="/contest/<%=contest._id%>/addProblem">
@@ -31,6 +47,7 @@
         </a> <!-- add a plus sign here after add problem-->
       </div>
     </div>
+    <% } %>
   </div>
 
 
@@ -38,5 +55,6 @@
 
 
 <script>
+  console.log("<%=contest.isInitiated%>");
   const prob = document.querySelector(".dummy-problem");
 </script>

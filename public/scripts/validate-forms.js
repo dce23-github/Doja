@@ -22,6 +22,7 @@ function checkValdiity(form) {
 if(form)
 form.addEventListener("submit", function (e) {
     if (!checkValdiity(form)) {
+        console.log("preventing default");
         e.preventDefault();
         // e.stopPropagation();
     }

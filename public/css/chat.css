@@ -37,7 +37,7 @@ textarea:focus {
   position: sticky;
   top: 80px;
   z-index: 1030;
-  background-color: rgba(245, 222, 179, 0.788);
+  background-color: rgba(176, 224, 230, 0.925);
   border-radius: 0.7rem;
   display: inline-block;
   text-align: center;
@@ -82,6 +82,7 @@ textarea:focus {
   margin: 0;
   padding: 0;
   position: relative;
+  margin-top: 20px;
 }
 
 #messages>li {
@@ -120,7 +121,7 @@ textarea:focus {
 /* modal image        */
 
 .slideshow {
-  top: 90px;
+  top: 60px;
   position: fixed;
   z-index: 1030;
 }
@@ -136,7 +137,7 @@ textarea:focus {
 .bg {
   top: 75px;
   position: fixed;
-  height: 80vh;
+  height: 74vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.647);
   z-index: 1024;
@@ -161,7 +162,7 @@ textarea:focus {
 }
 
 .modImg {
-  max-height: 300px;
+  max-height: 200px;
   max-width: 300px;
 }
 
@@ -221,7 +222,7 @@ textarea:focus {
 }
 
 .max-size {
-  max-height: 300px;
+  max-height: 200px;
   max-width: 300px;
 }
 
@@ -270,4 +271,14 @@ textarea:focus {
 .time{
   display: block;
   text-align: right;  
+}
+
+.tox-silver-sink{
+  display: none;
+}
+
+.doja-logo{
+  /* max-width: 50px; */
+  max-height: 50px;
+  margin-top: 5%;
 }

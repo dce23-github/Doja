@@ -3,16 +3,16 @@
 
 <div class="contest-container">
   <div class="contest-box">
-    <h1>Create Contest</h1>
+    <h1>Edit Contest</h1>
   </div>
 
-  <form method="POST" action="/contest/create" class="form-validate contest">
+  <form method="POST" action="/contest/<%=contest._id%>/update" class="form-validate contest">
     <div class="item">
       <div class="contest-col-25">
         <label for="contestTitle">Title</label>
       </div>
       <div class="contest-col-75">
-        <input type="text" name="contestTitle" class="required">
+        <input type="text" name="contestTitle" class="required" value="<%=contest.contestTitle%>">
       </div>
     </div>
 
@@ -21,7 +21,7 @@
         <label for="description">Description</label>
       </div>
       <div class="contest-col-75">
-        <textarea name="description" class="required"></textarea>
+        <textarea name="description" class="required"><%=contest.description%></textarea>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
         <label for="startTime">Start Time</label>
       </div>
       <div class="contest-col-75">
-        <input type="time" name="startTime" class="required">
+        <input type="time" name="startTime" class="required" value="<%=contest.startTime%>">
       </div>
     </div>
 
@@ -39,7 +39,7 @@
         <label for="endTime">End Time</label>
       </div>
       <div class="contest-col-75">
-        <input type="time" name="endTime" class="required">
+        <input type="time" name="endTime" class="required" value="<%=contest.endTime%>">
       </div>
     </div>
 
@@ -48,26 +48,27 @@
         <label for="date">Date</label>
       </div>
       <div class="contest-col-75">
-        <input type="date" name="date" class="required">
+        <input type="date" name="date" class="required" value="<%=contest.date%>">
       </div>
     </div>
 
-
+    <% if (contest.isInitiated === "off") { %>
     <div class="item">
       <div class="contest-col-25">
         <label for="isInitiated">Activate</label>
       </div>
       <div class="contest-col-75">
-        <input type="checkbox" name="isInitiated" class="required" style="height : 20px;">
+        <input type="checkbox" name="isInitiated" class="required" style="height : 20px;" >
       </div>
     </div>
+    <% } %>
 
     <div class="item" id="textarea-box">
       <div class="contest-col-25">
         <label for="organisation">Organisation</label>
       </div>
       <div class="contest-col-75">
-        <input type="text" name="organisation" class="required">
+        <input type="text" name="organisation" class="required" value="<%=contest.organisation%>">
       </div>
     </div>
 
@@ -76,12 +77,12 @@
         <label for="prize">Prize</label>
       </div>
       <div class="contest-col-75">
-        <textarea name="prize" class="required"></textarea>
+        <textarea name="prize" class="required"><%=contest.prize%></textarea>
       </div>
     </div>
 
 
-    <button type="submit" id="contest-create">Create</button>
+    <button type="submit" id="contest-create">Submit</button>
 
   </form>
 

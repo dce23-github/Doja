@@ -6,120 +6,737 @@
     <img src="<%=user.img%>" id="user-img">
   </div>
 
-  <div class="general-info">
-    <ul>
+  <nav class="userNav">
+    <!-- flexbox -->
+    <a onclick="displayGen(event)" class="userLink genLink">General</a>
+    <a onclick="displayFriends(event)" class="userLink friendLink">Friends</a>
+    <a onclick="displayTeams(event)" class="userLink teamLink">Teams</a>
+    <a onclick="displaySubmissions(event)" class="userLink subLink">Submissions</a>
+  </nav>
+
+
+  <div class="general">
+    <div class="img-box"><img src="/images/logo.png" class="userImg"></div>
+    <ul class="user-info">
       <li>
-        <p><%=user.handle%> </p>
+        <label class="labelUser">Handle</label> <span class="dataUser"><%=user.userHandle%></span>
       </li>
       <li>
-        <p><%=user.name%> </p>
+        <label class="labelUser">Name</label> <span class="dataUser"><%=user.name%></span>
       </li>
       <li>
-        <p><%=user.country%> </p>
+        <label class="labelUser">Country</label> <span class="dataUser"><%=user.country%></span>
       </li>
       <li>
-        <p><%=user.gender%> </p>
+        <label class="labelUser">Gender</label> <span class="dataUser"><%=user.gender%></span>
       </li>
       <li>
-        <p><%=user.organization%> </p>
+        <label class="labelUser">Organisaton</label> <span class="dataUser"><%=user.organisation%></span>
       </li>
     </ul>
   </div>
 
-  <div class="add-friend">
-    <a href="#" onclick="return addFriend(event)">Add Friends</a>
-    <div class="search-box disp-none">
-      <form method="POST" action="" class="search-user-form">
-        <input type="search" name="handle" placeholder="Search hanlde">
-        <button type="submit">Search</button>
-      </form>
-      <div class="display-users">
-        <form class="user-list" method="POST" action="/user/<%=user._id%>/addFriend">
-
-          <button type="submit">Send Request</button>
+  <div class="friends">
+    <nav class="friendsNav">
+      <a href="#" onclick="return getFriends(event)" class="myFriendsTab activeFriendsTab">My Friends</a>
+      <a href="#" onclick="return addFriend(event)" class="addFriendTab">Add Friends</a>
+      <a href="#" onclick="return getFriendRequests(event)" class="friendReqTab">Friend Requests</a>
+    </nav>
+    <div class="add-friends">
+      <div class="search-box">
+        <form method="POST" action="" class="search-user-form">
+          <p class="instruction">Search user hanlde and then select from list(check-box) and click on Send Request</p>
+          <input type="search" name="handle" placeholder="Search hanlde" class="search-inp">
+          <button type="submit" class="search-btn">Search</button>
         </form>
+        <div class="display-users">
+          <form class="user-list" method="POST" action="/user/<%=user._id%>/addFriend">
+            <button type="submit" class="send-request-btn">Send Request</button>
+          </form>
+        </div>
       </div>
+    </div>
+
+    <div class="display-friend-requests">
+      <form class="friend-requests" style="display: none;" method="POST" action="/user/<%=user._id%>/friend-requests">
+        <p class="instruction">Select User Name(check-box) to accept request :-</p>
+        <button type="submit" class="accept-btn">Accept</button>
+      </form>
+    </div>
+
+    <div class="display-friends" style="display:none">
     </div>
   </div>
 
-</div>
+  <!-- <a href="/user/<%=user._id%>/room/<%=user.chatid%>">Connect To Chat Room</a> -->
 
-<div class="display-friends">
-  <a href="#" onclick="return createChat(event)" id="chat-first">Create Chat Room</a>
-  <form class="friend-list" style="display: none;" method="POST" action="/user/<%=user._id%>/chat">
-    <p>Select two friends :-</p>
-    <button type="submit">Create</button>
-  </form>
-</div>
-<br>
-<a href="/user/<%=user._id%>/room/<%=user.chatid%>">Connect To Chat Room</a>
 
-<script type='text/javascript'>
-  const sbox = document.querySelector(".search-box");
-  const sform = document.querySelector(".search-user-form");
+  <div class="teams">
+    <nav class="friendsNav">
+      <a href="#" onclick="return getTeamInvites(event)" class="teamInviteTab teamTab">Team Invites</a>
+      <a href="#" onclick="return createTeam(event)" id="chat-first" class="createTeamTab teamTab">Create Team</a>
+      <a href="#" onclick="return myTeams(event)" id="chat-first" class="myTeamsTab teamTab">My Teams</a>
+    </nav>
+    <div class="display-invites">
 
-  function addFriend(event) {
-    console.log("hello");
-    sbox.classList.remove("disp-none");
-    sbox.classList.add("disp-block");
-    return false;
-  };
+      <form class="team-invites" style="display: none;" method="POST" action="/team/accept/<%=user._id%>/">
+        <p class="instruction">Select Team Name(check-box) to accept request :-</p>
+        <button type="submit" class="accept-btn">Accept</button>
+      </form>
+    </div>
 
-  sform.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const f = event.target;
-    const handle = f.handle.value;
-    const payload = {
-      handle
+    <div class="display-my-teams">
+      <div class="my-teams">
+        <p class="instruction" style="text-align: center;">Team Names</p>
+      </div>
+    </div>
+
+    <div class="display-teams">
+      <form class="team-list" style="display: none;" method="POST" action="/team/create/<%=user._id%>">
+        <p class="instruction">Enter a Team Name and Select two friends(check-box) and click on create :-</p>
+        <input type="text" name="teamName" placeholder="Your Team Name" class="teamName">
+        <button type="submit" class="createTeam-btn">Create</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="submissions">
+    <div class="display-submissions">
+
+    </div>
+  </div>
+
+
+  <div class="modal-box" style="display: none;">
+    <img src="/images/close1.png" onclick="toggleModalBox(event)" class="close">
+    <div class="modal">
+    </div>
+  </div>
+
+
+  <script type='text/javascript'>
+    const friends = document.querySelector(".friends");
+    friends.style.display = "none";
+    const teams = document.querySelector(".teams");
+    teams.style.display = "none";
+    const submissions = document.querySelector(".submissions");
+    const general = document.querySelector(".general");
+    submissions.style.display = "none";
+
+    const genLink = document.querySelector(".genLink");
+    const friendLink = document.querySelector(".friendLink");
+    const teamLink = document.querySelector(".teamLink");
+    const subLink = document.querySelector(".subLink");
+    genLink.classList.add("activeUserLink");
+
+    const sbox = document.querySelector(".search-box");
+    const sform = document.querySelector(".search-user-form");
+
+    function addFriend(event) {
+      altFriends(event);
+      document.querySelector(".add-friends").style.display = "block";
+      const nodes = document.querySelectorAll(".activeFriendsTab");
+      for (let node of nodes) node.classList.remove("activeFriendsTab");
+      const a = event.target;
+      a.classList.add("activeFriendsTab");
+      return false;
     };
-    const res = await fetch("/user/<%=user._id%>/search", {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json"
-      },
+
+    sform.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const f = event.target;
+      const handle = f.handle.value;
+      const payload = {
+        handle
+      };
+      const res = await fetch("/user/<%=user._id%>/search", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+
+      const users = await res.json();
+
+      const dbox = document.querySelector(".user-list");
+      for (let u of users) {
+        const div = document.createElement("div");
+        div.classList.add("searchedFriends")
+        const lab = document.createElement("label");
+        lab.textContent = u.name + "@" + u.userHandle;
+        lab.classList.add("labelFriend");
+        const item = document.createElement("input");
+        item.setAttribute("type", "checkbox");
+        item.setAttribute("name", "friends[]");
+        item.setAttribute("value", u._id + "");
+        item.setAttribute("class", "friendReq");
+        div.appendChild(lab);
+        div.appendChild(item);
+        div.classList.add("check-box")
+
+        dbox.appendChild(div);
+      }
     });
 
-    const users = await res.json();
 
-    const dbox = document.querySelector(".user-list");
-    for (let u of users) {
-      const lab = document.createElement("label")
-      lab.textContent = u.name + "@" + u.userHandle;
-      const item = document.createElement("input");
-      item.setAttribute("type", "checkbox");
-      item.setAttribute("name", "friends[]");
-      item.setAttribute("value", u._id + "");
-      dbox.appendChild(lab);
-      dbox.appendChild(item);
+    async function createTeam(event) {
+      // fecth friends
+      altTeamTab(event);
+      const a = event.target;
+      const nodes = document.querySelectorAll(".teamTab");
+      for (let node of nodes) node.classList.remove("activeTeamTab");
+      a.classList.add("activeTeamTab");
+      const res = await fetch("/team/create/<%=user._id%>", {
+        method: "GET",
+      });
+
+      const friends = await res.json();
+      const dbox = document.querySelector(".team-list");
+      dbox.style.display = "block";
+      for (let u of friends) {
+        const div = document.createElement("div");
+        div.classList.add("check-box");
+        const lab = document.createElement("label")
+        lab.textContent = u.name + "@" + u.userHandle;
+        lab.classList.add("labelFriend");
+        const item = document.createElement("input");
+        item.setAttribute("type", "checkbox");
+        item.setAttribute("name", "friends[]");
+        item.setAttribute("value", u._id + "");
+        item.setAttribute("class", "teamReq");
+        div.appendChild(lab);
+        div.appendChild(item);
+        dbox.appendChild(div);
+
+      }
+
+      return false;
     }
-  });
+
+    async function myTeams(event) {
+      // fecth team invites
+      altTeamTab(event);
+      const a = event.target;
+      const nodes = document.querySelectorAll(".teamTab");
+      for (let node of nodes) node.classList.remove("activeTeamTab");
+      a.classList.add("activeTeamTab");
+      const res = await fetch("/team/my-teams/<%=user._id%>", {
+        method: "GET",
+      });
+
+      const teams = await res.json();
+      const dbox = document.querySelector(".my-teams");
+      dbox.style.display = "block";
+      for (let team of teams) {
+        const div = document.createElement("div");
+        div.classList.add("check-box");
+        const lab = document.createElement("label")
+        lab.textContent = team.name;
+        lab.classList.add("labelFriend")
+        lab.style.width = "100%";
+        div.appendChild(lab);
+        dbox.appendChild(div);
+      }
+
+      return false;
+    }
+
+    async function getFriends(event) {
+      // fecth team invites
+      altFriends(event);
+      const a = event.target;
+      const nodes = document.querySelectorAll(".activeFriendsTab");
+      for (let node of nodes) node.classList.remove("activeFriendsTab");
+      a.classList.add("activeFriendsTab");
+      const res = await fetch("/user/<%=user._id%>/my-friends", {
+        method: "GET",
+      });
+
+      const friends = await res.json();
+      const dbox = document.querySelector(".display-friends");
+      dbox.style.display = "flex";
+      dbox.innerHTML = "";
+      for (let f of friends) {
+        const div = document.createElement("div");
+        div.style.display = "inline-block";
+        // div.style.flexDirection = "column";
+        div.classList.add("friendCol");
+
+        const a = document.createElement("a");
+        a.href = "/user/f";
+        a.textContent = f.userHandle;
+        a.classList.add("userHandleLink")
+        div.appendChild(a);
+        const p1 = document.createElement("p");
+        p1.textContent = "Name : " + f.name;
+        const p2 = document.createElement("p");
+        p2.textContent = "Organization : " + f.organisation;
+        div.appendChild(p1);
+        div.appendChild(p2);
+        dbox.appendChild(div);
+      }
+
+      return false;
+    }
+
+    async function getFriendRequests(event) {
+      // fecth team invites
+      altFriends(event);
+      const a = event.target;
+      const nodes = document.querySelectorAll(".activeFriendsTab");
+      for (let node of nodes) node.classList.remove("activeFriendsTab");
+      a.classList.add("activeFriendsTab");
+      const res = await fetch("/user/<%=user._id%>/friend-requests", {
+        method: "GET",
+      });
+
+      const friendRequests = await res.json();
+      const dbox = document.querySelector(".friend-requests");
+      dbox.style.display = "block";
+      for (let f of friendRequests) {
+        const div = document.createElement("div");
+        div.classList.add("check-box");
+        div.classList.add("rowfriendRequests");
+        const lab = document.createElement("label")
+        lab.textContent = f.name + "@" + f.userHandle;
+        lab.classList.add("labelFriend");
+        const item = document.createElement("input");
+        item.setAttribute("type", "checkbox");
+        item.setAttribute("name", "friends[]");
+        item.setAttribute("value", f._id + "");
+        item.setAttribute("class", "friendAc")
+
+        div.appendChild(lab);
+        div.appendChild(item);
+        dbox.appendChild(div);
+
+      }
+
+      return false;
+    }
+
+    async function getTeamInvites(event) {
+      // fecth team invites
+      altTeamTab(event);
+      const a = event.target;
+      const nodes = document.querySelectorAll(".teamTab");
+      for (let node of nodes) node.classList.remove("activeTeamTab");
+      a.classList.add("activeTeamTab");
+      const res = await fetch("/team/invites/<%=user._id%>", {
+        method: "GET",
+      });
+
+      const teams = await res.json();
+      const dbox = document.querySelector(".team-invites");
+      dbox.style.display = "block";
+      for (let team of teams) {
+        const div = document.createElement("div");
+        div.classList.add("check-box");
+        const lab = document.createElement("label")
+        lab.textContent = team.name;
+        lab.classList.add("labelFriend")
+        const item = document.createElement("input");
+        item.setAttribute("type", "checkbox");
+        item.setAttribute("name", "teamsAc[]");
+        item.setAttribute("value", team._id + "");
+        item.setAttribute("class", "teamInv");
+
+        div.appendChild(lab);
+        div.appendChild(item);
+        dbox.appendChild(div);
+      }
+
+      return false;
+    }
 
 
-  async function createChat(event) {
-    // fecth friends
-    const a = event.target;
-    a.classList.add("disp-none");
-    const res = await fetch("/user/<%=user._id%>/chat", {
-      method: "GET",
+
+    const addFriendForm = document.querySelector(".user-list");
+    addFriendForm.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const nodes = document.querySelectorAll(".friendReq");
+      console.log(nodes);
+      const friends = [];
+      for (let node of nodes) {
+        if (node.checked)
+          friends.push(node.value);
+      }
+
+
+      const url = addFriendForm.action;
+      const modalBox = document.querySelector(".modal-box");
+      modalBox.style.display = "block";
+      const modal = document.querySelector(".modal");
+      modal.textContent = "Sending Friend Request";
+
+      let res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          friends
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      res = await res.json();
+      // display modal on whether request sent or error
+      if (res.status === "friend request sent") {
+        modal.textContent = "Friend Request Sent";
+        setTimeout(() => {
+          modalBox.style.display = "none";
+          document.querySelector(".addFriendTab").click();
+        }, 2000);
+      }
     });
-    console.log(res);
-    const friends = await res.json();
-    console.log(friends);
-    const dbox = document.querySelector(".friend-list");
-    dbox.style.display = "block";
-    for (let u of friends) {
-      const lab = document.createElement("label")
-      lab.textContent = u.name + "@" + u.userHandle;
-      const item = document.createElement("input");
-      item.setAttribute("type", "checkbox");
-      item.setAttribute("name", "friends[]");
-      item.setAttribute("value", u._id + "");
-      dbox.appendChild(lab);
-      dbox.appendChild(item);
+
+    const createTeamForm = document.querySelector(".team-list");
+    createTeamForm.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const nodes = document.querySelectorAll(".teamReq");
+      console.log(nodes);
+      const friends = [];
+      const teamName = document.querySelector(".teamName").value;
+      for (let node of nodes) {
+        if (node.checked)
+          friends.push(node.value);
+      }
+
+      const body = {
+        friends,
+        teamName,
+      }
+
+      const url = createTeamForm.action;
+
+      const modalBox = document.querySelector(".modal-box");
+      modalBox.style.display = "block";
+      const modal = document.querySelector(".modal");
+      modal.textContent = "Team Request Processing";
+
+      let res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      res = await res.json();
+
+      // display modal on whether request sent or error
+      if (res.status === "created") {
+        modal.textContent = "Team Request Sent";
+        setTimeout(() => {
+          modalBox.style.display = "none";
+          document.querySelector(".createTeamTab").click();
+        }, 2000);
+      }
+    });
+
+    const acceptTeamForm = document.querySelector(".team-invites");
+    acceptTeamForm.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const nodes = document.querySelectorAll(".teamInv");
+      const teamsAc = [];
+      for (let node of nodes) {
+        if (node.checked)
+          teamsAc.push(node.value);
+      }
+
+      const body = {
+        teamsAc,
+      }
+
+      const url = acceptTeamForm.action;
+
+      const modalBox = document.querySelector(".modal-box");
+      modalBox.style.display = "block";
+      const modal = document.querySelector(".modal");
+      modal.textContent = "Accepting Team Request";
+
+      let res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      res = await res.json();
+      // display modal on whether request sent or error
+      if (res.status === "accepted") {
+        modal.textContent = "Team Request Accepted";
+        setTimeout(() => {
+          modalBox.style.display = "none";
+          document.querySelector(".teamInviteTab").click();
+        }, 2000);
+
+      }
+    });
+
+
+    const acceptFriendReqForm = document.querySelector(".friend-requests");
+    acceptFriendReqForm.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const nodes = document.querySelectorAll(".friendAc");
+      const friends = [];
+      for (let node of nodes) {
+        if (node.checked)
+          friends.push(node.value);
+      }
+
+      const body = {
+        friends,
+      }
+
+      const url = acceptFriendReqForm.action;
+      const modalBox = document.querySelector(".modal-box");
+      modalBox.style.display = "block";
+      const modal = document.querySelector(".modal");
+      modal.textContent = "Accepting Friend Request";
+
+      let res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+
+      res = await res.json();
+      if (res.status === "accepted") {
+        modal.textContent = "Friend Request Accepted";
+        setTimeout(() => {
+          modalBox.style.display = "none";
+          document.querySelector(".friendReqTab").click();
+        }, 2000);
+      }
+      // display modal on whether request sent or error
+
+    });
+
+
+    function displayGen(event) {
+      general.style.display = "block";
+      friends.style.display = "none";
+      teams.style.display = "none";
+      submissions.style.display = "none";
+      subLink.classList.remove("activeUserLink");
+      genLink.classList.add("activeUserLink");
+      friendLink.classList.remove("activeUserLink");
+      teamLink.classList.remove("activeUserLink");
     }
 
-    return false;
+    function displayFriends(event) {
+      general.style.display = "none";
+      friends.style.display = "block";
+      teams.style.display = "none";
+      submissions.style.display = "none";
+      subLink.classList.remove("activeUserLink");
+      genLink.classList.remove("activeUserLink");
+      friendLink.classList.add("activeUserLink");
+      teamLink.classList.remove("activeUserLink");
+      document.querySelector(".myFriendsTab").click();
+      document.querySelector(".display-friend-requests").style.display = "none";
+      document.querySelector(".add-friends").style.display = "none";
+    }
 
-  }
-</script>
+    function displayTeams(event) {
+      general.style.display = "none";
+      friends.style.display = "none";
+      teams.style.display = "block";
+      submissions.style.display = "none";
+      subLink.classList.remove("activeUserLink");
+      genLink.classList.remove("activeUserLink");
+      friendLink.classList.remove("activeUserLink");
+      teamLink.classList.add("activeUserLink");
+      document.querySelector(".teamInviteTab").click();
+    }
+
+    async function displaySubmissions(event) {
+      general.style.display = "none";
+      friends.style.display = "none";
+      teams.style.display = "none";
+      submissions.style.display = "block";
+      subLink.classList.add("activeUserLink");
+      genLink.classList.remove("activeUserLink");
+      friendLink.classList.remove("activeUserLink");
+      teamLink.classList.remove("activeUserLink");
+
+      let res = await fetch("/user/<%=user._id%>/submissions");
+      res = await res.json();
+      const dbox = document.querySelector(".display-submissions");
+      dbox.innerHTML = "";
+      let i = 1;
+
+      const div = document.createElement("div");
+      div.classList.add("rowSubmission");
+      div.classList.add("rowTop");
+      const sno = document.createElement("div");
+      sno.classList.add("sno");
+      sno.textContent = "S.NO";
+      const contest = document.createElement("div");
+      contest.textContent = "Contest";
+      contest.classList.add("contestCell");
+      const problem = document.createElement("div");
+      problem.textContent = "Problem";
+      problem.classList.add("problemCell");
+      const codeLink = document.createElement("div");
+      codeLink.classList.add("codeLink");
+      codeLink.textContent = "Code";
+      const verdict = document.createElement("div");
+      verdict.textContent = "Verdict";
+      verdict.classList.add("verdictCell");
+      
+      div.appendChild(sno);
+      div.appendChild(contest);
+      div.appendChild(problem);
+      div.appendChild(verdict);
+      div.appendChild(codeLink);
+      dbox.appendChild(div);
+
+      for (let sub of res.subs) {
+        const div = document.createElement("div");
+        div.classList.add("rowSubmission");
+        const sno = document.createElement("div");
+        sno.classList.add("sno");
+        sno.textContent = i++;
+        const contest = document.createElement("a");
+        contest.href = `/contest/${sub.contestId}`;
+        contest.textContent = sub.contestTitle;
+        contest.classList.add("contestCell");
+        const problem = document.createElement("a");
+        problem.href = `/contest/${sub.contestId}/problem/${sub.probId}`;
+        problem.textContent = sub.probTitle;
+        problem.classList.add("problemCell");
+        // const code = document.createElement("textarea");
+        // code.value = sub.code;
+        // code.setAttribute("readonly", "true");
+        // code.classList.add("userCode");
+        const codeLink = document.createElement("a");
+        codeLink.classList.add("codeLink");
+        codeLink.onclick = toggleModalBox;
+        codeLink.setAttribute("data-code", sub.code);
+        codeLink.textContent = "Code";
+        const verdict = document.createElement("div");
+        verdict.classList.add("verdictCell");
+        verdict.textContent = sub.accepted;
+        if (sub.accepted === "passed") {
+          verdict.classList.add("green");
+        } else verdict.classList.add("red");
+
+        div.appendChild(sno);
+        div.appendChild(contest);
+        div.appendChild(problem);
+        div.appendChild(verdict);
+        div.appendChild(codeLink);
+        dbox.appendChild(div);
+      }
+    }
+
+    function toggleModalBox(event) {
+      const a = event.target;
+      if (a.classList.contains("codeLink")) {
+        const modalBox = document.querySelector(".modal-box");
+        modalBox.style.display = "block";
+        const modal = document.querySelector(".modal");
+        modal.textContent = "";
+        const code = document.createElement("textarea");
+        code.value = a.dataset["code"];
+        code.setAttribute("readonly", "true");
+        code.classList.add("userCode");
+        modal.appendChild(code);
+      } else {
+        const modalBox = document.querySelector(".modal-box");
+        modalBox.style.display = "none";
+        const code = document.querySelector(".userCode");
+        if (code) code.remove();
+      }
+    }
+
+
+    const myFriendsTab = document.querySelector(".myFriendsTab");
+    const addFriendTab = document.querySelector(".addFriendTab");
+    const friendReqTab = document.querySelector(".friendReqTab");
+
+    function altFriends(event) {
+      const a = event.target;
+
+      if (myFriendsTab != a) {
+        const dbox = document.querySelector(".display-friends");
+        dbox.innerHTML = "";
+        dbox.style.display = "none";
+      } else if (myFriendsTab === a) {
+        const dbox = document.querySelector(".display-friends");
+        dbox.style.display = "block";
+      }
+
+      if (addFriendTab != a) {
+        const dbox = document.querySelector(".add-friends");
+        dbox.style.display = "none";
+      } else if (addFriendTab === a) {
+        const dbox = document.querySelector(".add-friends");
+        dbox.style.display = "block";
+        const searchedFriends = document.querySelectorAll(".searchedFriends");
+        for (let f of searchedFriends) {
+          f.remove();
+        }
+        document.querySelector(".search-inp").value = "";
+      }
+
+      if (friendReqTab !== a) {
+        const dbox = document.querySelector(".display-friend-requests");
+        dbox.style.display = "none";
+      } else if (friendReqTab === a) {
+        const dbox = document.querySelector(".display-friend-requests");
+        dbox.style.display = "block";
+        const friendReq = document.querySelectorAll(".rowfriendRequests");
+        for (let row of friendReq) {
+          row.remove();
+        }
+
+      }
+    }
+
+    const teamInviteTab = document.querySelector(".teamInviteTab");
+    const createTeamTab = document.querySelector(".createTeamTab");
+    const myTeamsTab = document.querySelector(".myTeamsTab");
+
+    function altTeamTab(event) {
+      const a = event.target;
+      const nodes = document.querySelectorAll(".check-box");
+      for (let node of nodes) node.remove();
+      if (teamInviteTab != a) {
+        const dbox = document.querySelector(".display-invites");
+        dbox.style.display = "none";
+      } else if (teamInviteTab === a) {
+        const dbox = document.querySelector(".display-invites");
+        dbox.style.display = "block";
+      }
+
+      if (createTeamTab != a) {
+        const dbox = document.querySelector(".display-teams");
+        dbox.style.display = "none";
+      } else if (createTeamTab === a) {
+        const dbox = document.querySelector(".display-teams");
+        dbox.style.display = "block";
+        const teamName = document.querySelector(".teamName");
+        teamName.value = "";
+      }
+
+      if (myTeamsTab !== a) {
+        const dbox = document.querySelector(".display-my-teams");
+        dbox.style.display = "none";
+      } else if (myTeamsTab === a) {
+        const dbox = document.querySelector(".display-my-teams");
+        dbox.style.display = "block";
+      }
+    }
+  </script>

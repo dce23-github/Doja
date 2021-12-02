@@ -1,0 +1,132 @@
+<% layout("layouts/boilerplate") %>
+<link href="/css/allContest.css" type="text/css" rel="stylesheet">
+
+<div class="main-container col-l-12 col-m-12 col-s-12">
+  <!-- flex-->
+  <div class="overlay-container"> </div>
+
+  <div class="sidebar-container col-l-2 col-m-2 col-s-12">
+    <div class="sidebar col-l-2 col-m-2 col-s-4">
+      <% if (user){ %>
+      <div class="user-info">
+        <!-- add a centered round image here , by first adding to schema-->
+        <a href="/user/<%=user._id%>">
+          <h3 id="username"><%=user.name%> </h3>
+        </a>
+        <hr>
+      </div>
+      <% }%>
+
+      <ul class="sidebar-menu">
+        <!--flex-->
+        <li>
+          <a href="/contest/running">Running Contests</a>
+        </li>
+        <li>
+          <a href="/contest/running">Problemset</a>
+        </li>
+        <li>
+          <a href="/contest/create">Create Contest</a>
+        </li>
+        <li>
+          <a href="/contest/running">Create Team</a>
+        </li>
+        <li>
+          <a href="/contest/solved">Solved Contests</a>
+        </li>
+        <li>
+          <a href="/contest/all">All Contests</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="content-box col-l-10 col-m-10 col-s-12">
+    <div class="content">
+      <h3 id="heading">Running Contest</h3>
+      <div class="all">
+        <% for(let contest of contests) {%>
+        <div class="all-contest">
+          <a href="#" id="title" onclick="selectTeam(event)" data="<%=contest._id%>"><%=contest.contestTitle%> </a>
+          <hr>
+          <div class="info">
+            <h4>Timing : <%=contest.startTime + "-"+contest.endTime%></h4>
+            <h4>Organisation : <%=contest.organisation%></h4>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flash" style="display: none;">
+  <div class="flash-content">
+    <img src = "/images/close1.png" class = "close" onclick="closeFlash()">
+    <p  style = "text-align: center;"><strong class="flash-message">Select Team for contest</strong></p>
+  </div>
+</div>
+
+<script>
+  let selectedContest;
+  const userId = "<%- ((user)?user._id:null)%>";
+
+  async function selectTeam(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const a = event.target;
+    selectedContest = a.getAttribute("data");
+
+    if (userId === null || userId === "") {
+      const flash = document.querySelector(".flash");
+      flash.style.display = "block";
+      const msg = document.querySelector(".flash-message");
+      msg.innerHTML = "Login Before entering a running contest";
+      setTimeout(() => {
+        flash.style.display = "none";
+      }, 1000);
+    } else {
+
+      let res = await fetch(`/team/my-teams/${userId}`);
+      const teams = await res.json();
+      const flash = document.querySelector(".flash");
+      flash.style.display = "block";
+      const msg = document.querySelector(".flash-message");
+      msg.innerHTML = "Select Team for contest";
+      const ul = document.createElement("select");
+      ul.classList.add("selectTeam");
+      for (let team of teams) {
+        const option = document.createElement("option");
+        option.value = team._id;
+        option.textContent = team.name;
+        ul.appendChild(option);
+      }
+
+      const content = document.querySelector(".flash-content");
+      content.appendChild(ul);
+      const enter = document.createElement("a");
+      enter.textContent = "Enter";
+      enter.setAttribute("href", `/contest/${selectedContest}?teamId=`);
+      enter.setAttribute("onclick", "enterContest(event)");
+      enter.classList.add("enterContest");
+      content.appendChild(enter);
+    }
+  }
+
+  function enterContest(event) {
+    const select = document.querySelector("select");
+    const a = event.target;
+    a.href += select.selectedOptions[0].value;
+  }
+
+  function closeFlash(event){
+    const flash = document.querySelector(".flash");
+    const selectTeam = document.querySelector(".selectTeam");
+    const enter = document.querySelector(".enterContest");
+    selectTeam.remove();
+    enter.remove();
+    flash.style.display = "none";
+  }
+
+</script>

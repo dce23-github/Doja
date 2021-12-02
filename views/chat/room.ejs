@@ -1,4 +1,4 @@
-<% layout("layouts/boilerplate") %>
+<% layout("layouts/chat") %>
 <link href="/css/chat.css" type="text/css" rel="stylesheet">
 <link href="/css/tiny.css" type="text/css" rel="stylesheet">
 <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
@@ -65,7 +65,7 @@
 
 
 <script>
-  var socket = io();
+  var socket = io("/chat");
   let user = "<%=user.name%>";
   console.log(user);
   var msgform = document.querySelector('.msg-form');
@@ -155,6 +155,8 @@
           time.classList.add("time");
           item.appendChild(time);
         }
+        item.style.lineBreak = "anywhere";
+        item.style.lineHeight = "1.1";
         messages.appendChild(item);
       } else {
         const item = document.createElement('li');
@@ -182,6 +184,8 @@
           time.classList.add("time");
           item.appendChild(time);
         }
+        item.style.lineBreak = "anywhere";
+        item.style.lineHeight = "1.1";
         messages.appendChild(item);
       }
 
@@ -190,11 +194,14 @@
   });
 
   socket.on('chat message', (msg, User, time) => {
+    console.log("hello");
     var item = document.createElement('li');
     // item.textContent = user + ": ";
     console.log(time);
     if (user === User) item.classList.add("mine");
     item.innerHTML = User + ": " + msg;
+    item.style.lineBreak = "anywhere";
+    item.style.lineHeight = "1.1";
     const p = document.createElement("p");
     p.innerText = time;
     p.classList.add("time");
@@ -260,7 +267,7 @@
     if (s !== "") {
       s = s.slice(0, s.length - 2);
       item.textContent = s + ((online.length - 1 > 1) ? " are " : " is ") + "online";
-    } else item.textContent = "Nobody is online!!";
+    } else item.textContent = "Team is offline!!";
   });
 
   socket.on("hello", msg => {
@@ -302,7 +309,7 @@
         html.style.cursor = "text";
         const area = doc.getElementById("tinymce");
         editor = area;
-        area.style.lineHeight = "0.4";
+        area.style.lineHeight = "0.99";
         // area.style.cursor = "text";
       });
 

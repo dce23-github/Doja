@@ -1,7 +1,296 @@
-.disp-none{
+.disp-none {
     display: none;
 }
 
-.disp-block{
+.disp-block {
     display: block;
+}
+
+
+.userNav {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.3rem;
+    background-color: orange;
+    color: rgb(0, 17, 46);
+    box-shadow: 0px 2px 4px 2px gray;
+    font-weight:600;
+}
+
+.userLink {
+    padding: 5px;
+}
+
+.userLink:hover {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.activeUserLink {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+
+
+.friends  , .teams, .general, .submissions{
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border: 2px solid gray;
+}
+
+.friendsNav {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(41, 41, 41);
+    font-size: 1.2rem;
+    padding: 10px;
+}
+
+.myFriendsTab, .addFriendTab, .friendReqTab, .teamInviteTab, .createTeamTab, .myTeamsTab{
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.myFriendsTab:hover, .addFriendTab:hover, .friendReqTab:hover, .teamInviteTab:hover, .createTeamTab:hover, .myTeamsTab:hover {
+    background-color: white;
+    color: black;
+    border-radius: 0.5rem;
+}
+
+.activeFriendsTab , .activeTeamTab{
+    background-color: white;
+    color: black;
+    border-radius: 0.5rem;
+}
+
+.display-friends {
+    flex-wrap: wrap;
+}
+
+.friendCol {
+    margin: 5%;
+    box-shadow: 0px 2px 2px 2px gray;
+    border: 1px solid darkgray;
+    width: 30%;
+    margin-left: 10%;
+    background-color: white;
+    /* padding : 5%; */
+}
+
+.userHandleLink {
+    background-color: powderblue;
+    padding: 10px;
+    border-radius: 0.7rem;
+}
+
+.search-inp {
+    width: 80%;
+    margin: 5%;
+    font-size: 1.2rem;
+}
+
+.search-btn {
+    padding: 5px;
+    font-size: 1.1rem;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.send-request-btn {
+    display: inline-block;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    font-size: 1.1rem;
+}
+
+.check-box {
+    display: block;
+    background-color: white;
+    width: 60%;
+    font-size: 1.1rem;
+    margin: 20px 0 10px 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.5rem;
+    background-color: rgb(187, 187, 187);
+    padding : 10px;
+    margin-left: 20%;
+}
+
+.friendReq , .friendAc, .teamReq, .teamInv{
+    padding: 10px;
+    width: 20px;
+    height: 20px;
+    border : 2px solid green;
+    cursor: pointer;
+}
+
+.labelFriend {
+    font-size: 1.3rem;
+    width : 75%;
+    text-align: center;
+    display: inline-block;
+}
+
+.accept-btn{
+    font-size: 1.2rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.instruction{
+    background-color: white;
+    border-radius: 0.5rem;
+    border : 2px dashed gray;
+    padding: 5px;
+}
+
+
+.teamName {
+    width : 75%;
+    font-size: 1.2rem;
+    margin-left: 5%;
+}
+
+.createTeam-btn{
+    font-size: 1.1rem;
+    padding : 5px;
+    margin-left: 5%;
+}
+
+.img-box{
+    background-color: #292929;
+    border-radius: 0.1rem;
+}
+
+.userImg{
+    max-width: 150px;
+    max-height: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-info{
+    list-style: none;
+}
+
+.labelUser{
+    display: inline-block;
+    width : 50%;
+    text-align: center;
+    font-size: 1.4rem;
+    background-color: rgb(190, 190, 190);
+    border-radius: 0.1rem;
+    margin: 10px 0 10px 0;
+    padding : 5px;
+}
+
+.dataUser{
+    display: inline-block;
+    text-align: center;
+    font-size: 1.4rem;
+    width: 40%;
+    background-color: white;
+    border-radius: 0.1rem;
+    border : 2px dashed gray;
+    padding : 5px;
+}
+
+
+.modal-box{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top:0;
+    z-index: 1050;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal{
+    /* width: 30%; */
+    /* height: 10%; */
+    position: relative;
+    top : 10%;
+    background-color: cornsilk;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding : 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border : 5px solid rgb(19, 19, 98);
+}
+
+.rowSubmission{
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid lightgray;
+}
+
+.userCode{
+    width: 100%;
+    height: 500px;
+    font-size: 1.2rem;
+}
+
+.close{
+    display: block;
+    margin-left: auto;
+    max-height: 100px;
+    max-width: 100px;
+    cursor: pointer;
+}
+
+.rowTop{
+    background-color: #292929;
+    color : white;
+    text-shadow: 1px 1px 1px lightgray;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding : 20px;
+    margin-bottom: 20px;
+    margin-top: 0 !important;
+    border : none !important;
+}
+
+.codeLink{
+    color : blue;
+}
+
+.rowTop .codeLink{
+    color : white !important;
+}
+
+
+.sno{
+    width: 4%;
+    border-left: none !important;
+}
+
+.contestCell, .problemCell, .codeLink, .verdictCell{
+    width: 24%;
+}
+
+
+.sno, .codeLink, .problemCell, .contestCell, .verdictCell {
+    border-left: 2px solid grey;
 }

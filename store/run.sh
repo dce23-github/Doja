@@ -1,5 +1,6 @@
  
 #!/bin/bash
+
 lang=$1
 solution=$7
 testcase=$8
@@ -25,7 +26,8 @@ elif [[ $lang = "cpp" ]]
 then {
         
         
-    #    g++ -o $9 $7 &> $2 && {
+    #    initMem=${memArr[1]}
+       g++ -o $9 $7 &> $2 && {
             {
                 cat $8 | /usr/bin/time -f "%e %M" -o $3 timeout $4s ./$9 &> $2
             } || {
@@ -79,7 +81,7 @@ then
 
     timeDiff=$(bc -l <<<"($4*1000)-${time}")
     memDiff=$(bc -l <<<"($5*1000)-(${memory}/1)")
-    if [[ $(echo "$timeDiff <= 0" | bc -l) -eq 1 ]]
+    if [[ $(echo "$timeDiff < 0" | bc -l) -eq 1 ]]
     then
         echo "TLE" >> $2
         echo "TLE" > $6

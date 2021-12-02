@@ -1,0 +1,81 @@
+.body{
+    background-color: white !important;
+}
+
+.container{
+    background-color: white;
+    padding : 30px 10px 30px 10px;
+    margin: 0px 0 20px 0;
+    height: 100vh;
+    font-size: 1.3rem;
+}
+
+.head-standings{
+    text-align: center;
+    background-color:  powderblue;
+    color:  rgb(61, 61, 61);
+    text-shadow: 1px 1px 1px rgb(47, 47, 47) ;
+    margin:0;
+    padding : 25px;
+}
+
+
+.rowTop{
+    background-color: cornflowerblue;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.rowTeam{
+    display: flex;
+}
+
+.rank{
+    width: 10%;
+    text-align: center;
+}
+
+.teamName{
+    width: 40%;
+    text-align: center;
+}
+
+.problems{
+    width: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+.standing{
+    border-radius: 0.4rem;
+    border: 2px solid gray;
+    height: 50vh;
+}
+
+.even{
+    background-color: #ecebeb
+}
+
+.odd{
+    background-color: ivory;
+}
+
+.ac{
+    color :green;
+    font-weight: bold;
+}
+
+.nill{
+    color:   crimson;
+    font-size: 1.4rem;
+}
+
+
+.back{
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: normal;
+    padding : 20px;
+}

@@ -7,10 +7,10 @@
 
   <div class="sidebar-container col-l-2 col-m-2 col-s-12">
     <div class="sidebar col-l-2 col-m-2 col-s-4">
-      <% if (user !== null){ %>
+      <% if (user){ %>
       <div class="user-info">
         <!-- add a centered round image here , by first adding to schema-->
-        <h3 id="username"><%=user.name%> </h3>
+        <a href = "/user/<%=user._id%>"><h3 id="username"><%=user.name%> </h3></a>
         <hr>
       </div>
       <% }%>
@@ -20,18 +20,18 @@
         <li>
           <a href="/contest/running">Running Contests</a>
         </li>
-        <li>
+        <!-- <li>
           <a href="/contest/running">Problemset</a>
-        </li>
+        </li> -->
         <li>
           <a href="/contest/create">Create Contest</a>
         </li>
-        <li>
+        <!-- <li>
           <a href="/contest/running">Create Team</a>
-        </li>
-        <li>
+        </li> -->
+        <!-- <li>
           <a href="/contest/solved">Solved Contests</a>
-        </li>
+        </li> -->
         <li>
           <a href="/contest/all">All Contests</a>
         </li>

@@ -66,7 +66,7 @@ const signup_post = async (req, res) => {
       const user = new User({
         name,
         email,
-        password,
+        password : passwordHashed,
         country,
         age,
         gender,

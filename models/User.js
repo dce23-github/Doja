@@ -36,7 +36,12 @@ const userSchema = new Schema(
     submissions: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
-    chatid: { type: Schema.Types.ObjectId, ref: "Chat" },
+    chat: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
+
+    teamInvites : [{ type: Schema.Types.ObjectId, ref: "Team" }],
+    teams : [{ type: Schema.Types.ObjectId, ref: "Team" }],
+    friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    curTeam : {type : Schema.Types.ObjectId, ref : "Team"},
   },
   { timestamps: true }
 );
@@ -47,6 +52,8 @@ userSchema.statics.login = async function (userCred, password, type) {
     const user = await User.findOne({ userHandle: userCred });
     
     if (user) {
+      console.log(user.password);
+      console.log(password);
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
         return user;

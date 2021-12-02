@@ -8,43 +8,271 @@
     <a href="/contest/<%=contest._id%>" style="display: block;">Back to Contest Page</a>
     <div class="problem-container">
       <div class="problem">
-        <p><b><%=problem.title%></b></p>
-        <p><b>Statement:</b><%-problem.statement%> </p>
-        <p><b>Input Format:</b><%-problem.input%> </p>
-        <p><b>Ouput Format:</b><%-problem.output%> </p>
-        <p><% for( let i = 0; i < problem.sampleCases.length; i++ ) { %>
-        <p>Input : <textarea readonly class="io"><%=problem.sampleCases[i].input%></textarea></p>
-        <p>Ouput : <textarea readonly class="io"><%=problem.sampleCases[i].output%></textarea></p>
+        <h2 class = "prob-title"><b><%=problem.title%></b></h2>
+        <hr class = "underline">
+        <h3><b>Statement:</b><%-problem.statement%> </p>
+        <hr class = "separator">
+        <h3><b>Input Format:</b><%-problem.input%> </p>
+          <hr class = "separator">
+        <h3><b>Ouput Format:</b><%-problem.output%> </p>
+          <hr class = "separator">
+        <h3 class = "pbox">Sample Cases:-<% for( let i = 0; i < problem.sampleCases.length; i++ ) { %>
+        <h3 class = "pbox">Input : <textarea readonly class="io"><%=problem.sampleCases[i].input%></textarea></h3>
+        <h3 class = "pbox">Ouput : <textarea readonly class="io"><%=problem.sampleCases[i].output%></textarea></h3>
         <% } %></p>
+        <hr class = "separator">
       </div>
       <div class="submit-file">
-        <div>
-          <p>Time remaining : </p>
-          <div class="file-form">
-            <!-- add form for file submission-->
+        <div class="timer-container">
+          <p class="timer-heading">Timer</p>
+          <div >
+            <ul class="timer">
+              <!-- <li><span id="days"></span>days</li> -->
+              <li class = "time-unit"><span id="hours">&nbsp;</span>H</li>
+              <li class = "time-unit"><span id="minutes">&nbsp;</span>M</li>
+              <li class = "time-unit"><span id="seconds">&nbsp;</span>S</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
+
     <div class="code-chat-container">
       <div class="editor">
-        <p>Editor</p>
+        <iframe src="/editor/<%=String(user.curTeam)%>" id="iframeEditor " class="code"></iframe>
       </div>
+      <% if (contest.isInitiated === "on") { %>
       <div class="chatbox">
-        <p>Chatbox</p>
+        <iframe src="/user/<%=user._id%>/room/<%=String(user.curTeam)%>" class="chat"></iframe>
+      </div>
+      <% } %>
+    </div>
+
+    <!-- action="/submit/619c9bc16d98e84f9b980cb2/<%=problem._id%>" -->
+
+    <% if( !(contest.isInitiated === "on" && team.problemsSolved.some(sub=>sub.sno === problem.sno)) ) {%>
+    <div class="proceed">
+
+      <form class="code-submit">
+        <div class="config">
+          <label class="lang-text"><strong>Language</strong></label>
+          <select name="lang-select" class="lang-select">
+            <option value="cpp">C++</option>
+            <option value="c">C</option>
+            <option value="java">Java</option>
+            <option value="py">Python</option>
+          </select>
+          <!-- <input type = "text" name = "lang"> -->
+          <!-- <label>Type </label><input type="text" name="type"> -->
+          <button type="submit" class="sub-btn sample" onclick="submitCode(event)">Run Sample</button>
+          <button type="submit" class="sub-btn test" onclick="submitCode(event)">Run Test</button>
+        </div>
+      </form>
+      <% } else{%>
+      <div class="doneProb">Accepted, All Test Cases Passed</div>
+      <% } %>
+
+      <div class='submit-status-box'>
+        <h3 class="head-submission">My Submissions</h3>
+        <h4 class="submit-type"></h4>
+        <p class="pass-status">No Submissions</p>
+        <p class="proceed-msg"></p>
       </div>
     </div>
 
-    <form method="POST" action="/submit/619c9bc16d98e84f9b980cb2/<%=problem._id%>">
-      <textarea name="code"></textarea>
-      <label>Language</label><input type="text" name="lang">
-      <label>Type </label><input type="text" name="type">
-      
-      <button type="submit">Submit</button>
-    </form>
+
   </div>
 </div>
 
+
+<div class="flash" style="display: none;">
+  <div class="flash-content">
+    <p style="text-align: center;"><strong class="flash-message">Contest Ended!!</strong></p>
+  </div>
+</div>
+
+
 <script>
-  
+  const contestType = "<%=contest.isInitiated%>";
+  if (contestType !== "on") {
+    const editor = document.querySelector(".editor");
+    editor.style.width = "80%";
+  }
+
+  window.codemirror = null;
+  const codeForm = document.querySelector(".code-submit");
+
+  const passStatus = document.querySelector(".pass-status");
+  const submitType = document.querySelector(".submit-type");
+  const statusBox = document.querySelector(".submit-status-box");
+  const received = [];
+
+  const submissions = (JSON.parse('{"sub": <%-JSON.stringify(submissions)%>}')).sub;
+  if (submissions.length > 0) {
+    passStatus.textContent = "";
+  }
+
+  for (let sub of submissions) {
+    if (String(sub.sno) !== "<%=problem.sno%>") continue;
+    let i = 1;
+    for (let ver of sub.verdict) {
+      const div = document.createElement("div");
+      div.classList.add("rowCase");
+      const divNum = document.createElement("div");
+      divNum.classList.add("divNum");
+      divNum.textContent = ((sub.type === "sample") ? "Sample Case" : "Test Case") + i++;
+      const stat = document.createElement("div");
+      stat.textContent = String(ver);
+      stat.classList.add("stat");
+      if (ver === "AC") stat.style.color = "limegreen";
+      else stat.style.color = "crimson";
+      div.appendChild(divNum);
+      div.appendChild(stat);
+
+      div.style.display = "flex";
+      div.style.justifyContent = "space-around";
+      statusBox.appendChild(div);
+    }
+  }
+
+  if (codeForm)
+    codeForm.addEventListener("submit", submitCode)
+
+  async function submitCode(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const lang = document.querySelector(".lang-select").selectedOptions[0].value;
+    const type = ((event.target.classList.contains("test")) ? "test" : "sample");
+    // const inptype = document.createElement("input");
+    // inptype.setAttribute("type", "text");
+    // inptype.setAttribute("name", "type");
+    // inptype.value = type;
+    // codeForm.appendChild(inptype);
+    // const inplang = document.createElement("input");
+    // inplang.setAttribute("type", "text");
+    // inplang.setAttribute("name", "lang");
+    // inplang.value = lang;
+    // codeForm.appendChild(inplang);
+
+
+    const code = document.querySelector(".code").contentWindow.codemirror.doc.getValue();
+    const body = {
+      code,
+      lang,
+      type,
+      sno: "<%=problem.sno%>",
+      contestType: "<%=contest.isInitiated%>",
+    };
+
+    const id = (("<%=contest.isInitiated%>" === "on") ? "<%=user.curTeam%>" : "<%=user._id%>");
+    console.log(id);
+
+    passStatus.textContent = "Processing";
+    passStatus.style.backgroundColor = "coral";
+    const res = await fetch(`/submit/${id}/<%=problem._id%>`, {
+      method: 'post',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await res.json();
+    const subId = data.subId;
+
+    if (data.status == "OK") {
+      const interval = setInterval(async function() {
+        const res = await fetch(`/submit/${subId}`);
+        const data = await res.json();
+        console.log(data);
+        if (data.status === "finished" && !received.some(id => id === String(data.sub._id))) {
+          received.push(String(data.sub._id));
+          clearInterval(interval);
+          console.log(data);
+
+
+          let i = 1;
+          for (let ver of data.sub.verdict) {
+            const div = document.createElement("div");
+            div.classList.add("rowCase");
+            const divNum = document.createElement("div");
+            divNum.classList.add("divNum");
+            divNum.textContent = ((type === "sample") ? "Sample Case" : "Test Case") + i++;
+            const stat = document.createElement("div");
+            stat.textContent = String(ver);
+            stat.classList.add("stat");
+            if (ver === "AC") stat.style.color = "limegreen";
+            else stat.style.color = "crimson";
+            div.appendChild(divNum);
+            div.appendChild(stat);
+
+            div.style.display = "flex";
+            div.style.justifyContent = "space-around";
+            statusBox.appendChild(div);
+          }
+
+          if (data.sub.accepted === "passed") {
+            passStatus.textContent = "Passed";
+            passStatus.style.backgroundColor = "limegreen";
+
+            if (data.sub.type === "test") {
+              const submitForm = document.querySelector(".code-submit");
+              submitForm.style.display = "none";
+              const proceedMsg = document.querySelector(".proceed-msg");
+              proceedMsg.style.display = "block";
+              proceedMsg.style.backgroundColor = "lightgrey";
+              proceedMsg.textContent = "Proceed to next Problem";
+            }
+          } else {
+            passStatus.textContent = "Failed";
+            passStatus.style.backgroundColor = "crimson";
+          }
+
+
+        }
+        // else if( !data.sub && (!received.some(id => id === String(data.sub._id))) ) {
+        //   passStatus.textContent = "Processing";
+        //   passStatus.style.backgroundColor = "coral";
+        // }
+      }, 2000)
+    }
+  }
+
+  // --------------------------
+  // timer logic
+
+  const start = "<%=contest.date%>" + " " + "<%=contest.startTime%>";
+  (function() {
+    const second = 1000,
+      minute = second * 60,
+      hour = minute * 60,
+      day = hour * 24;
+
+
+
+    const timer = new Date(start).getTime();
+    x = setInterval(function() {
+
+      const now = new Date().getTime();
+
+      const distance = now - timer;
+
+      const hrs = Math.floor((distance % (day)) / (hour));
+
+      // document.getElementById("days").innerText = Math.floor(distance / (day)),
+      document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+        document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+        document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+
+      if (String(hrs) === "<%=contest.duration%>") {
+        const modalBox = document.querySelector(".flash");
+        modalBox.display = "block";
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2500);
+        clearInterval(x);
+      }
+      //seconds
+    }, 0)
+  }());
 </script>

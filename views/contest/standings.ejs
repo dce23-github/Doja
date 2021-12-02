@@ -1,0 +1,44 @@
+<% layout("layouts/boilerplate") %>
+<link rel="stylesheet" type="text/css" href="/css/standings.css">
+<script>
+  console.log("<%= JSON.stringify(arr[0].snos) %>");
+</script>
+
+<h2 class = "head-standings">Standings </h2>
+<div style = "background-color: white;"><a href = "/contest/<%=contest._id%>/" class = "back">Back to Contest</a></div>
+<div class="container">
+  <div class="standing">
+
+    <div class="rowTeam rowTop">
+      <div class="rank">Rank</div>
+      <div class="teamName">Team</div>
+      <div class="problems">Problems</div>
+    </div>
+    <div class="rowTeam rowTop">
+      <div class="rank"></div>
+      <div class="teamName"></div>
+      <div class="problems">
+        <% for(let j = 1;j<=contest.problems.length;j++){%>
+           <div><%=j%></div>
+        <% } %>
+      </div>
+    </div>
+    <% arr.forEach((team, i)=>{%>
+    <div class="rowTeam <%=((i+1)%2==0)?`even`:`odd`%>">
+      <div class="rank"><%=i+1%></div>
+      <div class="teamName"><%=team.teamName%></div>
+      <div class="problems">
+        <% for(let j = 1;j<=contest.problems.length;j++){%>
+        <% if( (arr[i]).snos.some(sno => sno === j)) { %>
+        <div class="ac">AC</div>
+        <% } else {%>
+        <div class="nill"> -- </div>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+    <% }) %>
+
+
+  </div>
+</div>
