@@ -79,7 +79,7 @@ const allContest__get = async (req, res) => {
 
 const runningContest__get = async (req, res) => {
   const running = await Running.findOne({ name: "Running" }).populate("contests");
-  let contests = running.contests;
+  let contests = (running)?running.contests:null;
   if (!contests) contests = [];
   let user;
   if (res.locals.currentUser) {
