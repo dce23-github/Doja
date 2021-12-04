@@ -195,7 +195,8 @@ const createContest__post = async (req, res) => {
       arr.pop();
       let hrend = Number(arr[0]), mnend = Number(arr[1]);
       let x = arr.join("");
-      let y = ((st.split(":")).pop()).join("");
+      arr =  st.plit(":"); arr.pop();
+      let y = arr.join("");
       console.log(x, y);
       x = Number(x);
       y = Number(y);
