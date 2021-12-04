@@ -31,6 +31,8 @@ router.post("/create/:userId", async (req, res) => {
         
         const user = await User.findById(userId);
         user.teams.push(team._id);
+        await user.save();
+        
         team.members.push(user._id);
         team.acCnt = 1;
         await team.save();

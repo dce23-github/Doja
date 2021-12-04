@@ -132,28 +132,31 @@ const createContest__post = async (req, res) => {
 
     await contest.save();
     if (isInitiated === "on") {
-      let temp = new Date();
-      console.log(temp.toLocaleString("IST"));
-      let dobj = new Date(`${temp.toLocaleString("IST")}`);
+      let dobj = new Date();
+      console.log(dobj.toLocaleString());
       const hr = dobj.getHours();
       const mn = dobj.getMinutes();
       const day1 = dobj.getDate();
-      const day2 = new Date(date).getDate();
-      console.log(hr, mn, day1, day2);
 
+      let st = contest.startTime;
+      dobj = new Date(date+" "+st+" GMT+5:30");
+      dobj = new Date(dobj.toLocaleString());
+      console.log(dobj.toLocaleString());
+      st = dobj.getTime();
+      console.log(st);
+      const day2 = dobj.getDate();
+      
       if (day2 - day1 > 3) {
         res.send("cannot create contest before three days");
       }
       console.log(date, startTime, endTime);
 
-      dobj = new Date();
       let time = ((day2 - day1 - 1 > 0) ? day2 - day1 - 1 : 0) * 60 * 60;
       if (day1 != day2) {
         time += (24 * 60 - (hr * 60 + mn)) * 60;
       }
       time *= 1000; // time in miliseconds after which contest should start
 
-      let st = contest.startTime;
       let arr = st.split(":");
       let hrst = Number(arr[0]), mnst = Number(arr[1]);
       if (day1 != day2) {
@@ -162,9 +165,9 @@ const createContest__post = async (req, res) => {
       }
       else {
         let x = arr.join("");
-        let y =  String(mn);
-        if(y.length == 1)y = "0"+y;
-        y = hr+y;
+        let y = String(mn);
+        if (y.length == 1) y = "0" + y;
+        y = hr + y;
         console.log(x, y);
         x = Number(x);
         y = Number(y);
@@ -178,13 +181,20 @@ const createContest__post = async (req, res) => {
         console.log(d1, d2);
         time += (d1 * 60 * 60 + d2 * 60) * 1000;
       }
+
       addToQueue(contest._id, "start", time);
-      const end = contest.endTime;
+
+      let end = contest.endTime;
+      dobj = new Date(date+" "+end+" GMT+5:30");
+      dobj = new Date(dobj.toLocaleString());
+      end = dobj.getTime();
+      console.log(st);
+      
       arr = end.split(":");
       let hrend = Number(arr[0]), mnend = Number(arr[1]);
       let x = arr.join("");
       let y = (st.split(":")).join("");
-      console.log(x,y);
+      console.log(x, y);
       x = Number(x);
       y = Number(y);
       x -= y;
