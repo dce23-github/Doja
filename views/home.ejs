@@ -7,7 +7,7 @@
 
   <div class="sidebar-container col-l-2 col-m-2 col-s-12">
     <div class="sidebar col-l-2 col-m-2 col-s-4">
-      <% if (user !== null) { %>
+      <% if (user) { %>
       <div class="user-info">
         <!-- add a centered round image here , by first adding to schema-->
         <a href="/user/<%=user._id%>/">
@@ -15,7 +15,7 @@
         </a>
         <hr>
       </div>
-      <% }%>
+      <% } %>
 
       <ul class="sidebar-menu">
         <!--flex-->
@@ -28,9 +28,11 @@
         <li>
           <a href="/contest/create">Create Contest</a>
         </li>
+        <% if (user) { %>
         <li>
           <a href="/user/<%=user._id%>">Create Team</a>
         </li>
+        <% } %>
         <li>
           <a href="/contest/all">All Contests</a>
         </li>
@@ -41,9 +43,9 @@
 
   <div class="content-box col-l-10 col-m-10 col-s-12">
     <div class="content">
-      <div class = "home-content">
-        <h2 id = "home-heading">Welcome to Doja</h2>
-        <hr class = "underline">
+      <div class="home-content">
+        <h2 id="home-heading">Welcome to Doja</h2>
+        <hr class="underline">
         <p>Doja is an Online Judge platform to create, host and participate in coding
           competitions and contests.
         </p>
@@ -70,7 +72,7 @@
           <li>If you choose to activate contest , you cannot edit the contest details again. But you'll always have the
             option to add/edit problems.
           </li>
-          <li>Once you submit the form, you can add problems, eidt them. You can edit contest details from contest page and maybe activate 
+          <li>Once you submit the form, you can add problems, eidt them. You can edit contest details from contest page and maybe activate
             the contest once all the problems have been set by selecting date and time.
           </li>
           <li>Set the duration of the contest by choosing start time and end time. Keep the start and end time in

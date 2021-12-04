@@ -21,11 +21,11 @@
         <div class="dropdown col-l-1">
           <button class="settings col-l-2"><img src="/images/menu.png" class="menu-img"></button><!-- add an image here-->
           <ul class="list-settings list-1 col-l-2 ">
-            <%if(user) {%>
+            <% if(user) {%>
             <li>
               <a href="/user/<%=user._id%>" title="My Profile">Profile</a>
             </li>
-            <%}%>
+            <% } %>
             <li>
               <a href="/auth/logout" title="Log Out">Log Out</a>
             </li>
@@ -48,5 +48,5 @@
     </div>
   </div>
 
-  <script> const userId = "<%=user._id%>"; </script>
+  <script> const userId = "<%= (user)?(user._id) : null %>"; </script>
 </header>
