@@ -142,7 +142,7 @@ const createContest__post = async (req, res) => {
       dobj = new Date(date+" "+st+" GMT+5:30");
       dobj = new Date(dobj.toLocaleString());
       console.log(dobj.toLocaleString());
-      st = dobj.getTime();
+      st = dobj.toTimeString();
       console.log(st);
       const day2 = dobj.getDate();
       
@@ -158,6 +158,7 @@ const createContest__post = async (req, res) => {
       time *= 1000; // time in miliseconds after which contest should start
 
       let arr = st.split(":");
+      arr.pop();
       let hrst = Number(arr[0]), mnst = Number(arr[1]);
       if (day1 != day2) {
         console.log(day1, day2);
@@ -187,10 +188,11 @@ const createContest__post = async (req, res) => {
       let end = contest.endTime;
       dobj = new Date(date+" "+end+" GMT+5:30");
       dobj = new Date(dobj.toLocaleString());
-      end = dobj.getTime();
-      console.log(st);
+      end = dobj.toTimeString();
+      console.log(end);
       
       arr = end.split(":");
+      arr.pop();
       let hrend = Number(arr[0]), mnend = Number(arr[1]);
       let x = arr.join("");
       let y = (st.split(":")).join("");
