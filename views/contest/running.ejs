@@ -28,9 +28,11 @@
         <li>
           <a href="/contest/create">Create Contest</a>
         </li>
+        <% if(user) {%>
         <li>
           <a href="/user/<%=user._id%>">Create Team</a>
         </li>
+        <% } %>
         <li>
           <a href="/contest/all">All Contests</a>
         </li>
@@ -60,8 +62,8 @@
 
 <div class="flash" style="display: none;">
   <div class="flash-content">
-    <img src = "/images/close1.png" class = "close" onclick="closeFlash()">
-    <p  style = "text-align: center;"><strong class="flash-message">Select Team for contest</strong></p>
+    <img src="/images/close1.png" class="close" onclick="closeFlash()">
+    <p style="text-align: center;"><strong class="flash-message">Select Team for contest</strong></p>
   </div>
 </div>
 
@@ -117,7 +119,7 @@
     a.href += select.selectedOptions[0].value;
   }
 
-  function closeFlash(event){
+  function closeFlash(event) {
     const flash = document.querySelector(".flash");
     const selectTeam = document.querySelector(".selectTeam");
     const enter = document.querySelector(".enterContest");
@@ -125,5 +127,4 @@
     enter.remove();
     flash.style.display = "none";
   }
-
 </script>

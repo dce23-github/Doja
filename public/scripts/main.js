@@ -30,8 +30,12 @@ async function getNotif(event) {
     const flashNotif = document.querySelector(".flash-notif");
     const notif = document.querySelector(".notif-content");
     flashNotif.style.display = "block";
-
-
+    const img = document.createElement("img");
+    img.setAttribute("src", "/images/close1.png");
+    img.classList.add("closeNotif");
+    img.setAttribute("onclick", "closeNotif(event)");
+    notif.appendChild(img);
+    
     const res = await fetch(`/notifications/${userId}`);
     const user = await res.json();
 
@@ -50,6 +54,7 @@ async function getNotif(event) {
             div.classList.add("rowNotif");
             const p = document.createElement("p");
             p.textContent = "Friend Request -";
+            p.classList.add("notifTitle");
             const p2 = document.createElement("p");
             p2.textContent = freq.name + "@" + freq.userHandle;
             div.appendChild(p);
@@ -61,6 +66,7 @@ async function getNotif(event) {
             const div = document.createElement("rowNotif");
             const p = document.createElement("p");
             p.textContent = "Team Invite -";
+            p.classList.add("notifTitlr");
             const p2 = document.createElement("p");
             p2.textContent = "Team Name : " + team.name;
             const p3 = document.createElement("p");
@@ -73,9 +79,10 @@ async function getNotif(event) {
     }
 }
 
+
 function closeNotif(event) {
     const flashNotif = document.querySelector(".flash-notif");
     const notif = document.querySelector(".notif-content");
     notif.innerHTML = "";
-    flashNotif.style.display = "block";
+    flashNotif.style.display = "none";
 }

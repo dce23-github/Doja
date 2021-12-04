@@ -10,7 +10,9 @@
       <% if (user){ %>
       <div class="user-info">
         <!-- add a centered round image here , by first adding to schema-->
-        <a href = "/user/<%=user._id%>"><h3 id="username"><%=user.name%> </h3></a>
+        <a href="/user/<%=user._id%>">
+          <h3 id="username"><%=user.name%> </h3>
+        </a>
         <hr>
       </div>
       <% }%>
@@ -26,9 +28,11 @@
         <li>
           <a href="/contest/create">Create Contest</a>
         </li>
+        <% if(user) {%>
         <li>
           <a href="/user/<%=user._id%>">Create Team</a>
-        </li> 
+        </li>
+        <% } %>
         <li>
           <a href="/contest/all">All Contests</a>
         </li>
@@ -43,7 +47,7 @@
       <div class="all">
         <% for(let contest of all) {%>
         <div class="all-contest">
-          <a href = "/contest/<%=contest._id%>" id ="title"><%=contest.contestTitle%> </a>
+          <a href="/contest/<%=contest._id%>" id="title"><%=contest.contestTitle%> </a>
           <hr>
           <div class="info">
             <h4>Timing : <%=contest.startTime + "-"+contest.endTime%></h4>

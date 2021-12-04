@@ -7,14 +7,14 @@
     --shadow-color-dark: rgb(47, 47, 47);
     --navbar-color: rgb(11, 34, 57);
     --all-header-color: rgb(51, 51, 51);
-    --form-header-color : corflowerblue;
+    --form-header-color: corflowerblue;
 }
 
 div, button, a, span, ul, li {
     box-sizing: border-box;
 }
 
-button{
+button {
     cursor: pointer;
 }
 
@@ -154,7 +154,7 @@ header {
     min-width: 75px;
     max-height: 75px;
     min-height: 75px;
-    
+
 }
 
 .login-nav {
@@ -170,12 +170,12 @@ header {
     font-weight: bold;
     font-family: "Poppins";
     text-shadow: 0px 1px 1px var(--shadow-color-dark);
-    margin-right : 1rem;
-    width : 5rem;
+    margin-right: 1rem;
+    width: 5rem;
 }
 
-.login-nav:hover{
-    border : 2px solid var(--main-color3);
+.login-nav:hover {
+    border: 2px solid var(--main-color3);
 }
 
 
@@ -187,6 +187,7 @@ header {
         max-height: 70px;
         min-height: 70px;
     }
+
     .doja-text {
         position: relative;
         margin-top: 15%;
@@ -197,6 +198,7 @@ header {
         max-width: 100px;
         margin-left: 10px;
     }
+
     .login {
         cursor: pointer;
         background-color: var(--main-color2);
@@ -219,6 +221,7 @@ header {
         max-height: 70px;
         min-height: 70px;
     }
+
     .doja-text {
         position: relative;
         margin-top: 25%;
@@ -229,6 +232,7 @@ header {
         max-width: 100px;
         margin-left: 10px;
     }
+
     .login {
         cursor: pointer;
         background-color: var(--main-color2);
@@ -287,15 +291,15 @@ header {
 
 .settings {
     width: 35px;
-    height : 30px;
+    height: 30px;
     cursor: pointer;
     background: none;
     border: 2px solid var(--main-color1);
     border-radius: 0.5rem;
 }
 
-.settings:hover{
-    border : 2px solid var(--main-color3);
+.settings:hover {
+    border: 2px solid var(--main-color3);
 }
 
 .menu-img {
@@ -303,7 +307,7 @@ header {
     min-width: 20px;
     max-height: 20px;
     min-height: 20px;
-    padding : 2px;
+    padding: 2px;
 }
 
 .animate-btn-set-open {
@@ -322,6 +326,7 @@ header {
     from {
         border: 2px solid var(--main-color1);
     }
+
     to {
         border: 2px solid var(--main-color3);
     }
@@ -331,6 +336,7 @@ header {
     from {
         border: 2px solid var(--main-color3);
     }
+
     to {
         border: 2px solid var(--main-color1);
     }
@@ -367,8 +373,8 @@ header {
     position: relative;
     display: block;
     width: 100%;
-    padding : 3%;
-    color :rgb(0, 51, 128);
+    padding: 3%;
+    color: rgb(0, 51, 128);
 }
 
 .animate-settings-open {
@@ -391,6 +397,7 @@ header {
         top: 0;
         opacity: 0;
     }
+
     to {
         display: block;
         top: var(--top-height);
@@ -404,6 +411,7 @@ header {
         top: var(--top-height);
         opacity: 1;
     }
+
     to {
         display: none;
         top: 0;
@@ -425,61 +433,61 @@ header {
 /*settings dropdown ends   */
 
 
-.disp-block{
+.disp-block {
     display: block;
 }
 
-.disp-none{
-    display : none;
+.disp-none {
+    display: none;
 }
 
 
 /*user*/
 
-#username{
+#username {
     text-align: center;
 }
 
-.sidebar-menu{
+.sidebar-menu {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     list-style: none;
-    margin-left:0;
-    padding : 0;
-    margin-top : 2rem;
+    margin-left: 0;
+    padding: 0;
+    margin-top: 2rem;
 }
 
-.sidebar-menu li{
-    margin : 1.7rem 0 0 0;
+.sidebar-menu li {
+    margin: 1.7rem 0 0 0;
 }
 
-.sidebar li a{
+.sidebar li a {
     display: block;
     width: 100%;
-    padding : 14px;
+    padding: 14px;
     color: var(--main-color2);
-    font-size : 1.5rem;
+    font-size: 1.5rem;
     padding-left: 15px;
     text-shadow: 1px 1px rgb(39, 39, 39);
 }
 
-.sidebar li:hover{
+.sidebar li:hover {
     background-color: orange;
     border-radius: 0.5rem;
 }
 
-.sidebar a:hover{
-    color : var(--navbar-color);
+.sidebar a:hover {
+    color: var(--navbar-color);
     text-shadow: 1px 1px white;
 }
 
-.tox-statusbar{
+.tox-statusbar {
     display: none !important;
 }
 
-.home-content{
-    padding : 20px;
+.home-content {
+    padding: 20px;
 }
 
 
@@ -492,32 +500,33 @@ header {
 }
 
 
-#home-heading{
+#home-heading {
     text-align: center;
-    color : rgb(31, 31, 31);
+    color: rgb(31, 31, 31);
     margin-bottom: 0;
 }
 
 
-.rowNotif{
-    border-left: 10px solid orange;
-    background-color: lightyellow;
-    padding : 12px;
+.rowNotif {
+    border-left: 10px solid var(--main-color2);
+    background-color:   lightblue;
+    padding: 12px;
     margin-bottom: 20px;
     border-radius: 0.7rem;
 }
 
 
-.flash-notif{
+
+.flash-notif {
     height: 100vh;
     width: 100vw;
     position: fixed;
     z-index: 1035;
     background-color: rgba(0, 0, 0, 0.5);
-    top :0;
+    top: 0;
 }
 
-.notif-content{
+.notif-content {
     width: 70%;
     border: 1px solid gray;
     border-radius: 0.5rem;
@@ -528,12 +537,28 @@ header {
     margin-right: auto;
     top: 30%;
     position: relative;
-    padding : 20px;
+    padding: 20px;
     border: 5px solid rgb(177, 177, 177);
 }
 
-.headNotif{
+.headNotif {
     text-align: center;
     font-size: 1.6rem;
     color: rgb(34, 34, 34);
+}
+
+.closeNotif{
+    max-width  : 50px;
+    max-height : 50px;
+    display    : block;
+    margin-left: auto;
+    cursor     : pointer;
+}
+
+.notifTitle{
+    background-color: white;
+    display: inline-block;
+    padding:5px;
+    border-radius: 0.7rem;
+
 }
