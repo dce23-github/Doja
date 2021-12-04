@@ -31,6 +31,7 @@ const { userRoutes, socketChat } = require("./routes/userRoutes");
 const { submissionRoutes } = require("./routes/submissionRoutes")
 const { teamRoutes } = require("./routes/teamRoutes");
 const {editorRoutes, socketEditor} = require("./routes/editorRoutes");
+const {notifRoutes} = require("./routes/notifRoutes");
 // const problemRoutes = require("./routes/problemRoutes");
 
 const PORT = process.env.PORT || 3000;
@@ -120,6 +121,9 @@ app.use("/submit", submissionRoutes);
 app.use("/team", teamRoutes);
 
 
+/* Notifications */
+
+app.use("/notifications", notifRoutes);
 
 app.get("/", async (req, res) => {
   try {

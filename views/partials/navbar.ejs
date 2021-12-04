@@ -17,18 +17,20 @@
         <a class="login-nav col-l-1" onclick="loginRender()">Log In</a>
         <a class="login-nav col-l-1" href="/auth/signup">Sign up</a>
         <% } %>
-        
+
         <div class="dropdown col-l-1">
           <button class="settings col-l-2"><img src="/images/menu.png" class="menu-img"></button><!-- add an image here-->
           <ul class="list-settings list-1 col-l-2 ">
+            <%if(user) {%>
             <li>
-              <a href=" profile.html" title="My Profile">Profile</a>
+              <a href="/user/<%=user._id%>" title="My Profile">Profile</a>
             </li>
+            <%}%>
             <li>
               <a href="/auth/logout" title="Log Out">Log Out</a>
             </li>
             <li>
-              <a href="notifications.html" title="Notifications">Notifications</a>
+              <a href="#" onclick="getNotif(event)" title="Notifications">Notifications</a>
             </li>
           </ul>
           </button>
@@ -37,8 +39,14 @@
 
 
     </div>
-
-
-
   </nav>
+
+
+  <div class = "flash-notif" style = "display:none;">
+    <div class = "notif-content">
+
+    </div>
+  </div>
+
+  <script> const userId = "<%=user._id%>"; </script>
 </header>

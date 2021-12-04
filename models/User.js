@@ -42,6 +42,7 @@ const userSchema = new Schema(
     teams : [{ type: Schema.Types.ObjectId, ref: "Team" }],
     friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
     curTeam : {type : Schema.Types.ObjectId, ref : "Team"},
+    
   },
   { timestamps: true }
 );
