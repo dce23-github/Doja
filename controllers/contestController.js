@@ -92,13 +92,25 @@ const runningContest__get = async (req, res) => {
 }
 
 const createContest_get = (req, res) => {
-  res.render("contest/create");
+  let user;
+  if (res.locals.currentUser) {
+    user = res.locals.currentUser;
+    user = await User.findById(user);
+  }
+  else user = null;
+  res.render("contest/create", { user });
 }
 
 const addProblem__get = async (req, res) => {
   const { id } = req.params;
   const contest = await Contest.findById(id);
-  res.render(`contest/addProblem`, { contest });
+  let user;
+  if (res.locals.currentUser) {
+    user = res.locals.currentUser;
+    user = await User.findById(user);
+  }
+  else user = null;
+  res.render(`contest/addProblem`, { contest, user });
 }
 
 const createContest__post = async (req, res) => {
@@ -139,13 +151,13 @@ const createContest__post = async (req, res) => {
       const day1 = dobj.getDate();
 
       let st = contest.startTime;
-      dobj = new Date(date+" "+st+" GMT+5:30");
+      dobj = new Date(date + " " + st + " GMT+5:30");
       dobj = new Date(dobj.toLocaleString());
       console.log(dobj.toLocaleString());
       st = dobj.toTimeString();
       console.log(st);
       const day2 = dobj.getDate();
-      
+
       if (day2 - day1 > 3) {
         res.send("cannot create contest before three days");
       }
@@ -186,16 +198,16 @@ const createContest__post = async (req, res) => {
       addToQueue(contest._id, "start", time);
 
       let end = contest.endTime;
-      dobj = new Date(date+" "+end+" GMT+5:30");
+      dobj = new Date(date + " " + end + " GMT+5:30");
       dobj = new Date(dobj.toLocaleString());
       end = dobj.toTimeString();
       console.log(end);
-      
+
       arr = end.split(":");
       arr.pop();
       let hrend = Number(arr[0]), mnend = Number(arr[1]);
       let x = arr.join("");
-      arr =  st.split(":"); arr.pop();
+      arr = st.split(":"); arr.pop();
       let y = arr.join("");
       console.log(x, y);
       x = Number(x);
@@ -212,6 +224,7 @@ const createContest__post = async (req, res) => {
       console.log(time);
       addToQueue(contest._id, "end", time);
     }
+
     res.redirect(`/contest/${contest._id}`);
 
   } catch (error) {
@@ -270,8 +283,10 @@ const getUpdateContest__get = async (req, res) => {
     const { id } = req.params;
     const contest = await Contest.findById(id);
     const user = res.locals.currentUser;
-    if (user === String(contest.authorId))
-      res.render("contest/editContest", { contest });
+    if (user === String(contest.authorId)) {
+      user = await User.findById(user);
+      res.render("contest/editContest", { contest, user });
+    }
     else res.redirect(".");
   }
   catch (err) {
@@ -648,7 +663,7 @@ const getProblem__get = async (req, res) => {
         }
     }
   }
-  console.log(submissions);
+
   res.render("contest/showProblem", { contest, problem, user, team, submissions });
 }
 
@@ -701,9 +716,13 @@ const getStandings__get = async (req, res) => {
       }
     });
 
-    console.log(arr);
-    console.log(arr[0].snos);
-    res.render("contest/standings", { contest, arr: arr });
+    let user;
+    if (res.locals.currentUser) {
+      user = res.locals.currentUser;
+      user = await User.findById(user);
+    }
+    else user = null;
+    res.render("contest/standings", { contest, arr: arr, user });
 
   }
   else {
