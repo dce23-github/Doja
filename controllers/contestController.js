@@ -91,7 +91,7 @@ const runningContest__get = async (req, res) => {
   res.render("contest/running", { user, contests });
 }
 
-const createContest_get = (req, res) => {
+const createContest_get = async (req, res) => {
   let user;
   if (res.locals.currentUser) {
     user = res.locals.currentUser;
