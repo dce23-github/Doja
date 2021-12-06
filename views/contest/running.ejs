@@ -71,7 +71,7 @@
 
 <script>
   let selectedContest;
-  const userId = "<%- ((user)?user._id:null)%>";
+  const user = "<%- ((user)?user._id:null)%>";
 
   async function selectTeam(event) {
     event.preventDefault();
@@ -79,7 +79,7 @@
     const a = event.target;
     selectedContest = a.getAttribute("data");
 
-    if (userId === null || userId === "") {
+    if (user === null || user === "") {
       const flash = document.querySelector(".flash");
       flash.style.display = "block";
       const msg = document.querySelector(".flash-message");
@@ -88,9 +88,10 @@
         flash.style.display = "none";
       }, 1000);
     } else {
-
-      let res = await fetch(`/team/my-teams/${userId}`);
+      console.log(user);
+      let res = await fetch(`/team/my-teams/${user}`);
       const teams = await res.json();
+      console.log(teams);
       const flash = document.querySelector(".flash");
       flash.style.display = "block";
       const msg = document.querySelector(".flash-message");

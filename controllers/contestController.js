@@ -78,9 +78,15 @@ const allContest__get = async (req, res) => {
 
 
 const runningContest__get = async (req, res) => {
-  const running = await Running.findOne({ name: "Running" }).populate("contests");
+  let running = await Running.find({});
+  running = running[0];
+  running = await running.populate("contests");
+
+  console.log(running);
   let contests = (running) ? running.contests : null;
   if (!contests) contests = [];
+
+  console.log("running contest : ", contests);
   let user;
   if (res.locals.currentUser) {
     user = res.locals.currentUser;
