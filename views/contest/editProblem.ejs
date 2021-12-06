@@ -7,7 +7,7 @@
     <h1>Edit problem</h1>
   </div>
 
-  <form method="PATCH" action="/contest/<%=contest._id%>/addProblem?_method=PATCH" class="form-validate problem">
+  <form method="POST" action="/contest/<%=contest._id%>/addProblem/<%=problem._id%>" class="form-validate problem">
     <div class="problem-item">
       <div class="problem-col-25">
         <label for="title">Title</label>
@@ -60,7 +60,7 @@
           <label for="sampleCases">Dummy Sample Case Input </label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"></textarea>
+          <textarea class="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"></textarea>
         </div>
       </div>
 
@@ -69,7 +69,7 @@
           <label for="sampleCases">Dummy Sample Case Output </label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea" class="textbox" name="sampleCaseOutput[]" class="required"></textarea>
+          <textarea class="mytextarea" class="textbox" name="sampleCaseOutput[]" class="required"></textarea>
         </div>
       </div>
 
@@ -79,7 +79,7 @@
           <label for="sampleCases">Sample Case <%=i+1%> : Input</label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"><%=problem.sampleCases[i].input%></textarea>
+          <textarea class="mytextarea" class="textbox" name="sampleCaseInput[]" class="required"><%=problem.sampleCases[i].input%></textarea>
         </div>
       </div>
 
@@ -88,7 +88,7 @@
           <label for="sampleCases">Sample Case <%=i+1%> : Output</label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea6" class="textbox" name="sampleCaseOutput[]" class="required"><%=problem.sampleCases[i].output%></textarea>
+          <textarea class="mytextarea" class="textbox" name="sampleCaseOutput[]" class="required"><%=problem.sampleCases[i].output%></textarea>
         </div>
       </div>
       <% } %>
@@ -103,7 +103,7 @@
           <label for="testCases">Dummy Test Case : Input</label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea" class="textbox" name="testCaseInput[]" class="required"></textarea>
+          <textarea class="mytextarea" class="textbox" name="testCaseInput[]" class="required"></textarea>
         </div>
       </div>
       <div class="problem-item dummyTestCaseOutput testcase disp-none" id="textarea-box">
@@ -111,7 +111,7 @@
           <label for="testCases">Dummy Test Case : Ouput</label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea" class="textbox" name="testCaseOutput[]" class="required"></textarea>
+          <textarea class="mytextarea" class="textbox" name="testCaseOutput[]" class="required"></textarea>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
           <label for="testCases">Test Case <%=i+1%>: Input</label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea7" class="textbox" name="testCaseInput[]" class="required"><%=problem.testCases[i].input%></textarea>
+          <textarea class="mytextarea" class="textbox" name="testCaseInput[]" class="required"><%=problem.testCases[i].input%></textarea>
         </div>
       </div>
       <div class="problem-item testcase" id="textarea-box">
@@ -129,7 +129,7 @@
           <label for="testCases">Test Case <%=i+1%>: Output</label>
         </div>
         <div class="problem-col-75">
-          <textarea id="mytextarea8" class="textbox" name="testCaseOutput[]" class="required"><%=problem.testCases[i].output%></textarea>
+          <textarea class="mytextarea" class="textbox" name="testCaseOutput[]" class="required"><%=problem.testCases[i].output%></textarea>
         </div>
       </div>
       <% } %>
@@ -166,7 +166,7 @@
 
 <button type="submit" id="problem-create">Submit</button>
 
-<a onclick="tryy(event)">Try</a>
+
 </form>
 
 </div>
@@ -300,13 +300,4 @@
     });
   }
 
-
-  function tryy(e){
-    const ed = document.querySelector("#mytextarea");
-    console.log(ed.TEXT_NODE);
-    // const cont = tinymce.get("mytextarea5").getContent();
-    // console.log(cont);
-    e.preventDefault();
-    e.stopPropagation();
-  }
 </script>

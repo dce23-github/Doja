@@ -79,7 +79,7 @@ const allContest__get = async (req, res) => {
 
 const runningContest__get = async (req, res) => {
   const running = await Running.findOne({ name: "Running" }).populate("contests");
-  let contests = (running)?running.contests:null;
+  let contests = (running) ? running.contests : null;
   if (!contests) contests = [];
   let user;
   if (res.locals.currentUser) {
@@ -244,7 +244,10 @@ const getContest__get = async (req, res) => {
     } else {
 
       const userId = res.locals.currentUser;
-      const user = await User.findById(userId);
+      let user;
+      if (userId)
+        user = await User.findById(userId);
+
       if (query && query.teamId) {
         const teamId = query.teamId;
         let cond = false;
@@ -267,7 +270,8 @@ const getContest__get = async (req, res) => {
         user.curTeam = teamId;
         await user.save();
       }
-      else user.curTeam = null; // contest is inactive
+      //else user.curTeam = null; // contest is inactive
+
 
       res.render("contest/show", { contest: contest, user });
     }
@@ -280,14 +284,17 @@ const getContest__get = async (req, res) => {
 
 const getUpdateContest__get = async (req, res) => {
   try {
+    console.log("hello");
     const { id } = req.params;
     const contest = await Contest.findById(id);
-    const user = res.locals.currentUser;
-    if (user === String(contest.authorId)) {
+    let user = res.locals.currentUser;
+    if (String(user) === String(contest.authorId)) {
       user = await User.findById(user);
       res.render("contest/editContest", { contest, user });
     }
-    else res.redirect(".");
+    else {
+      res.redirect(".");
+    }
   }
   catch (err) {
     console.log("Contest not found for update, ", err);
@@ -401,6 +408,7 @@ const updateContest__patch = async (req, res) => {
         console.log(time);
         addToQueue(contest._id, "end", time);
       }
+
 
       contest = await Contest.findById(id);
       res.redirect(`/contest/${id}`);
@@ -560,15 +568,22 @@ const addProblemEdit__get = async (req, res) => {
   const { id, pid } = req.params;
   const contest = await Contest.findById(id);
   const problem = await Problem.findById(pid);
-  const user = res.locals.currentUser;
-  if (user !== String(contest.authorId))
+  let user = res.locals.currentUser;
+  if (String(user) !== String(contest.authorId))
     res.redirect(".");
-  res.render("contest/editProblem", { contest, problem });
+  user = await User.findById(user);
+  res.render("contest/editProblem", { contest, problem, user });
 }
 
 const addProblem__patch = async (req, res) => {
+  
   try {
-    const { id } = req.params;
+    const { id, pid } = req.params;
+    let cont = await Contest.findById(id);
+    const user = res.locals.currentUser;
+    if (String(user) !== String(cont.authorId))
+      res.redirect(".");
+
     const {
       statement,
       input,
@@ -579,28 +594,68 @@ const addProblem__patch = async (req, res) => {
       difficulty,
       timeLimit,
       memoryLimit,
-      testCases,
-      sampleCases,
+      // image,
+      testCaseInput,
+      testCaseOutput,
+      sampleCaseInput,
+      sampleCaseOutput,
     } = req.body;
+
     const authorId = res.locals.currentUser;
 
-    const problem = await Problem.UdpateOne(
-      { _id: id },
-      {
-        statement,
-        input,
-        output,
-        constraints,
-        title,
-        authorId,
-        difficulty,
-        timeLimit,
-        memoryLimit,
-        contestId: id,
-      });
+    sampleCaseOutput.forEach((sc, i) => {
+      sc = String(sc).trim();
+      sampleCaseOutput[i] = String(sc).split("\r").join("");
+    });
 
+    testCaseOutput.forEach((sc, i) => {
+      sc = String(sc).trim();
+      testCaseOutput[i] = String(sc).split("\r").join("");
+    })
+
+    const testCases = [];
+    const sampleCases = [];
+    testCaseInput.forEach((tci, i) => {
+      if (i != 0)
+        testCases.push({
+          input: tci,
+          output: testCaseOutput[i],
+        });
+    });
+
+    sampleCaseInput.forEach((sci, i) => {
+      if (i != 0)
+        sampleCases.push({
+          input: sci,
+          output: sampleCaseOutput[i],
+        });
+    });
+
+    // console.log(sampleCases);
+    // console.log(testCases);
+    // let contest = Contest.findById(id);
+    const sno = cont.problems.length + 1;
+    const problem = await Problem.findByIdAndUpdate(pid, {
+      sno,
+      statement,
+      input,
+      output,
+      constraints,
+      title,
+      authorId,
+      difficulty,
+      timeLimit,
+      memoryLimit,
+      testCases,
+      sampleCases,
+      contestId: id,
+    });
+
+    const contest = await Contest.findById(id);
     res.redirect(`/contest/${contest._id}`);
-  } catch (error) {
+
+  }
+  catch (error) {
     console.log(error);
     res.status(400).json({ message: "failed to add problem" });
   }

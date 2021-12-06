@@ -30,7 +30,7 @@ router.get("/:id", getContest__get);
 router.get("/:id/addProblem", addProblem__get);
 router.get("/:id/addProblem/:pid", addProblemEdit__get);
 router.post("/:id/addProblem", addProblem__post);
-router.patch("/:id/addProblem", addProblem__patch);
+router.post("/:id/addProblem/:pid", addProblem__patch);
 router.patch("/:id/:pid/addTestcase", addTestcase__patch);
 router.get("/:id/problem/:pid", getProblem__get);
 router.get("/:id/update", getUpdateContest__get);

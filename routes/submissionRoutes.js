@@ -71,6 +71,7 @@ router.get("/:subId", async (req, res) => {
             const teamId = sub.teamId;
             const probId = sub.probId;
             const problem = await Problem.findById(probId);
+            const contest = await Contest.findById(sub.contestId);
             let ac = 0;
             for (let ver of sub.verdict) {
                 if (ver === "AC") ac++;
@@ -85,7 +86,7 @@ router.get("/:subId", async (req, res) => {
             }
 
             if (sub.type === "test") {
-                if (sub.accepted === "passed") problem.countAc = problem.countAc + 1;
+                if (sub.accepted === "passed" && String(userId) !== String(contest.authorId) ) problem.countAc = problem.countAc + 1;
                 await problem.save();
 
                 if (teamId !== null) {

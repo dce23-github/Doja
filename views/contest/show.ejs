@@ -28,7 +28,7 @@
 
       <div id="pid"><span id="text"><%=i+1%></span></div>
       <div id="ptitle"><a href="/contest/<%=contest._id%>/problem/<%=p._id%>"><span id="text"><%=p.title%></span></a></div>
-      <% if (user && user === String(contest.authorId) ) { %>
+      <% if (user && String(user._id) === String(contest.authorId) ) { %>
       <a href="/contest/<%=contest._id%>/addProblem/<%=p._id%>" id="edit">
         <span id="text">Edit</span>
       </a>
