@@ -82,11 +82,11 @@ const runningContest__get = async (req, res) => {
   running = running[0];
   running = await running.populate("contests");
 
-  console.log(running);
+  // console.log(running);
   let contests = (running) ? running.contests : null;
   if (!contests) contests = [];
 
-  console.log("running contest : ", contests);
+  // console.log("running contest : ", contests);
   let user;
   if (res.locals.currentUser) {
     user = res.locals.currentUser;
@@ -358,31 +358,43 @@ const updateContest__patch = async (req, res) => {
 
       if (isInitiated === "on") {
         let dobj = new Date();
+        console.log(dobj.toLocaleString());
         const hr = dobj.getHours();
         const mn = dobj.getMinutes();
         const day1 = dobj.getDate();
-        const day2 = new Date(date).getDate();
-        // console.log(hr, mn, sec, day, day2);
+
+        let st = contest.startTime;
+        dobj = new Date(date + " " + st + " GMT+5:30");
+        dobj = new Date(dobj.toLocaleString());
+        console.log(dobj.toLocaleString());
+        st = dobj.toTimeString();
+        console.log(st);
+        const day2 = dobj.getDate();
+        console.log(day1, day2);
 
         if (day2 - day1 > 3) {
           res.send("cannot create contest before three days");
         }
+        console.log(date, startTime, endTime);
 
-        dobj = new Date();
         let time = ((day2 - day1 - 1 > 0) ? day2 - day1 - 1 : 0) * 60 * 60;
         if (day1 != day2) {
           time += (24 * 60 - (hr * 60 + mn)) * 60;
         }
         time *= 1000; // time in miliseconds after which contest should start
 
-        const st = contest.startTime;
         let arr = st.split(":");
+        arr.pop();
         let hrst = Number(arr[0]), mnst = Number(arr[1]);
-        if (day1 != day2)
+        if (day1 != day2) {
+          console.log(day1, day2);
           time += (hrst * 60 * 60 + mnst * 60) * 1000;
+        }
         else {
-          let x = hrst + "" + mnst;
-          let y = hr + "" + mn;
+          let x = arr.join("");
+          let y = String(mn);
+          if (y.length == 1) y = "0" + y;
+          y = hr + y;
           console.log(x, y);
           x = Number(x);
           y = Number(y);
@@ -396,18 +408,29 @@ const updateContest__patch = async (req, res) => {
           console.log(d1, d2);
           time += (d1 * 60 * 60 + d2 * 60) * 1000;
         }
+
         addToQueue(contest._id, "start", time);
-        const end = contest.endTime;
+
+        let end = contest.endTime;
+        dobj = new Date(date + " " + end + " GMT+5:30");
+        dobj = new Date(dobj.toLocaleString());
+        end = dobj.toTimeString();
+        console.log(end);
+
         arr = end.split(":");
+        arr.pop();
         let hrend = Number(arr[0]), mnend = Number(arr[1]);
-        let x = hrend + "" + mnend;
-        let y = hrst + "" + mnst;
+        let x = arr.join("");
+        arr = st.split(":"); arr.pop();
+        let y = arr.join("");
+        console.log(x, y);
         x = Number(x);
         y = Number(y);
         x -= y;
         x = String(x);
         let d1, d2;
         while (x.length < 4) x = "0" + x;
+        console.log(x);
         d1 = Number(x.slice(0, 2));
         d2 = Number(x.slice(2, 4));
         console.log(d1, d2);
@@ -583,7 +606,7 @@ const addProblemEdit__get = async (req, res) => {
 }
 
 const addProblem__patch = async (req, res) => {
-  
+
   try {
     const { id, pid } = req.params;
     let cont = await Contest.findById(id);

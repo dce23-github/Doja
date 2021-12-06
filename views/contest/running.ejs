@@ -88,10 +88,10 @@
         flash.style.display = "none";
       }, 1000);
     } else {
-      console.log(user);
+      
       let res = await fetch(`/team/my-teams/${user}`);
       const teams = await res.json();
-      console.log(teams);
+      
       const flash = document.querySelector(".flash");
       flash.style.display = "block";
       const msg = document.querySelector(".flash-message");

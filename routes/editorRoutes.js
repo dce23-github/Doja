@@ -38,21 +38,21 @@ socketEditor = (ioEditor) => {
       socket.join(roomId);
       if (rooms[roomId] === undefined) rooms[roomId] = [];
       rooms[roomId].push(peerId);
-      console.log(rooms[roomId]);
+      // console.log(rooms[roomId]);
 
       // const sids = io.sockets.adapter.rooms.get(roomId);
       const ids = [];
       for (let pid of rooms[roomId]) {
         ids.push(pid);
       }
-      console.log(ids);
+      // console.log(ids);
       socket.emit("joinedRoom", ids);
 
       socket.to(roomId).emit("newConnection", peerId);
     });
 
     socket.on("disconnected", () => {
-      console.log("disconnected : ", id);
+      // console.log("disconnected : ", id);
       hashId[socketPeerId] = undefined;
       rooms[socketRoomId] = rooms[socketRoomId].filter(pid => pid !== socketPeerId);
       socket.emit("disconnected", socketPeerId);

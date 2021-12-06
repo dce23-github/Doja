@@ -216,7 +216,7 @@ const socketChat = (ioChat) => {
         const userCon = socket.request.user; // connected user
         const team = await Team.findById(userCon.curTeam);
         const chatid = String(team.chatId);
-        console.log(chatid);
+        // console.log(chatid);
         const chat = await Chat.findById(chatid).populate({
             path: "messages",
             populate: {
@@ -253,8 +253,8 @@ const socketChat = (ioChat) => {
             chat.messages.push(message._id);
             await chat.save();
 
-            console.log(socket.rooms);
-            console.log(chatid, user);
+            // console.log(socket.rooms);
+            // console.log(chatid, user);
             ioChat.to(chatid).emit("chat message", msg, user, time);
         });
 
@@ -278,7 +278,7 @@ const socketChat = (ioChat) => {
                 await chat.save();
             }
             ioChat.to(chatid).emit("chat images", msg, user, time);
-            console.log("ehllo");
+            
         })
     });
 }

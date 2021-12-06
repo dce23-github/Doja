@@ -164,7 +164,7 @@
       };
 
       const id = (("<%=contest.isInitiated%>" === "on") ? "<%=(user)?user.curTeam:null%>" : "<%=(user)?user._id:null%>");
-      console.log(id);
+      // console.log(id);
 
       passStatus.textContent = "Processing";
       passStatus.style.backgroundColor = "coral";
@@ -183,11 +183,11 @@
         const interval = setInterval(async function() {
           const res = await fetch(`/submit/${subId}`);
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           if (data.status === "finished" && !received.some(id => id === String(data.sub._id))) {
             received.push(String(data.sub._id));
             clearInterval(interval);
-            console.log(data);
+            // console.log(data);
 
 
             let i = 1;

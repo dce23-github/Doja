@@ -119,8 +119,6 @@ router.get("/my-teams/:userId", async (req, res) => {
     const { userId } = req.params;
     try {
         const user = await User.findById(userId).populate("teams");
-        console.log("in team", user);
-        console.log(user.teams);
         res.send(user.teams);
     }
     catch (err) {
