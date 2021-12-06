@@ -25,10 +25,11 @@
         <li>
           <a href="/contest/running">Problemset</a>
         </li>
+
+        <% if(user) {%>
         <li>
           <a href="/contest/create">Create Contest</a>
         </li>
-        <% if(user) {%>
         <li>
           <a href="/user/<%=user._id%>">Create Team</a>
         </li>
