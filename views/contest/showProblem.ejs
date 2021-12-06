@@ -42,6 +42,7 @@
       <% } %>
     </div>
 
+    <% if(user){ %>
     <div class="code-chat-container">
       <div class="editor">
         <iframe src="/editor/<%=String(((user.curTeam)?user.curTeam:user._id))%>" id="iframeEditor " class="code"></iframe>
@@ -52,10 +53,11 @@
       </div>
       <% } %>
     </div>
+    <% } %>
 
     <!-- action="/submit/619c9bc16d98e84f9b980cb2/<%=problem._id%>" -->
 
-    <% if( !(contest.isInitiated === "on" && team.problemsSolved.some(sub=>sub.sno === problem.sno)) ) {%>
+    <% if( user && !(contest.isInitiated === "on" && team.problemsSolved.some(sub=>sub.sno === problem.sno)) ) {%>
     <div class="proceed">
 
       <form class="code-submit">
@@ -73,7 +75,7 @@
           <button type="submit" class="sub-btn test" onclick="submitCode(event)">Run Test</button>
         </div>
       </form>
-      <% } else{%>
+      <% } else if(user && (contest.isInitiated === "on" && team.problemsSolved.some(sub=>sub.sno === problem.sno))){%>
       <div class="doneProb">Accepted, All Test Cases Passed</div>
       <% } %>
 
@@ -101,7 +103,8 @@
   const contestType = "<%=contest.isInitiated%>";
   if (contestType !== "on") {
     const editor = document.querySelector(".editor");
-    editor.style.width = "80%";
+    if (editor)
+      editor.style.width = "80%";
   }
 
   window.codemirror = null;
@@ -140,114 +143,105 @@
     }
   }
 
-  if (codeForm)
+  if (codeForm) {
     codeForm.addEventListener("submit", submitCode)
 
-  async function submitCode(event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const lang = document.querySelector(".lang-select").selectedOptions[0].value;
-    const type = ((event.target.classList.contains("test")) ? "test" : "sample");
-    // const inptype = document.createElement("input");
-    // inptype.setAttribute("type", "text");
-    // inptype.setAttribute("name", "type");
-    // inptype.value = type;
-    // codeForm.appendChild(inptype);
-    // const inplang = document.createElement("input");
-    // inplang.setAttribute("type", "text");
-    // inplang.setAttribute("name", "lang");
-    // inplang.value = lang;
-    // codeForm.appendChild(inplang);
 
 
-    const code = document.querySelector(".code").contentWindow.codemirror.doc.getValue();
-    const body = {
-      code,
-      lang,
-      type,
-      sno: "<%=problem.sno%>",
-      contestType: "<%=contest.isInitiated%>",
-    };
+    async function submitCode(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
 
-    const id = (("<%=contest.isInitiated%>" === "on") ? "<%=user.curTeam%>" : "<%=user._id%>");
-    console.log(id);
+      const lang = document.querySelector(".lang-select").selectedOptions[0].value;
+      const type = ((event.target.classList.contains("test")) ? "test" : "sample");
+      const code = document.querySelector(".code").contentWindow.codemirror.doc.getValue();
+      const body = {
+        code,
+        lang,
+        type,
+        sno: "<%=problem.sno%>",
+        contestType: "<%=contest.isInitiated%>",
+      };
 
-    passStatus.textContent = "Processing";
-    passStatus.style.backgroundColor = "coral";
-    const res = await fetch(`/submit/${id}/<%=problem._id%>`, {
-      method: 'post',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+      const id = (("<%=contest.isInitiated%>" === "on") ? "<%=(user)?user.curTeam:null%>" : "<%=(user)?user._id:null%>");
+      console.log(id);
 
-    const data = await res.json();
-    const subId = data.subId;
-
-    if (data.status == "OK") {
-      const interval = setInterval(async function() {
-        const res = await fetch(`/submit/${subId}`);
-        const data = await res.json();
-        console.log(data);
-        if (data.status === "finished" && !received.some(id => id === String(data.sub._id))) {
-          received.push(String(data.sub._id));
-          clearInterval(interval);
-          console.log(data);
-
-
-          let i = 1;
-          for (let ver of data.sub.verdict) {
-            const div = document.createElement("div");
-            div.classList.add("rowCase");
-            const divNum = document.createElement("div");
-            divNum.classList.add("divNum");
-            divNum.textContent = ((type === "sample") ? "Sample Case" : "Test Case") + i++;
-            const stat = document.createElement("div");
-            stat.textContent = String(ver);
-            stat.classList.add("stat");
-            if (ver === "AC") stat.style.color = "limegreen";
-            else stat.style.color = "crimson";
-            div.appendChild(divNum);
-            div.appendChild(stat);
-
-            div.style.display = "flex";
-            div.style.justifyContent = "space-around";
-            statusBox.appendChild(div);
-          }
-
-          if (data.sub.accepted === "passed") {
-            passStatus.textContent = "Passed";
-            passStatus.style.backgroundColor = "limegreen";
-
-            if (data.sub.type === "test") {
-              const submitForm = document.querySelector(".code-submit");
-              submitForm.style.display = "none";
-              const proceedMsg = document.querySelector(".proceed-msg");
-              proceedMsg.style.display = "block";
-              proceedMsg.style.backgroundColor = "lightgrey";
-              proceedMsg.textContent = "Proceed to next Problem";
-            }
-          } else {
-            passStatus.textContent = "Failed";
-            passStatus.style.backgroundColor = "crimson";
-          }
-
-
+      passStatus.textContent = "Processing";
+      passStatus.style.backgroundColor = "coral";
+      const res = await fetch(`/submit/${id}/<%=problem._id%>`, {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json'
         }
-        // else if( !data.sub && (!received.some(id => id === String(data.sub._id))) ) {
-        //   passStatus.textContent = "Processing";
-        //   passStatus.style.backgroundColor = "coral";
-        // }
-      }, 2000)
+      });
+
+      const data = await res.json();
+      const subId = data.subId;
+
+      if (data.status == "OK") {
+        const interval = setInterval(async function() {
+          const res = await fetch(`/submit/${subId}`);
+          const data = await res.json();
+          console.log(data);
+          if (data.status === "finished" && !received.some(id => id === String(data.sub._id))) {
+            received.push(String(data.sub._id));
+            clearInterval(interval);
+            console.log(data);
+
+
+            let i = 1;
+            for (let ver of data.sub.verdict) {
+              const div = document.createElement("div");
+              div.classList.add("rowCase");
+              const divNum = document.createElement("div");
+              divNum.classList.add("divNum");
+              divNum.textContent = ((type === "sample") ? "Sample Case" : "Test Case") + i++;
+              const stat = document.createElement("div");
+              stat.textContent = String(ver);
+              stat.classList.add("stat");
+              if (ver === "AC") stat.style.color = "limegreen";
+              else stat.style.color = "crimson";
+              div.appendChild(divNum);
+              div.appendChild(stat);
+
+              div.style.display = "flex";
+              div.style.justifyContent = "space-around";
+              statusBox.appendChild(div);
+            }
+
+            if (data.sub.accepted === "passed") {
+              passStatus.textContent = "Passed";
+              passStatus.style.backgroundColor = "limegreen";
+
+              if (data.sub.type === "test") {
+                const submitForm = document.querySelector(".code-submit");
+                submitForm.style.display = "none";
+                const proceedMsg = document.querySelector(".proceed-msg");
+                proceedMsg.style.display = "block";
+                proceedMsg.style.backgroundColor = "lightgrey";
+                proceedMsg.textContent = "Proceed to next Problem";
+              }
+            } else {
+              passStatus.textContent = "Failed";
+              passStatus.style.backgroundColor = "crimson";
+            }
+
+
+          }
+          // else if( !data.sub && (!received.some(id => id === String(data.sub._id))) ) {
+          //   passStatus.textContent = "Processing";
+          //   passStatus.style.backgroundColor = "coral";
+          // }
+        }, 2000)
+      }
     }
   }
-
   // --------------------------
   // timer logic
   const contestStat = "<%=contest.isInitiated%>";
   const start = "<%=contest.date%>" + " " + "<%=contest.startTime%>";
-  if (contestStat) {
+  if (contestStat === "on") {
     (function() {
       const second = 1000,
         minute = second * 60,

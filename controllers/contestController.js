@@ -719,6 +719,8 @@ const getProblem__get = async (req, res) => {
     }
   }
 
+  console.log(user);
+
   res.render("contest/showProblem", { contest, problem, user, team, submissions });
 }
 
