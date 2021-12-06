@@ -8,38 +8,43 @@
     <a href="/contest/<%=contest._id%>" style="display: block;">Back to Contest Page</a>
     <div class="problem-container">
       <div class="problem">
-        <h2 class = "prob-title"><b><%=problem.title%></b></h2>
-        <hr class = "underline">
-        <h3><b>Statement:</b><%-problem.statement%> </p>
-        <hr class = "separator">
-        <h3><b>Input Format:</b><%-problem.input%> </p>
-          <hr class = "separator">
-        <h3><b>Ouput Format:</b><%-problem.output%> </p>
-          <hr class = "separator">
-        <h3 class = "pbox">Sample Cases:-<% for( let i = 0; i < problem.sampleCases.length; i++ ) { %>
-        <h3 class = "pbox">Input : <textarea readonly class="io"><%=problem.sampleCases[i].input%></textarea></h3>
-        <h3 class = "pbox">Ouput : <textarea readonly class="io"><%=problem.sampleCases[i].output%></textarea></h3>
-        <% } %></p>
-        <hr class = "separator">
+        <h2 class="prob-title"><b><%=problem.title%></b></h2>
+        <hr class="underline">
+        <h3>Statement:</h3>
+        <p><%-problem.statement%></p>
+        <hr class="separator">
+        <h3>Input Format:</h3>
+        <p><%-problem.input%> </p>
+        <hr class="separator">
+        <h3>Ouput Format:</h3>
+        <p><%-problem.output%> </p>
+        <hr class="separator">
+        <h3 class="pbox">Sample Cases:-</h3>
+        <% for( let i = 0; i < problem.sampleCases.length; i++ ) { %>
+        <h3 class="pbox">Input : </h3><textarea readonly class="io"><%=problem.sampleCases[i].input%></textarea>
+        <h3 class="pbox">Ouput :</h3> <textarea readonly class="io"><%=problem.sampleCases[i].output%></textarea>
+        <% } %>
       </div>
+      <% if (contest.isInitiated === "on") { %>
       <div class="submit-file">
         <div class="timer-container">
           <p class="timer-heading">Timer</p>
-          <div >
+          <div>
             <ul class="timer">
               <!-- <li><span id="days"></span>days</li> -->
-              <li class = "time-unit"><span id="hours">&nbsp;</span>H</li>
-              <li class = "time-unit"><span id="minutes">&nbsp;</span>M</li>
-              <li class = "time-unit"><span id="seconds">&nbsp;</span>S</li>
+              <li class="time-unit"><span id="hours">&nbsp;</span>H</li>
+              <li class="time-unit"><span id="minutes">&nbsp;</span>M</li>
+              <li class="time-unit"><span id="seconds">&nbsp;</span>S</li>
             </ul>
           </div>
         </div>
       </div>
+      <% } %>
     </div>
 
     <div class="code-chat-container">
       <div class="editor">
-        <iframe src="/editor/<%=String(user.curTeam)%>" id="iframeEditor " class="code"></iframe>
+        <iframe src="/editor/<%=String(((user.curTeam)?user.curTeam:user._id))%>" id="iframeEditor " class="code"></iframe>
       </div>
       <% if (contest.isInitiated === "on") { %>
       <div class="chatbox">
@@ -240,39 +245,41 @@
 
   // --------------------------
   // timer logic
-
+  const contestStat = "<%=contest.isInitiated%>";
   const start = "<%=contest.date%>" + " " + "<%=contest.startTime%>";
-  (function() {
-    const second = 1000,
-      minute = second * 60,
-      hour = minute * 60,
-      day = hour * 24;
+  if (contestStat) {
+    (function() {
+      const second = 1000,
+        minute = second * 60,
+        hour = minute * 60,
+        day = hour * 24;
 
 
 
-    const timer = new Date(start).getTime();
-    x = setInterval(function() {
+      const timer = new Date(start).getTime();
+      x = setInterval(function() {
 
-      const now = new Date().getTime();
+        const now = new Date().getTime();
 
-      const distance = now - timer;
+        const distance = now - timer;
 
-      const hrs = Math.floor((distance % (day)) / (hour));
+        const hrs = Math.floor((distance % (day)) / (hour));
 
-      // document.getElementById("days").innerText = Math.floor(distance / (day)),
-      document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-        document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-        document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+        // document.getElementById("days").innerText = Math.floor(distance / (day)),
+        document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+          document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+          document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
 
-      if (String(hrs) === "<%=contest.duration%>") {
-        const modalBox = document.querySelector(".flash");
-        modalBox.display = "block";
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 2500);
-        clearInterval(x);
-      }
-      //seconds
-    }, 0)
-  }());
+        if (String(hrs) === "<%=contest.duration%>") {
+          const modalBox = document.querySelector(".flash");
+          modalBox.display = "block";
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 2500);
+          clearInterval(x);
+        }
+        //seconds
+      }, 0)
+    }());
+  }
 </script>
