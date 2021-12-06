@@ -51,7 +51,8 @@
           <a href="#" id="title" onclick="selectTeam(event)" data="<%=contest._id%>"><%=contest.contestTitle%> </a>
           <hr>
           <div class="info">
-            <h4>Timing : <%=contest.startTime + "-"+contest.endTime%></h4>
+            <h4 style = "margin-top: 0;">Date : <%=contest.date%></h4>
+            <h4>Time : <%=contest.startTime + "-"+contest.endTime%></h4>
             <h4>Organisation : <%=contest.organisation%></h4>
           </div>
         </div>

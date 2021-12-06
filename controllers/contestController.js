@@ -157,6 +157,7 @@ const createContest__post = async (req, res) => {
       st = dobj.toTimeString();
       console.log(st);
       const day2 = dobj.getDate();
+      console.log(day1, day2);
 
       if (day2 - day1 > 3) {
         res.send("cannot create contest before three days");
