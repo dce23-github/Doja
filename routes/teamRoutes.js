@@ -119,7 +119,8 @@ router.get("/my-teams/:userId", async (req, res) => {
     const { userId } = req.params;
     try {
         const user = await User.findById(userId).populate("teams");
-        res.send(user.teams);
+        const teams = user.teams.filter(team=>team.valid===true);
+        res.send(teams);
     }
     catch (err) {
         console.log(err);

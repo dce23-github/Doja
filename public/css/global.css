@@ -551,8 +551,11 @@ header {
     max-width  : 50px;
     max-height : 50px;
     display    : block;
-    margin-left: auto;
+    /* margin-left: auto; */
+    right :0;
+    top : 0;
     cursor     : pointer;
+    position: absolute;
 }
 
 .notifTitle{

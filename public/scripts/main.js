@@ -40,9 +40,11 @@ async function getNotif(event) {
     const user = await res.json();
 
     if (user.friendRequests.length == 0 && user.teamInvites.length == 0) {
-        const p = document.createElement("p");
-        p.style.textAlign = "center";
-        p.textContent = "No Notifications!!";
+        const h2 = document.createElement("h2");
+        h2.style.textAlign = "center";
+        h2.classList.add("headNotif");
+        h2.textContent = "No Notifications!!";
+        notif.appendChild(h2);
     }
     else {
         const h2 = document.createElement("h2");
