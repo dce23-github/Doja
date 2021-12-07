@@ -16,6 +16,9 @@
         <h3>Input Format:</h3>
         <p><%-problem.input%> </p>
         <hr class="separator">
+        <h3>Constraints:</h3>
+        <p><%-problem.constraints%> </p>
+        <hr class="separator">
         <h3>Ouput Format:</h3>
         <p><%-problem.output%> </p>
         <hr class="separator">
@@ -71,8 +74,8 @@
           </select>
           <!-- <input type = "text" name = "lang"> -->
           <!-- <label>Type </label><input type="text" name="type"> -->
-          <button type="submit" class="sub-btn sample" onclick="submitCode(event)">Run Sample</button>
-          <button type="submit" class="sub-btn test" onclick="submitCode(event)">Run Test</button>
+          <button type="submit" class="sub-btn sample" onclick="changeType(event)">Run Sample</button>
+          <button type="submit" class="sub-btn test" onclick="changeType(event)">Run Test</button>
         </div>
       </form>
       <% } else if(user && (contest.isInitiated === "on" && team.problemsSolved.some(sub=>sub.sno === problem.sno))){%>
@@ -143,17 +146,20 @@
     }
   }
 
+  let subType;
   if (codeForm) {
-    codeForm.addEventListener("submit", submitCode)
+    codeForm.addEventListener("submit", submitCode);
 
-
+    function changeType(event) {
+      if (event.target.classList.contains("test")) subType = "test";
+      else subType = "sample";
+    }
 
     async function submitCode(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-
       const lang = document.querySelector(".lang-select").selectedOptions[0].value;
-      const type = ((event.target.classList.contains("test")) ? "test" : "sample");
+      const type = subType;
       const code = document.querySelector(".code").contentWindow.codemirror.doc.getValue();
       const body = {
         code,

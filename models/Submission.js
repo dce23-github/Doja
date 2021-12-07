@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const submissionSchema = new Schema(
   {
+    processed : {type : Boolean, default : false},
     accepted : {type : String},
     status : {type : String},
     teamId :{ type: Schema.Types.ObjectId, ref : "Team"}, 

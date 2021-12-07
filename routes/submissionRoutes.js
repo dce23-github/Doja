@@ -31,14 +31,14 @@ router.post("/:id/:pid", async (req, res) => {
         // const prob = await Problem.findById(pid);
         try {
             const problem = await Problem.findById(pid);
-            console.log("sub contestid : ",problem.contestId);
+            console.log("sub contestid : ", problem.contestId);
             const contest = await Contest.findById(problem.contestId);
             const sub = new Submission({
                 "userId": userId,
                 probId: pid,
-                probTitle : problem.title,
-                contestId : problem.contestId,
-                contestTitle : contest.contestTitle,
+                probTitle: problem.title,
+                contestId: problem.contestId,
+                contestTitle: contest.contestTitle,
                 "code": code,
                 "lang": lang,
                 type: type,
@@ -67,58 +67,65 @@ router.get("/:subId", async (req, res) => {
     }
     else {
         if (sub.status === "finished") {
-            const userId = sub.userId;
-            const teamId = sub.teamId;
-            const probId = sub.probId;
-            const problem = await Problem.findById(probId);
-            const contest = await Contest.findById(sub.contestId);
-            let ac = 0;
-            for (let ver of sub.verdict) {
-                if (ver === "AC") ac++;
-            }
-            if (ac === sub.verdict.length) {
-                sub.accepted = "passed";
+            if (sub.processed === false) {
+                sub.processed = true;
                 await sub.save();
-            }
-            else {
-                sub.accepted = "failed";
-                await sub.save();
-            }
-
-            if (sub.type === "test") {
-                if (sub.accepted === "passed" && String(userId) !== String(contest.authorId) ) problem.countAc = problem.countAc + 1;
-                await problem.save();
-
-                if (teamId !== null) {
-                    const team = await Team.findById(teamId).populate("problemsSolved");
-                    if (!team.problemsSolved.some(sub => sub.sno === problem.sno)) {
-                        team.submissions.push(subId);
-                        await team.save();
-
-                        for (let id of team.members) {
-                            const user = await User.findById(id);
-                            user.submissions.push(subId);
-                            await user.save();
-                        }
-
-                        if (sub.accepted === "passed") {
-                            team.problemsSolved.push({
-                                sno: problem.sno || 2,
-                                subId: subId,
-                            });
-                            await team.save();
-                        }
-                    }
+                const userId = sub.userId;
+                const teamId = sub.teamId;
+                const probId = sub.probId;
+                const problem = await Problem.findById(probId);
+                const contest = await Contest.findById(sub.contestId);
+                let ac = 0;
+                for (let ver of sub.verdict) {
+                    if (ver === "AC") ac++;
+                }
+                if (ac === sub.verdict.length) {
+                    sub.accepted = "passed";
+                    await sub.save();
                 }
                 else {
-                    const user = await User.findById(userId);
-                    user.submissions.push(subId);
-                    console.log("inside sub route: ",user.submissions);
-                    await user.save();
+                    sub.accepted = "failed";
+                    await sub.save();
                 }
-            }
 
-            res.send({ status: sub.status, sub });
+                if (sub.type === "test") {
+                    if (sub.accepted === "passed" && String(userId) !== String(contest.authorId)) problem.countAc = problem.countAc + 1;
+                    await problem.save();
+
+                    if (teamId !== null) {
+                        const team = await Team.findById(teamId).populate("problemsSolved");
+                        if (!team.problemsSolved.some(sub => sub.sno === problem.sno)) {
+
+                            team.submissions.push(subId);
+                            await team.save();
+
+
+                            for (let id of team.members) {
+                                const user = await User.findById(id);
+                                user.submissions.push(subId);
+                                await user.save();
+
+                            }
+
+                            if (sub.accepted === "passed") {
+                                team.problemsSolved.push({
+                                    sno: problem.sno,
+                                    subId: subId,
+                                });
+                                await team.save();
+                            }
+                        }
+                    }
+                    else {
+                        const user = await User.findById(userId);
+                        user.submissions.push(subId);
+                        await user.save();
+                    }
+                }
+
+                res.send({ status: sub.status, sub });
+            }
+            else res.send({status : "already processed"});
         }
         else if (sub.status == "internal error") {
             res.send({ status: sub.status });

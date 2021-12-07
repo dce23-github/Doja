@@ -10,7 +10,8 @@ const createToken = (id) => {
 
 const signup_get = (req, res) => {
   try {
-    res.render("auth/signup");
+    let user = null;
+    res.render("auth/signup", {user});
   } catch (error) {
     console.log(error, "insidesigup error");
   }
