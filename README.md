@@ -1,5 +1,8 @@
 # Doja : Online Judge for hosting coding contests
 
+Online Judge for creating and participating in team contest(3 members), Doja provides a platform for practicing team contests where one gets a 
+real time collaborative code editor so that multiple people can code together on the same editor and also a chatting room so that the team members
+can code ,discuss and communicate within one window , thus removing third party dependencies and improving performance of the users.
 
 <h3>Main Features</h3> 
 <ol>
