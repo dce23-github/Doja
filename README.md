@@ -1,5 +1,5 @@
-# Doja
-<h2><strong>Online Judge for hosting coding contests</strong></h2>
+# Doja : Online Judge for hosting coding contests
+
 
 <h3>Main Features</h3> 
 <ol>
@@ -10,7 +10,7 @@
 
 <u>Read the 'Doja Minor Project Report' to get more insights about algorithms and implementation</u>
 
-  <h4>Snapshots</h4>
+<h3>Snapshots</h3>
   
 Main Window with Code Editor and Chat Room
   
