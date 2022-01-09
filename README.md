@@ -6,9 +6,13 @@
   <li>Basic Code Submission and Code validation</li>
   <li> Real Time Collaborative Code Editor </li>
   <li>Chatting Window</li>
+  <li>Create Contest</li>
+  <li>Participate in Team Contest(3 members per team)</li>
+  <li>Add friends, create teams</li>
+  <li>Check past submissions</li>
 </ol>
 
-<u><i>Read the 'Doja Minor Project Report' to get more insights about algorithms and implementation</i></u>
+<u><strong><i>Read the 'Doja Minor Project Report' to get more insights about algorithms and implementation</i></strong></u>
 
 <h3>Snapshots</h3>
   
