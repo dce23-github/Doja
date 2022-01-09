@@ -1,11 +1,12 @@
 # Doja
 <h2><strong>Online Judge for hosting coding contests</strong></h2>
 
-<h3>Main Features</h3> :
+<h3>Main Features</h3> 
 <ol>
   <li>Basic Code Submission and Code validation</li>
   <li> Real Time Collaborative Code Editor </li>
   <li>Chatting Window</li>
+</ol>
 
 <u>Read the 'Doja Minor Project Report' to get more insights about algorithms and implementation</u>
 
